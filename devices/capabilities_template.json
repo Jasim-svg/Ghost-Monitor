@@ -1,0 +1,34 @@
+{
+  "device_id": "REPLACE_ME",
+  "display_name": "REPLACE_ME",
+  "role": "worker",
+  "os": "REPLACE_ME",
+  "os_version": "REPLACE_ME",
+  "arch": "x64",
+  "ram_gb": 0,
+  "cpu_cores": 0,
+  "power_class": "strong",
+  "tools": {
+    "nmap": false,
+    "ffuf": false,
+    "gobuster": false,
+    "nikto": false,
+    "sqlmap": false,
+    "metasploit": false,
+    "burpsuite": false,
+    "wireshark": false,
+    "python3": false,
+    "git": true,
+    "curl": false,
+    "custom_scripts": []
+  },
+  "task_types_accepted": [
+    "command",
+    "scan",
+    "fuzz",
+    "recon"
+  ],
+  "max_parallel_tasks": 1,
+  "registered_at": "REPLACE_ME",
+  "notes": ""
+}

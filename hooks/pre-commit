@@ -1,0 +1,86 @@
+#!/usr/bin/env python3
+"""
+╔══════════════════════════════════════════════════════╗
+║     GHOST SYNC — PRE-COMMIT SECRET SCANNER          ║
+║     Blocks any commit that contains secrets         ║
+╚══════════════════════════════════════════════════════╝
+
+Install:
+  cp hooks/pre-commit .git/hooks/pre-commit
+  chmod +x .git/hooks/pre-commit
+"""
+
+import re
+import subprocess
+import sys
+
+# ── Patterns that should NEVER be committed ────────────────────────────────
+BANNED_PATTERNS = [
+    (r"(?i)(api[_-]?key|apikey)\s*[:=]\s*['\"]?[A-Za-z0-9\-_]{16,}", "API Key"),
+    (r"(?i)(secret[_-]?key|secret)\s*[:=]\s*['\"]?[A-Za-z0-9\-_]{16,}", "Secret Key"),
+    (r"(?i)(password|passwd|pwd)\s*[:=]\s*['\"]?.{6,}", "Password"),
+    (r"ghp_[A-Za-z0-9]{36}", "GitHub Personal Token"),
+    (r"ghs_[A-Za-z0-9]{36}", "GitHub App Token"),
+    (r"sk-[A-Za-z0-9]{40,}", "OpenAI API Key"),
+    (r"AIza[A-Za-z0-9\-_]{35}", "Google API Key"),
+    (r"AKIA[A-Za-z0-9]{16}", "AWS Access Key"),
+    (r"-----BEGIN (RSA|EC|OPENSSH|PGP) PRIVATE KEY", "Private Key"),
+    (r"(?i)bearer\s+[A-Za-z0-9\-_\.=]{20,}", "Bearer Token"),
+    (r"[0-9a-fA-F]{64}", "Possible Hash/Secret (64-char hex)"),
+]
+
+# Files to skip (git-crypt encrypted files are binary — skip them)
+SKIP_EXTENSIONS = {".enc", ".gpg", ".git-crypt", ".png", ".jpg", ".pdf"}
+
+
+def get_staged_files():
+    result = subprocess.run(
+        ["git", "diff", "--cached", "--name-only", "--diff-filter=ACM"],
+        capture_output=True, text=True
+    )
+    return result.stdout.strip().splitlines()
+
+
+def get_file_content(filepath):
+    result = subprocess.run(
+        ["git", "show", f":{filepath}"],
+        capture_output=True, text=True
+    )
+    return result.stdout
+
+
+def scan():
+    files   = get_staged_files()
+    found   = []
+
+    for filepath in files:
+        suffix = "." + filepath.rsplit(".", 1)[-1] if "." in filepath else ""
+        if suffix in SKIP_EXTENSIONS:
+            continue
+
+        content = get_file_content(filepath)
+        for pattern, label in BANNED_PATTERNS:
+            matches = re.findall(pattern, content)
+            if matches:
+                found.append((filepath, label, matches[0] if isinstance(matches[0], str) else matches[0][0]))
+
+    if found:
+        print("\n" + "═" * 56)
+        print("  🚨 GHOST SYNC — SECRET DETECTED IN COMMIT")
+        print("═" * 56)
+        for filepath, label, sample in found:
+            redacted = sample[:6] + "..." + sample[-4:] if len(sample) > 12 else "***"
+            print(f"  FILE   : {filepath}")
+            print(f"  TYPE   : {label}")
+            print(f"  SAMPLE : {redacted}")
+            print()
+        print("  Commit BLOCKED. Move secrets to secure/ or .gitignore them.")
+        print("═" * 56 + "\n")
+        sys.exit(1)
+
+    print("[GHOST] Pre-commit scan passed — no secrets detected.")
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    scan()

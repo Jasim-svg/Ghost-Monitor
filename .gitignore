@@ -1,0 +1,29 @@
+# ============================================================
+#  GHOST SYNC — .gitignore
+# ============================================================
+*.pem
+*.key
+*.p12
+id_rsa
+id_ed25519
+*.env
+.env.*
+secrets.json
+.DS_Store
+Thumbs.db
+desktop.ini
+__pycache__/
+*.pyc
+.venv/
+venv/
+node_modules/
+.vscode/
+*.swp
+*~
+agent/.device_id
+agent/.device_secret
+agent/local_config.json
+*.tmp
+*.bak
+scratch/
+tmp/
