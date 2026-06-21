@@ -27,3 +27,4 @@ agent/local_config.json
 *.bak
 scratch/
 tmp/
+monitor_settings.json
