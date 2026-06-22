@@ -4,222 +4,891 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ghost Monitor — Agency Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg:      #080c10;
-    --bg2:     #0d1117;
-    --bg3:     #161b22;
-    --bg4:     #1e2530;
-    --border:  #21262d;
-    --cyan:    #00d4ff;
-    --cyan2:   #0ea5e9;
-    --green:   #22c55e;
-    --amber:   #f59e0b;
-    --red:     #ef4444;
-    --text:    #e2e8f0;
-    --muted:   #64748b;
-    --card-r:  8px;
-    font-family: 'Courier New', monospace;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); min-height: 100vh; font-size: 13px; }
+:root {
+  --bg:         #080B1A;
+  --surface:    #0D1628;
+  --surface-2:  #111E33;
+  --surface-3:  #162540;
+  --border:     rgba(148, 170, 200, 0.10);
+  --border-2:   rgba(148, 170, 200, 0.18);
+  --teal:       #00D4AA;
+  --teal-dim:   #00967A;
+  --teal-glow:  rgba(0, 212, 170, 0.15);
+  --brass:      #E0A458;
+  --brass-dim:  #A87C43;
+  --red:        #FF4D6A;
+  --red-dim:    #C23050;
+  --blue:       #4D9EFF;
+  --text:       #C8D6E5;
+  --text-muted: #6B7E94;
+  --text-dim:   #3D5068;
+  --text-bright:#EEF2F8;
+  --online:     #00D4AA;
+  --offline:    #FF4D6A;
+  --paused:     #E0A458;
+  --radius-sm:  8px;
+  --radius:     12px;
+  --radius-lg:  18px;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); min-height: 100vh; font-size: 13px; line-height: 1.5; }
 
-  /* ── header ── */
-  header { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 10px 18px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-  .logo { font-size: 15px; font-weight: bold; color: var(--cyan); letter-spacing: 2px; }
-  .logo span { color: var(--muted); font-size: 11px; margin-left: 8px; letter-spacing: 0; }
-  .header-right { display: flex; align-items: center; gap: 10px; }
-  .sync-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--green); margin-right: 4px; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
-  .btn { background: var(--bg3); border: 1px solid var(--border); color: var(--cyan); padding: 5px 12px; border-radius: 5px; cursor: pointer; font-family: inherit; font-size: 12px; transition: background .15s; white-space: nowrap; }
-  .btn:hover { background: var(--bg4); }
-  .btn.green { color: var(--green); }
+/* ── topbar ── */
+.topbar {
+  height: 64px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 20px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--teal);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo-glyph { font-size: 18px; }
+.live-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+  animation: pulse-dot 3s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+@media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
 
-  /* ── stats bar ── */
-  .stats-bar { display: flex; gap: 10px; padding: 12px 18px; border-bottom: 1px solid var(--border); background: var(--bg2); flex-wrap: wrap; }
-  .stat-card { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--card-r); padding: 9px 16px; min-width: 120px; }
-  .stat-label { color: var(--muted); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
-  .stat-value { font-size: 20px; font-weight: bold; }
-  .v-green { color: var(--green); }
-  .v-amber { color: var(--amber); }
-  .v-cyan  { color: var(--cyan); }
-  .v-muted { color: var(--muted); font-size: 13px; }
+.stats-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.stats-row::-webkit-scrollbar { display: none; }
 
-  /* ── layout ── */
-  .layout { display: flex; height: calc(100vh - 106px); overflow: hidden; }
+.stat-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--text-muted);
+}
+.stat-chip .sc-label { font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; }
+.stat-chip .sc-val { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; }
+.stat-chip.online  .sc-val { color: var(--online); }
+.stat-chip.offline .sc-val { color: var(--offline); }
+.stat-chip.total   .sc-val { color: var(--text); }
+.stat-chip.alerts  .sc-val { color: var(--brass); }
+.stat-chip.consented { position: relative; }
 
-  /* ── sidebar ── */
-  .sidebar { width: 240px; min-width: 200px; background: var(--bg2); border-right: 1px solid var(--border); overflow-y: auto; display: flex; flex-direction: column; }
-  .sidebar-hdr { padding: 8px 12px; font-size: 10px; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; border-bottom: 1px solid var(--border); }
-  .device-card { padding: 9px 12px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background .12s; }
-  .device-card:hover  { background: var(--bg3); }
-  .device-card.active { background: var(--bg4); border-left: 2px solid var(--cyan); }
-  .device-name { font-weight: bold; font-size: 13px; margin-bottom: 2px; }
-  .device-meta { color: var(--muted); font-size: 11px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-  .badge { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: bold; }
-  .badge.online   { background: #052e16; color: var(--green); }
-  .badge.offline  { background: #1c1917; color: var(--muted); }
-  .badge.warn     { background: #451a03; color: var(--amber); }
-  .badge.info     { background: #082f49; color: var(--cyan2); }
-  .badge.critical { background: #450a0a; color: var(--red); }
-  .mini-bar { height: 3px; border-radius: 2px; background: var(--border); margin-top: 4px; }
-  .mini-bar-fill { height: 100%; border-radius: 2px; transition: width .3s; }
+.consent-ring { display: inline-block; vertical-align: middle; }
 
-  /* ── main panel ── */
-  .main-panel { flex: 1; overflow-y: auto; padding: 14px 18px; }
+.topbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.time-label { font-size: 11px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
 
-  /* ── tabs ── */
-  .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
-  .tab { padding: 6px 14px; cursor: pointer; color: var(--muted); border-bottom: 2px solid transparent; font-size: 12px; transition: color .15s; }
-  .tab:hover { color: var(--text); }
-  .tab.active { color: var(--cyan); border-bottom-color: var(--cyan); }
-  .section { display: none; }
-  .section.active { display: block; }
+/* ── buttons ── */
+.btn {
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  color: var(--text);
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  transition: background 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.btn:hover { background: var(--surface-3); border-color: var(--border-2); color: var(--text-bright); }
+.btn.enroll { color: var(--teal); border-color: rgba(0,212,170,0.35); }
+.btn.enroll:hover { background: var(--teal-glow); }
+.btn.refresh { font-size: 14px; padding: 6px 10px; }
+.btn-primary {
+  background: var(--teal);
+  border: none;
+  color: #000;
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+}
+.btn-primary:hover { background: var(--teal-dim); }
+.btn-primary.green { background: #22c55e; color: #000; }
+.btn-primary.green:hover { background: #16a34a; }
+.btn-cancel {
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  color: var(--text-muted);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+}
+.btn-cancel:hover { color: var(--text); }
 
-  /* ── table ── */
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  th { text-align: left; padding: 5px 8px; color: var(--muted); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
-  td { padding: 5px 8px; border-bottom: 1px solid #1a1f26; }
-  tr:hover td { background: var(--bg3); }
-  .mono { font-family: 'Courier New', monospace; }
-  .cpu-bar { height: 4px; border-radius: 2px; background: var(--border); width: 55px; display: inline-block; vertical-align: middle; }
-  .cpu-bar-fill { height: 100%; border-radius: 2px; background: var(--cyan2); }
+/* ── layout ── */
+.layout {
+  display: flex;
+  height: calc(100vh - 64px);
+  overflow: hidden;
+}
 
-  /* ── event row ── */
-  .event-row { display: flex; gap: 8px; padding: 6px 0; border-bottom: 1px solid #1a1f26; align-items: flex-start; }
-  .evt-time   { color: var(--muted); font-size: 11px; white-space: nowrap; min-width: 130px; }
-  .evt-dev    { color: var(--cyan2); font-size: 11px; min-width: 90px; }
-  .evt-body   { flex: 1; }
-  .evt-detail { color: var(--muted); font-size: 11px; word-break: break-all; }
+/* ── sidebar ── */
+.sidebar {
+  width: 280px;
+  min-width: 240px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface-3) transparent;
+}
+.sidebar-hdr {
+  padding: 12px 16px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  z-index: 5;
+}
+.sidebar-count {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1px 7px;
+  font-size: 10px;
+  color: var(--teal);
+  font-weight: 600;
+  letter-spacing: 0;
+}
 
-  /* ── metrics ── */
-  .metric-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-bottom: 12px; }
-  .metric-card { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--card-r); padding: 10px; }
-  .metric-label { color: var(--muted); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
-  .metric-val { font-size: 18px; font-weight: bold; color: var(--cyan); margin-bottom: 5px; }
-  .metric-bar { height: 4px; border-radius: 3px; background: var(--border); }
-  .metric-bar-fill { height: 100%; border-radius: 3px; transition: width .4s; }
+/* ── device cards ── */
+.device-card {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+  border-left: 3px solid transparent;
+  position: relative;
+}
+.device-card:hover  { background: var(--surface-2); }
+.device-card.active { background: var(--surface-3); border-left-color: var(--teal); }
+.device-card.is-online  { border-left-color: var(--online); }
+.device-card.is-offline { border-left-color: var(--offline); }
+.device-card.is-paused  { border-left-color: var(--paused); }
+.device-card.active.is-online  { border-left-color: var(--teal); }
+.device-card.active.is-paused  { border-left-color: var(--paused); box-shadow: inset 3px 0 0 var(--paused); }
+.device-card.active.is-offline { border-left-color: var(--offline); box-shadow: inset 3px 0 0 var(--offline); }
 
-  /* ── log box ── */
-  .log-box { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--card-r); padding: 10px; max-height: 380px; overflow-y: auto; font-size: 11px; line-height: 1.6; color: #94a3b8; white-space: pre-wrap; word-break: break-all; }
+.dc-row1 { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
+.dc-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dc-dot.online  { background: var(--online); animation: dot-pulse 3s ease-in-out infinite; }
+.dc-dot.paused  { background: var(--paused); }
+.dc-dot.offline { background: var(--offline); }
+@keyframes dot-pulse {
+  0%,100% { opacity:1; } 50% { opacity:0.35; }
+}
+@media (prefers-reduced-motion: reduce) { .dc-dot.online { animation: none; } }
 
-  /* ── file browser ── */
-  .file-search { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 7px 10px; border-radius: 5px; font-family: inherit; font-size: 12px; margin-bottom: 10px; }
-  .file-search:focus { outline: none; border-color: var(--cyan2); }
-  .file-ts { color: var(--muted); font-size: 11px; margin-bottom: 8px; }
-  .file-req-badge { font-size: 10px; padding: 2px 8px; border-radius: 3px; background: var(--bg3); border: 1px solid var(--border); color: var(--muted); cursor: pointer; white-space: nowrap; }
-  .file-req-badge:hover { border-color: var(--cyan2); color: var(--cyan2); }
-  .file-req-badge.pending  { background: #1c1102; color: var(--amber); border-color: #92400e; }
-  .file-req-badge.ready    { background: #052e16; color: var(--green); border-color: #16a34a; cursor: default; }
-  .file-req-badge.download { background: #082f49; color: var(--cyan); border-color: var(--cyan2); cursor: pointer; }
-  .file-req-badge.error    { background: #450a0a; color: var(--red); border-color: #ef4444; cursor: default; }
+.dc-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-bright);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.os-pill {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 2px 5px;
+  border-radius: 4px;
+  border: 1px solid var(--border-2);
+  color: var(--text-muted);
+  background: var(--surface-3);
+  flex-shrink: 0;
+}
+.consent-icon { font-size: 11px; flex-shrink: 0; }
+.consent-icon.ok   { color: var(--teal); }
+.consent-icon.warn { color: var(--brass); }
 
-  /* ── right panel ── */
-  .right-panel { width: 260px; min-width: 220px; background: var(--bg2); border-left: 1px solid var(--border); overflow-y: auto; }
-  .rp-hdr { padding: 8px 12px; font-size: 10px; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-  .alert-item { padding: 7px 10px; border-bottom: 1px solid var(--border); }
-  .alert-item:hover { background: var(--bg3); }
-  .alert-dev  { color: var(--cyan2); font-size: 11px; }
-  .alert-time { color: var(--muted); font-size: 10px; }
-  .alert-msg  { font-size: 11px; word-break: break-all; margin-top: 2px; }
+.dc-row2 { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+.dc-time { font-size: 11px; color: var(--text-muted); flex: 1; }
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.badge.online   { background: rgba(0,212,170,0.12); color: var(--online); border: 1px solid rgba(0,212,170,0.25); }
+.badge.offline  { background: rgba(255,77,106,0.10); color: var(--offline); border: 1px solid rgba(255,77,106,0.25); }
+.badge.paused   { background: rgba(224,164,88,0.12); color: var(--paused); border: 1px solid rgba(224,164,88,0.25); }
+.badge.consent-ok { background: rgba(77,158,255,0.10); color: var(--blue); border: 1px solid rgba(77,158,255,0.2); }
+.badge.consent-warn { background: rgba(224,164,88,0.12); color: var(--brass); border: 1px solid rgba(224,164,88,0.25); }
+.badge.info     { background: rgba(77,158,255,0.10); color: var(--blue); border: 1px solid rgba(77,158,255,0.2); }
+.badge.warn     { background: rgba(224,164,88,0.12); color: var(--brass); border: 1px solid rgba(224,164,88,0.25); }
+.badge.critical { background: rgba(255,77,106,0.10); color: var(--red); border: 1px solid rgba(255,77,106,0.25); }
+.badge.state-est  { background: rgba(0,212,170,0.1); color: var(--teal); border: 1px solid rgba(0,212,170,0.2); }
+.badge.state-listen { background: rgba(77,158,255,0.1); color: var(--blue); border: 1px solid rgba(77,158,255,0.2); }
+.badge.state-close  { background: rgba(224,164,88,0.1); color: var(--brass); border: 1px solid rgba(224,164,88,0.2); }
 
-  /* ── active window ── */
-  .active-win { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--card-r); padding: 7px 10px; margin-bottom: 12px; font-size: 12px; }
-  .active-win-lbl { color: var(--muted); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
-  .active-win-val { color: var(--cyan); }
+.mini-bar { height: 6px; border-radius: 3px; background: var(--surface-3); margin-top: 3px; overflow: hidden; }
+.mini-bar-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
 
-  /* ── empty ── */
-  .empty { text-align: center; padding: 36px 20px; color: var(--muted); }
-  .empty big { display: block; font-size: 28px; margin-bottom: 8px; }
-  .loading { color: var(--muted); text-align: center; padding: 20px; }
-  .tag { font-size: 10px; padding: 1px 5px; border-radius: 3px; }
+.dc-window {
+  font-size: 10px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 4px;
+}
 
-  /* ── modals ── */
-  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 500; align-items: center; justify-content: center; }
-  .overlay.open { display: flex; }
-  .modal { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 22px; width: 500px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
-  .modal h2 { font-size: 14px; color: var(--cyan); margin-bottom: 14px; letter-spacing: 1px; }
-  .modal label { display: block; color: var(--muted); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; margin: 10px 0 4px; }
-  .modal input { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 7px 10px; border-radius: 5px; font-family: inherit; font-size: 13px; }
-  .modal input:focus { outline: none; border-color: var(--cyan2); }
-  .hint { color: var(--muted); font-size: 11px; margin-top: 3px; line-height: 1.5; }
-  .modal-row { display: flex; gap: 8px; margin-top: 16px; }
-  .btn-primary { background: var(--cyan2); border: none; color: #000; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: bold; }
-  .btn-primary:hover { background: var(--cyan); }
-  .btn-cancel { background: var(--bg3); border: 1px solid var(--border); color: var(--muted); padding: 8px 12px; border-radius: 5px; cursor: pointer; font-family: inherit; font-size: 13px; }
-  .btn-cancel:hover { color: var(--text); }
-  .modal-msg { margin-top: 12px; padding: 9px; border-radius: 5px; font-size: 12px; display: none; }
-  .modal-msg.ok  { background: #052e16; color: var(--green); display: block; }
-  .modal-msg.err { background: #450a0a; color: var(--red); display: block; }
+/* ── main panel ── */
+.main-panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 20px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface-3) transparent;
+}
 
-  /* ── enroll URL box ── */
-  .url-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 5px; padding: 8px 10px; font-size: 12px; color: var(--cyan); word-break: break-all; margin: 8px 0; min-height: 32px; }
-  .os-row { display: flex; gap: 8px; }
-  .os-btn { flex: 1; background: var(--bg3); border: 1px solid var(--border); color: var(--muted); padding: 7px; border-radius: 5px; cursor: pointer; font-family: inherit; font-size: 12px; text-align: center; }
-  .os-btn.sel { border-color: var(--cyan2); color: var(--cyan2); background: #082f49; }
-  .secret-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 5px; padding: 7px 10px; font-size: 12px; color: var(--amber); word-break: break-all; margin: 6px 0; font-family: 'Courier New', monospace; }
+/* ── device header card ── */
+.device-header-card {
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 16px;
+}
+.dhc-row1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.dhc-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-bright);
+  flex: 1;
+  min-width: 0;
+}
+.dhc-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.dhc-meta-sep { color: var(--text-dim); }
+.dhc-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.dhc-metric-block {}
+.dhc-metric-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.dhc-metric-val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 5px;
+}
+.metric-bar { height: 5px; border-radius: 3px; background: var(--surface-3); overflow: hidden; }
+.metric-bar-fill { height: 100%; border-radius: 3px; transition: width 0.4s; }
 
-  /* ── scrollbar ── */
-  ::-webkit-scrollbar { width: 5px; height: 5px; }
-  ::-webkit-scrollbar-track { background: var(--bg2); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.dhc-window {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.dhc-window-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.btn-revoke {
+  background: transparent;
+  border: 1px solid rgba(255,77,106,0.35);
+  color: var(--red);
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+.btn-revoke:hover { background: rgba(255,77,106,0.1); }
+
+/* ── tabs ── */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 14px;
+  gap: 2px;
+}
+.tab {
+  padding: 8px 16px;
+  cursor: pointer;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--teal); border-bottom-color: var(--teal); }
+.section { display: none; }
+.section.active { display: block; }
+
+/* ── tables ── */
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th {
+  text-align: left;
+  padding: 6px 10px;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border-2);
+  background: var(--surface);
+}
+td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--border);
+}
+tr:nth-child(even) td { background: rgba(13,22,40,0.4); }
+tr:hover td { background: var(--surface-2); }
+.mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+.cpu-bar-wrap { display: flex; align-items: center; gap: 6px; }
+.cpu-bar { height: 4px; border-radius: 2px; background: var(--surface-3); width: 48px; flex-shrink: 0; overflow: hidden; }
+.cpu-bar-fill { height: 100%; border-radius: 2px; }
+.proc-top td { background: rgba(0,212,170,0.04) !important; }
+
+/* ── events timeline ── */
+.timeline-item {
+  display: flex;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.tl-time {
+  color: var(--text-muted);
+  font-size: 11px;
+  white-space: nowrap;
+  min-width: 130px;
+  font-variant-numeric: tabular-nums;
+}
+.tl-icon { font-size: 12px; min-width: 16px; text-align: center; }
+.tl-body { flex: 1; }
+.tl-type {
+  font-size: 11px;
+  color: var(--text);
+  margin-bottom: 2px;
+  font-weight: 500;
+}
+.tl-detail {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  word-break: break-all;
+}
+.tl-sev-info    .tl-type { color: var(--text-muted); }
+.tl-sev-warning .tl-type { color: var(--brass); }
+.tl-sev-critical .tl-type { color: var(--red); }
+
+/* ── log box ── */
+.log-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  max-height: 420px;
+  overflow-y: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* ── file browser ── */
+.file-search {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  margin-bottom: 10px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.file-search:focus { border-color: var(--teal-dim); }
+.file-ts { color: var(--text-muted); font-size: 11px; margin-bottom: 8px; }
+.file-req-badge {
+  font-size: 10px;
+  padding: 3px 9px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  color: var(--teal);
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-block;
+  transition: background 0.15s;
+}
+.file-req-badge:hover  { background: var(--teal-glow); }
+.file-req-badge.pending  { color: var(--brass); border-color: rgba(224,164,88,0.35); background: rgba(224,164,88,0.08); cursor: default; }
+.file-req-badge.ready    { color: var(--teal); border-color: rgba(0,212,170,0.35); background: var(--teal-glow); cursor: default; }
+.file-req-badge.download { color: var(--teal); border-color: rgba(0,212,170,0.35); background: var(--teal-glow); }
+.file-req-badge.error    { color: var(--red); border-color: rgba(255,77,106,0.35); background: rgba(255,77,106,0.08); cursor: default; }
+
+.access-log-section { margin-top: 20px; }
+.access-log-section h4 {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+
+/* ── activity feed ── */
+.event-row {
+  display: flex;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.evt-time   { color: var(--text-muted); font-size: 11px; white-space: nowrap; min-width: 130px; font-variant-numeric: tabular-nums; }
+.evt-dev    { color: var(--blue); font-size: 11px; min-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.evt-body   { flex: 1; }
+.evt-detail { color: var(--text-muted); font-size: 11px; word-break: break-all; font-family: 'JetBrains Mono', monospace; }
+
+/* ── right panel ── */
+.right-panel {
+  width: 240px;
+  min-width: 200px;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface-3) transparent;
+}
+.rp-hdr {
+  padding: 12px 14px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+}
+.alert-item {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.12s;
+}
+.alert-item:hover { background: var(--surface-2); }
+.alert-dev  { color: var(--blue); font-size: 11px; font-weight: 500; }
+.alert-time { color: var(--text-dim); font-size: 10px; }
+.alert-msg  { font-size: 11px; word-break: break-all; margin-top: 3px; color: var(--text); }
+
+/* ── empty states ── */
+.empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-muted);
+}
+.empty-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.5; }
+.empty-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.empty-sub { font-size: 12px; line-height: 1.6; }
+.empty-sub a { color: var(--teal); text-decoration: none; cursor: pointer; }
+.loading { color: var(--text-muted); text-align: center; padding: 20px; font-size: 12px; }
+
+/* ── section eyebrow ── */
+.section-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 6px 0 4px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+
+/* ── modals ── */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.overlay.open { display: flex; }
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  width: 560px;
+  max-width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 18px;
+}
+.modal label {
+  display: block;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 14px 0 5px;
+}
+.modal label:first-of-type { margin-top: 0; }
+.modal input, .modal textarea {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s;
+  resize: vertical;
+}
+.modal input:focus, .modal textarea:focus { border-color: var(--teal-dim); }
+.modal-hint { color: var(--text-muted); font-size: 11px; margin-top: 4px; line-height: 1.6; }
+.modal-row { display: flex; gap: 8px; margin-top: 18px; }
+.modal-msg { margin-top: 12px; padding: 10px 12px; border-radius: var(--radius-sm); font-size: 12px; display: none; }
+.modal-msg.ok  { background: rgba(0,212,170,0.1); color: var(--teal); border: 1px solid rgba(0,212,170,0.25); display: block; }
+.modal-msg.err { background: rgba(255,77,106,0.1); color: var(--red); border: 1px solid rgba(255,77,106,0.25); display: block; }
+
+/* ── enroll modal two-col ── */
+.enroll-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+.enroll-left {}
+.enroll-right {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+  max-height: 280px;
+  overflow-y: auto;
+  font-family: 'JetBrains Mono', monospace;
+}
+.enroll-right-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.os-row { display: flex; gap: 6px; }
+.os-btn {
+  flex: 1;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  color: var(--text-muted);
+  padding: 7px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  transition: all 0.15s;
+}
+.os-btn.sel { border-color: var(--teal-dim); color: var(--teal); background: var(--teal-glow); }
+.url-box {
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  font-size: 12px;
+  color: var(--teal);
+  word-break: break-all;
+  margin: 6px 0;
+  min-height: 36px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.consent-note {
+  background: rgba(0,212,170,0.06);
+  border: 1px solid rgba(0,212,170,0.18);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: rgba(0,212,170,0.75);
+  margin-top: 8px;
+}
+
+/* ── settings value box ── */
+.value-box {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--teal);
+  word-break: break-all;
+  margin-top: 4px;
+}
+.policy-box {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+  max-height: 150px;
+  overflow-y: auto;
+  margin-top: 4px;
+}
+.cloudflare-note {
+  background: rgba(0,212,170,0.04);
+  border: 1px solid rgba(0,212,170,0.14);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin-top: 6px;
+  font-size: 11px;
+  line-height: 1.8;
+  color: var(--text-muted);
+}
+.cloudflare-note strong { color: var(--teal); }
+.cloudflare-note code {
+  background: rgba(0,212,170,0.08);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 3px; }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">GHOST MONITOR <span>Agency Security Dashboard</span></div>
-  <div class="header-right">
-    <span style="color:var(--muted);font-size:11px"><span class="sync-dot"></span>LIVE</span>
-    <span style="color:var(--muted);font-size:11px" id="serverTime">—</span>
-    <button class="btn" onclick="refreshAll()">↺ Refresh</button>
-    <button class="btn green" onclick="openEnroll()">+ Enroll Device</button>
+<!-- ── Topbar ── -->
+<div class="topbar">
+  <div class="logo">
+    <span class="logo-glyph">◈</span>
+    GHOST MONITOR
+  </div>
+  <div class="live-chip">
+    <div class="live-dot"></div>
+    LIVE
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-chip online">
+      <span class="sc-label">Online</span>
+      <span class="sc-val" id="s-online">—</span>
+    </div>
+    <div class="stat-chip offline">
+      <span class="sc-label">Offline</span>
+      <span class="sc-val" id="s-offline">—</span>
+    </div>
+    <div class="stat-chip total">
+      <span class="sc-label">Total</span>
+      <span class="sc-val" id="s-total">—</span>
+    </div>
+    <div class="stat-chip consented" id="consented-chip">
+      <span class="consent-ring" id="consentRingSvg"></span>
+      <span class="sc-label">Consented</span>
+      <span class="sc-val" id="s-consented">—</span>
+    </div>
+    <div class="stat-chip alerts">
+      <span class="sc-label">Alerts 1h</span>
+      <span class="sc-val" id="s-alerts">—</span>
+    </div>
+    <span class="time-label" id="serverTime"></span>
+  </div>
+
+  <div class="topbar-actions">
+    <button class="btn refresh" onclick="refreshAll()" title="Refresh">↺</button>
+    <button class="btn enroll" onclick="openEnroll()">+ Enroll Device</button>
     <button class="btn" onclick="openSettings()">⚙ Settings</button>
   </div>
-</header>
-
-<div class="stats-bar">
-  <div class="stat-card"><div class="stat-label">Online</div><div class="stat-value v-green" id="s-online">—</div></div>
-  <div class="stat-card"><div class="stat-label">Offline</div><div class="stat-value v-amber" id="s-offline">—</div></div>
-  <div class="stat-card"><div class="stat-label">Total Devices</div><div class="stat-value v-cyan" id="s-total">—</div></div>
-  <div class="stat-card"><div class="stat-label">Consented</div><div class="stat-value v-green" id="s-consented">—</div></div>
-  <div class="stat-card"><div class="stat-label">Alerts (1h)</div><div class="stat-value v-amber" id="s-alerts">—</div></div>
 </div>
 
+<!-- ── Main Layout ── -->
 <div class="layout">
+
   <!-- Sidebar -->
   <div class="sidebar">
-    <div class="sidebar-hdr">Devices</div>
+    <div class="sidebar-hdr">
+      <span>Devices</span>
+      <span class="sidebar-count" id="deviceCount">0</span>
+    </div>
     <div id="fleetList"><div class="loading">Loading…</div></div>
   </div>
 
-  <!-- Main panel -->
+  <!-- Main Panel -->
   <div class="main-panel">
+
     <!-- All-devices view (default) -->
     <div id="viewAll">
       <div class="tabs">
         <div class="tab active" onclick="gTab('activity',this)">Activity Feed</div>
         <div class="tab" onclick="gTab('warnings',this)">Warnings</div>
       </div>
-      <div class="section active" id="gt-activity"><div id="activityFeed"><div class="loading">Loading…</div></div></div>
-      <div class="section"        id="gt-warnings"><div id="allWarnings"><div class="loading">Loading…</div></div></div>
+      <div class="section active" id="gt-activity">
+        <div id="activityFeed"><div class="loading">Loading…</div></div>
+      </div>
+      <div class="section" id="gt-warnings">
+        <div id="allWarnings"><div class="loading">Loading…</div></div>
+      </div>
     </div>
 
     <!-- Device detail view -->
     <div id="viewDevice" style="display:none">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
-        <button class="btn" onclick="clearDevice()">← All Devices</button>
-        <span id="dTitle" style="color:var(--cyan);font-size:15px;font-weight:bold;"></span>
-        <span id="dBadge"></span>
-        <span id="dConsentBadge"></span>
-        <span id="dIP" style="color:var(--muted);font-size:11px;"></span>
-        <button id="dRevokeBtn" class="btn" style="color:var(--red);border-color:var(--red);margin-left:auto;display:none;" onclick="revokeDevice()">✕ Revoke Device</button>
+
+      <!-- Header card -->
+      <div class="device-header-card">
+        <div class="dhc-row1">
+          <span id="dBadge"></span>
+          <span class="dhc-name" id="dTitle"></span>
+          <span id="dConsentBadge"></span>
+          <button id="dRevokeBtn" class="btn-revoke" style="display:none" onclick="revokeDevice()">✕ Revoke</button>
+          <button class="btn" style="font-size:11px;padding:4px 10px;" onclick="clearDevice()">← Back</button>
+        </div>
+        <div class="dhc-meta" id="dMeta"></div>
+        <div class="dhc-metrics" id="dMetrics"></div>
+        <div class="dhc-window" id="activeWin" style="display:none">
+          <span style="color:var(--text-muted);font-size:10px;text-transform:uppercase;letter-spacing:.07em;flex-shrink:0">Active:</span>
+          <span class="dhc-window-val" id="activeWinVal"></span>
+        </div>
       </div>
-      <div id="activeWin" class="active-win" style="display:none">
-        <div class="active-win-lbl">Active Window</div>
-        <div class="active-win-val" id="activeWinVal">—</div>
-      </div>
-      <div class="metric-grid" id="dMetrics"></div>
+
       <div class="tabs">
         <div class="tab active" onclick="dTab('processes',this)">Processes</div>
         <div class="tab" onclick="dTab('network',this)">Network</div>
@@ -235,20 +904,24 @@
     </div>
   </div>
 
-  <!-- Right panel: alerts -->
+  <!-- Right Panel: Warnings -->
   <div class="right-panel">
-    <div class="rp-hdr"><span>Warnings</span><span id="alertCount" style="color:var(--amber)">0</span></div>
+    <div class="rp-hdr">
+      <span>Warnings</span>
+      <span id="alertCount" style="color:var(--brass)">0</span>
+    </div>
     <div id="alertsFeed"><div class="loading">—</div></div>
   </div>
 </div>
 
-<!-- ═══════ Enroll Device Modal ═══════ -->
+<!-- ══ Enroll Device Modal ══ -->
 <div class="overlay" id="enrollModal">
-  <div class="modal">
-    <h2>ENROLL NEW DEVICE</h2>
+  <div class="modal" style="width:680px">
+    <div class="modal-title">Enroll New Device</div>
+
     <label>Device Name</label>
     <input id="enrollName" type="text" placeholder="e.g. john-laptop, workstation-2" oninput="updateEnrollURL()">
-    <div class="hint">Letters, numbers, hyphens. This is the label that appears in the dashboard.</div>
+    <div class="modal-hint">Letters, numbers, hyphens. Appears as the device label in the dashboard.</div>
 
     <label>Operating System</label>
     <div class="os-row">
@@ -258,57 +931,78 @@
 
     <label>Enrollment Link</label>
     <div class="url-box" id="enrollURL">Enter a device name above…</div>
-    <div class="hint">
-      <strong style="color:var(--text)">Share this link</strong> — staff member opens it in a browser to download the setup script, then runs it.<br>
-      Or click <em>Download Script</em> to grab it yourself and send via email/USB/chat.
-    </div>
 
-    <div style="background:#082f49;border:1px solid #075985;border-radius:5px;padding:9px 12px;margin-top:10px;font-size:11px;line-height:1.7;color:#7dd3fc;">
-      <strong>What the script does (automatically):</strong><br>
-      <strong style="color:var(--cyan)">Windows (.bat):</strong> Double-click to run. Creates a silent Scheduled Task that auto-starts on login.<br>
-      <strong style="color:var(--cyan)">Linux / macOS (.sh):</strong> Run <code style="background:#0c2340;padding:1px 4px;border-radius:3px;">bash enroll-devicename.sh</code> in a terminal — do not double-click (opens in editor on some systems).<br>
-      Both: downloads agent, installs psutil, configures device ID + secret, starts monitoring immediately.
+    <div class="enroll-grid">
+      <div class="enroll-left">
+        <div class="modal-hint" style="margin-top:0;">
+          <strong style="color:var(--text)">Share this link</strong> — staff member opens it in a browser to download the setup script, then runs it.<br>
+          Or click <em>Download Script</em> to grab it yourself.
+        </div>
+        <div class="consent-note" style="margin-top:8px;">
+          ◈ Staff member sees the full monitoring policy and must type <strong>Y</strong> before anything installs.
+          Consent is logged on the commander before any files are written — no silent installs.
+        </div>
+      </div>
+      <div class="enroll-right-col">
+        <div class="enroll-right-label">What your staff will see:</div>
+        <div class="enroll-right">GHOST MONITOR | MONITORING DISCLOSURE
+================================================================
+
+This device will be monitored by your agency administrator.
+The following data is collected every 5-10 minutes:
+
+  Processes      - program names, CPU%, memory
+  Network        - active connections, external IPs
+  System metrics - CPU%, RAM%, disk usage
+  Active window  - title of the focused window
+  File listings  - names/sizes in Documents, Desktop, Downloads
+                   (contents NOT read without explicit request)
+
+Data goes only to your agency's commander PC.
+
+================================================================
+Type Y to accept and continue, anything else to cancel:</div>
+      </div>
     </div>
 
     <div class="modal-msg" id="enrollMsg"></div>
     <div class="modal-row">
       <button class="btn-primary" onclick="copyEnrollLink()">Copy Link</button>
-      <button class="btn-primary" style="background:var(--green);" onclick="downloadEnrollScript()">Download Script</button>
-      <button class="btn-cancel"  onclick="closeEnroll()">Close</button>
+      <button class="btn-primary green" onclick="downloadEnrollScript()">Download Script</button>
+      <button class="btn-cancel" onclick="closeEnroll()">Close</button>
     </div>
   </div>
 </div>
 
-<!-- ═══════ Settings Modal ═══════ -->
+<!-- ══ Settings Modal ══ -->
 <div class="overlay" id="settingsModal">
   <div class="modal">
-    <h2>SETTINGS</h2>
+    <div class="modal-title">Settings</div>
 
     <label>Commander Network Address</label>
-    <div class="secret-box" id="settingsLanIP">Detecting…</div>
-    <div class="hint">Address staff machines connect to. Must be reachable on your LAN.</div>
+    <div class="value-box" id="settingsLanIP">Detecting…</div>
+    <div class="modal-hint">Address staff machines connect to on your LAN.</div>
 
     <label>Auth Model</label>
-    <div class="hint" style="margin-top:4px;">
-      v2 uses <strong>per-device tokens</strong> stored in <code style="background:var(--bg3);padding:1px 4px;border-radius:3px;">tokens.json</code>.
-      Each enrollment link generates a unique token for that device.
-      Revoking a device from its detail view instantly invalidates its token.
+    <div class="modal-hint" style="margin-top:4px;">
+      v2 uses <strong style="color:var(--text)">per-device tokens</strong> stored in
+      <code style="font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--surface-2);padding:1px 5px;border-radius:3px;">tokens.json</code>.
+      Each enrollment generates a unique token. Revoking one device leaves all others unaffected.
     </div>
 
-    <label>Monitoring Policy <span style="color:var(--muted);font-weight:400;">(shown to staff at enrollment)</span></label>
-    <div id="settingsPolicy" style="background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:9px 12px;font-size:11px;line-height:1.7;color:#94a3b8;white-space:pre-wrap;max-height:160px;overflow-y:auto;margin-top:4px;">Loading…</div>
+    <label>Monitoring Policy <span style="color:var(--text-dim);font-weight:400;text-transform:none;letter-spacing:0;">(shown to staff at enrollment)</span></label>
+    <div class="policy-box" id="settingsPolicy">Loading…</div>
 
-    <label>Public URL Override <span style="color:var(--muted);font-weight:400;">(for remote / internet access)</span></label>
+    <label>Public URL Override <span style="color:var(--text-dim);font-weight:400;text-transform:none;letter-spacing:0;">(for remote / internet access)</span></label>
     <input id="settingsURLOverride" type="text" placeholder="https://your-tunnel.trycloudflare.com">
-    <div style="background:#0a1a0a;border:1px solid #14532d;border-radius:5px;padding:9px 12px;margin-top:6px;font-size:11px;line-height:1.8;color:#86efac;">
-      <strong style="color:#4ade80;">Cloudflare Tunnel setup (one-time, free):</strong><br>
-      1. Download <code style="background:#052e16;padding:1px 4px;border-radius:3px;">cloudflared</code> from <strong>developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads</strong><br>
-      2. Run: <code style="background:#052e16;padding:1px 4px;border-radius:3px;">cloudflared tunnel --url http://localhost:8888</code><br>
-      3. Copy the <code style="background:#052e16;padding:1px 4px;border-radius:3px;">https://….trycloudflare.com</code> URL it prints<br>
-      4. Paste it in the field above and click <strong>Save</strong><br>
-      All new enrollment links will use this URL — staff in any city can connect.
+    <div class="cloudflare-note">
+      <strong>Cloudflare Tunnel setup (one-time, free)</strong><br>
+      1. Download <code>cloudflared</code> from developers.cloudflare.com/cloudflare-one/…/downloads<br>
+      2. Run: <code>cloudflared tunnel --url http://localhost:8888</code><br>
+      3. Copy the <code>https://….trycloudflare.com</code> URL it prints<br>
+      4. Paste above and click Save — all new enrollment links will use it.
     </div>
-    <div class="hint" style="margin-top:6px;">Leave blank to use LAN-only mode (same network only).</div>
+    <div class="modal-hint" style="margin-top:6px;">Leave blank to use LAN-only mode.</div>
 
     <div class="modal-msg" id="settingsMsg"></div>
     <div class="modal-row">
@@ -323,12 +1017,17 @@
 let selectedDevice = null;
 let enrollOS = 'win';
 let enrollBaseURL = '';
-let fileRequests = {};   // request_id → status polling
+let fileRequests = {};
 
 // ── utils ──────────────────────────────────────────────────────────────────
 function fmt(iso) {
   if (!iso) return '—';
   try { return new Date(iso).toLocaleString([], {month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
+  catch { return iso; }
+}
+function fmtShort(iso) {
+  if (!iso) return '—';
+  try { return new Date(iso).toLocaleDateString([], {month:'short',day:'numeric',year:'numeric'}); }
   catch { return iso; }
 }
 function ago(iso) {
@@ -340,17 +1039,47 @@ function ago(iso) {
 }
 function pct(n) { return Math.min(100, Math.max(0, n || 0)); }
 function barColor(n) {
-  return n > 85 ? 'var(--red)' : n > 65 ? 'var(--amber)' : 'var(--cyan2)';
+  return n > 80 ? 'var(--red)' : n > 60 ? 'var(--brass)' : 'var(--teal)';
 }
 function sevClass(s) {
   return s === 'critical' ? 'critical' : s === 'warning' ? 'warn' : 'info';
 }
+function tlSevClass(s) {
+  return s === 'critical' ? 'tl-sev-critical' : s === 'warning' ? 'tl-sev-warning' : 'tl-sev-info';
+}
 function evtIcon(t) {
-  return {process_started:'▶',process_stopped:'■',high_cpu:'🔥',high_ram:'🧠',new_ext_connection:'🌐'}[t] || '•';
+  return {process_started:'▶',process_stopped:'■',high_cpu:'△',high_ram:'△',new_ext_connection:'◆',new_ext_conn:'◆'}[t] || '●';
 }
 function fmtSize(kb) {
   if (kb < 1024) return kb + ' KB';
   return (kb / 1024).toFixed(1) + ' MB';
+}
+function osLabel(os) {
+  if (!os) return '';
+  const o = os.toLowerCase();
+  if (o.includes('win')) return 'WIN';
+  if (o.includes('darwin') || o.includes('mac')) return 'MAC';
+  return 'LIN';
+}
+function netStateBadge(s) {
+  if (!s) return `<span style="color:var(--text-muted)">${s||'—'}</span>`;
+  const u = (s||'').toUpperCase();
+  if (u === 'ESTABLISHED') return `<span class="badge state-est">${s}</span>`;
+  if (u === 'LISTEN')      return `<span class="badge state-listen">${s}</span>`;
+  if (u === 'CLOSE_WAIT' || u === 'TIME_WAIT') return `<span class="badge state-close">${s}</span>`;
+  return `<span style="color:var(--text-muted);font-size:10px">${s}</span>`;
+}
+
+// consent ring SVG
+function makeConsentRingSvg(fraction, color) {
+  const r = 8, cx = 10, cy = 10, strokeW = 2.5;
+  const circ = 2 * Math.PI * r;
+  const dash = fraction * circ;
+  return `<svg width="20" height="20" viewBox="0 0 20 20" style="transform:rotate(-90deg)">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="${strokeW}"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="${strokeW}"
+      stroke-dasharray="${dash} ${circ}" stroke-linecap="round" style="transition:stroke-dasharray .4s"/>
+  </svg>`;
 }
 
 // ── stats ──────────────────────────────────────────────────────────────────
@@ -359,14 +1088,22 @@ async function loadStats() {
   document.getElementById('s-online').textContent    = d.devices_online    ?? '—';
   document.getElementById('s-offline').textContent   = d.devices_offline   ?? '—';
   document.getElementById('s-total').textContent     = d.devices_total     ?? '—';
-  document.getElementById('s-consented').textContent = d.devices_consented != null
-    ? `${d.devices_consented}/${d.devices_total ?? '?'}`
-    : '—';
-  document.getElementById('s-consented').style.color =
-    (d.devices_consented != null && d.devices_consented < (d.devices_total ?? 0))
-      ? 'var(--amber)' : 'var(--green)';
-  document.getElementById('s-alerts').textContent  = d.alerts_1h ?? '—';
-  document.getElementById('s-alerts').style.color  = (d.alerts_1h > 0) ? 'var(--red)' : 'var(--amber)';
+
+  const consented = d.devices_consented ?? 0;
+  const total     = d.devices_total ?? 0;
+  const allOk     = total > 0 && consented >= total;
+  const someOk    = consented > 0 && consented < total;
+  const noneOk    = consented === 0 && total > 0;
+  const consentColor = allOk ? 'var(--teal)' : someOk ? 'var(--brass)' : noneOk ? 'var(--red)' : 'var(--text-muted)';
+  const fraction = total > 0 ? consented / total : 0;
+
+  document.getElementById('s-consented').textContent = total > 0 ? `${consented}/${total}` : '—';
+  document.getElementById('s-consented').style.color = consentColor;
+  document.getElementById('consentRingSvg').innerHTML = makeConsentRingSvg(fraction, consentColor);
+
+  document.getElementById('s-alerts').textContent = d.alerts_1h ?? '—';
+  document.getElementById('s-alerts').style.color = (d.alerts_1h > 0) ? 'var(--red)' : 'var(--text-muted)';
+
   if (d.server_time) document.getElementById('serverTime').textContent = new Date(d.server_time).toLocaleTimeString();
 }
 
@@ -374,29 +1111,49 @@ async function loadStats() {
 async function loadFleet() {
   const devices = await fetch('/api/fleet').then(r=>r.json()).catch(()=>[]);
   const el = document.getElementById('fleetList');
+  document.getElementById('deviceCount').textContent = devices.length;
+
   if (!devices.length) {
-    el.innerHTML = '<div class="empty"><big>📡</big>No devices yet.<br>Click "+ Enroll Device" to add one.</div>';
+    el.innerHTML = `<div class="empty">
+      <div class="empty-icon">◈</div>
+      <div class="empty-title">No devices yet</div>
+      <div class="empty-sub"><a onclick="openEnroll()">Click + Enroll Device</a> to add your first device.</div>
+    </div>`;
     return;
   }
+
   el.innerHTML = devices.map(d => {
-    const cpu = d.metrics?.cpu_percent || 0;
-    const ram = d.metrics?.ram_percent || 0;
-    const statusBadge = d.paused
-      ? `<span class="badge warn">PAUSED</span>`
-      : `<span class="badge ${d.online?'online':'offline'}">${d.online?'ONLINE':'OFFLINE'}</span>`;
-    const consentBadge = d.consented
-      ? `<span class="badge info" title="Consented ${d.consent_ts ? ago(d.consent_ts) : ''}">✓</span>`
-      : `<span class="badge warn" title="No consent record">!</span>`;
-    return `<div class="device-card${selectedDevice===d.device_id?' active':''}" onclick="selectDevice('${d.device_id}')">
-      <div class="device-name">${d.display_name||d.device_id}</div>
-      <div class="device-meta">
-        ${statusBadge}
-        ${consentBadge}
-        <span>${d.os||''}</span>
+    const cpu  = d.metrics?.cpu_percent || 0;
+    const ram  = d.metrics?.ram_percent || 0;
+    const stateClass = d.paused ? 'paused' : d.online ? 'online' : 'offline';
+    const dotClass   = d.paused ? 'paused' : d.online ? 'online' : 'offline';
+    const isActive   = selectedDevice === d.device_id;
+    const consentHtml = d.consented
+      ? `<span class="consent-icon ok" title="Consented ${d.consent_ts ? ago(d.consent_ts) : ''}">✓</span>`
+      : `<span class="consent-icon warn" title="No consent record">⚠</span>`;
+    const winTitle = d.active_window ? `<div class="dc-window">${escHtml(d.active_window.slice(0,55))}</div>` : '';
+
+    return `<div class="device-card is-${stateClass}${isActive?' active':''}" onclick="selectDevice('${d.device_id}')">
+      <div class="dc-row1">
+        <div class="dc-dot ${dotClass}"></div>
+        <div class="dc-name">${escHtml(d.display_name||d.device_id)}</div>
+        <span class="os-pill">${osLabel(d.os)}</span>
+        ${consentHtml}
       </div>
-      <div class="device-meta" style="margin-top:2px;">${ago(d.last_seen)}</div>
-      <div class="mini-bar" title="CPU ${cpu}%"><div class="mini-bar-fill" style="width:${pct(cpu)}%;background:${barColor(cpu)}"></div></div>
-      <div class="mini-bar" style="margin-top:2px;" title="RAM ${ram}%"><div class="mini-bar-fill" style="width:${pct(ram)}%;background:${barColor(ram)}"></div></div>
+      <div class="dc-row2">
+        ${d.paused
+          ? `<span class="badge paused">PAUSED</span>`
+          : `<span class="badge ${d.online?'online':'offline'}">${d.online?'ONLINE':'OFFLINE'}</span>`
+        }
+        <span class="dc-time">${ago(d.last_seen)}</span>
+      </div>
+      <div class="mini-bar" title="CPU ${cpu}%">
+        <div class="mini-bar-fill" style="width:${pct(cpu)}%;background:${barColor(cpu)}"></div>
+      </div>
+      <div class="mini-bar" style="margin-top:3px;" title="RAM ${ram}%">
+        <div class="mini-bar-fill" style="width:${pct(ram)}%;background:${barColor(ram)}"></div>
+      </div>
+      ${winTitle}
     </div>`;
   }).join('');
 }
@@ -405,14 +1162,21 @@ async function loadFleet() {
 async function loadActivityFeed() {
   const events = await fetch('/api/activity?limit=150').then(r=>r.json()).catch(()=>[]);
   const el = document.getElementById('activityFeed');
-  if (!events.length) { el.innerHTML = '<div class="empty"><big>📋</big>No activity yet.<br>Agents push data every 5–10 min.</div>'; return; }
+  if (!events.length) {
+    el.innerHTML = `<div class="empty">
+      <div class="empty-icon">◈</div>
+      <div class="empty-title">No activity yet</div>
+      <div class="empty-sub">Waiting for agents to check in. Data arrives every 5–10 minutes.</div>
+    </div>`;
+    return;
+  }
   el.innerHTML = events.map(e => `
     <div class="event-row">
       <span class="evt-time">${fmt(e.ts)}</span>
-      <span class="evt-dev">${e.display_name||e.device_id||'—'}</span>
+      <span class="evt-dev">${escHtml(e.display_name||e.device_id||'—')}</span>
       <div class="evt-body">
-        <span class="badge ${sevClass(e.severity)}">${e.type}</span> ${evtIcon(e.type)}
-        <div class="evt-detail">${e.detail||''}</div>
+        <span class="badge ${sevClass(e.severity)}">${e.type}</span>
+        <span class="evt-detail" style="margin-left:6px;">${escHtml(e.detail||'')}</span>
       </div>
     </div>`).join('');
 }
@@ -420,51 +1184,72 @@ async function loadActivityFeed() {
 async function loadAllWarnings() {
   const alerts = await fetch('/api/alerts?limit=100').then(r=>r.json()).catch(()=>[]);
   const el = document.getElementById('allWarnings');
-  if (!alerts.length) { el.innerHTML = '<div class="empty"><big>✅</big>No warnings in recent history.</div>'; return; }
+  if (!alerts.length) {
+    el.innerHTML = `<div class="empty">
+      <div class="empty-icon">✓</div>
+      <div class="empty-title">No warnings</div>
+      <div class="empty-sub">All devices are within normal parameters.</div>
+    </div>`;
+    return;
+  }
   el.innerHTML = alerts.map(a => `
     <div class="event-row">
       <span class="evt-time">${fmt(a.ts)}</span>
-      <span class="evt-dev">${a.display_name||a.device_id||'—'}</span>
-      <div class="evt-body"><span class="badge warn">${a.type}</span> <span class="evt-detail">${a.detail||''}</span></div>
+      <span class="evt-dev">${escHtml(a.display_name||a.device_id||'—')}</span>
+      <div class="evt-body">
+        <span class="badge warn">${a.type}</span>
+        <span class="evt-detail" style="margin-left:6px;">${escHtml(a.detail||'')}</span>
+      </div>
     </div>`).join('');
 }
 
 async function loadRightAlerts() {
   const alerts = await fetch('/api/alerts?limit=50').then(r=>r.json()).catch(()=>[]);
   document.getElementById('alertCount').textContent = alerts.length;
-  document.getElementById('alertsFeed').innerHTML = alerts.length
-    ? alerts.map(a=>`<div class="alert-item">
-        <div style="display:flex;justify-content:space-between;">
-          <span class="alert-dev">${a.display_name||a.device_id||'?'}</span>
-          <span class="alert-time">${ago(a.ts)}</span>
-        </div>
-        <div class="alert-msg"><span class="badge warn">${a.type}</span> ${a.detail||''}</div>
-      </div>`).join('')
-    : '<div class="loading" style="color:var(--green)">No warnings</div>';
+  if (!alerts.length) {
+    document.getElementById('alertsFeed').innerHTML = '<div class="loading" style="color:var(--teal)">No warnings</div>';
+    return;
+  }
+  document.getElementById('alertsFeed').innerHTML = alerts.map(a=>`<div class="alert-item">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;">
+      <span class="alert-dev">${escHtml(a.display_name||a.device_id||'?')}</span>
+      <span class="alert-time">${ago(a.ts)}</span>
+    </div>
+    <div class="alert-msg"><span class="badge warn">${a.type}</span> ${escHtml(a.detail||'')}</div>
+  </div>`).join('');
 }
 
 // ── device detail ──────────────────────────────────────────────────────────
 async function selectDevice(id) {
   selectedDevice = id;
-  delete _fileListCache[id];   // force fresh file listing when device is opened
+  delete _fileListCache[id];
   document.getElementById('viewAll').style.display    = 'none';
   document.getElementById('viewDevice').style.display = 'block';
 
   const status = await fetch(`/api/device/${id}/status`).then(r=>r.json()).catch(()=>({}));
   document.getElementById('dTitle').textContent = status.display_name || id;
+
   const onlineBadge = status.paused
-    ? `<span class="badge warn">PAUSED</span>`
+    ? `<span class="badge paused">PAUSED</span>`
     : `<span class="badge ${status.online?'online':'offline'}">${status.online?'ONLINE':'OFFLINE'}</span>`;
   document.getElementById('dBadge').innerHTML = onlineBadge;
+
   const consentHtml = status.consented
-    ? `<span class="badge info" title="Policy v${status.policy_version||'1.0'}">✓ CONSENTED ${status.consent_ts ? ago(status.consent_ts) : ''}</span>`
-    : `<span class="badge warn" title="No consent on record — re-enroll device">! NO CONSENT</span>`;
+    ? `<span class="badge consent-ok" title="Policy v${status.policy_version||'1.0'}">✓ CONSENTED ${status.consent_ts ? fmtShort(status.consent_ts) : ''}</span>`
+    : `<span class="badge consent-warn" title="No consent on record — re-enroll device">! NO CONSENT</span>`;
   document.getElementById('dConsentBadge').innerHTML = consentHtml;
-  document.getElementById('dIP').textContent = status.ip ? `(${status.ip})` : '';
+
+  // Meta row: OS · IP · hostname
+  const metaParts = [];
+  if (status.os) metaParts.push(status.os);
+  if (status.ip) metaParts.push(status.ip);
+  if (status.hostname) metaParts.push(status.hostname);
+  document.getElementById('dMeta').innerHTML = metaParts.map(p=>`<span>${escHtml(p)}</span>`).join('<span class="dhc-meta-sep">·</span>');
+
   document.getElementById('dRevokeBtn').style.display = 'inline-block';
 
   if (status.active_window) {
-    document.getElementById('activeWin').style.display = 'block';
+    document.getElementById('activeWin').style.display = 'flex';
     document.getElementById('activeWinVal').textContent = status.active_window;
   } else {
     document.getElementById('activeWin').style.display = 'none';
@@ -472,12 +1257,12 @@ async function selectDevice(id) {
 
   const m = status.metrics || {};
   document.getElementById('dMetrics').innerHTML = [
-    {label:'CPU',    val:(m.cpu_percent||0)+'%',                            pct:m.cpu_percent},
-    {label:'RAM',    val:`${m.ram_used_gb||0} / ${m.ram_total_gb||0} GB`,   pct:m.ram_percent},
-    {label:'Disk',   val:`${m.disk?.used_gb||0} / ${m.disk?.total_gb||0} GB`, pct:m.disk?.percent},
-  ].map(c=>`<div class="metric-card">
-    <div class="metric-label">${c.label}</div>
-    <div class="metric-val">${c.val}</div>
+    {label:'CPU',  val:(m.cpu_percent||0).toFixed(1)+'%', pct:m.cpu_percent},
+    {label:'RAM',  val:`${m.ram_used_gb||0} / ${m.ram_total_gb||0} GB`, pct:m.ram_percent},
+    {label:'Disk', val:`${m.disk?.used_gb||0} / ${m.disk?.total_gb||0} GB`, pct:m.disk?.percent},
+  ].map(c=>`<div class="dhc-metric-block">
+    <div class="dhc-metric-label">${c.label}</div>
+    <div class="dhc-metric-val">${c.val}</div>
     <div class="metric-bar"><div class="metric-bar-fill" style="width:${pct(c.pct)}%;background:${barColor(c.pct||0)}"></div></div>
   </div>`).join('');
 
@@ -515,44 +1300,58 @@ async function loadDeviceTab(id, tab) {
   if (!el) return;
 
   if (tab === 'processes') {
-    const snap = await fetch(`/api/device/${id}/snapshot`).then(r=>r.json()).catch(()=>({}));
+    const snap  = await fetch(`/api/device/${id}/snapshot`).then(r=>r.json()).catch(()=>({}));
     const procs = snap.processes || [];
-    if (!procs.length) { el.innerHTML = '<div class="empty"><big>📋</big>No process data yet.</div>'; return; }
+    if (!procs.length) {
+      el.innerHTML = `<div class="empty"><div class="empty-icon">◈</div><div class="empty-title">No process data yet</div><div class="empty-sub">Data arrives within 5–10 minutes after enrollment.</div></div>`;
+      return;
+    }
+    const top5 = new Set(procs.slice(0,5).map(p=>p.pid));
     el.innerHTML = `<table>
-      <tr><th>PID</th><th>Name</th><th>User</th><th>CPU%</th><th>RAM%</th><th>Status</th></tr>
-      ${procs.slice(0,80).map(p=>`<tr>
-        <td class="mono">${p.pid||'—'}</td>
-        <td>${p.name||'—'}</td>
-        <td class="mono" style="color:var(--muted)">${p.username||'—'}</td>
+      <thead><tr><th>PID</th><th>Name</th><th>User</th><th>CPU%</th><th>RAM%</th><th>Status</th></tr></thead>
+      <tbody>
+      ${procs.slice(0,80).map(p=>`<tr class="${top5.has(p.pid)?'proc-top':''}">
+        <td class="mono" style="color:var(--text-muted)">${p.pid||'—'}</td>
+        <td class="mono">${escHtml(p.name||'—')}</td>
+        <td class="mono" style="color:var(--text-muted)">${escHtml(p.username||'—')}</td>
         <td>
-          <span style="color:${barColor(p.cpu_percent||0)}">${(p.cpu_percent||0).toFixed(1)}%</span>
-          <div class="cpu-bar"><div class="cpu-bar-fill" style="width:${pct(p.cpu_percent)}%"></div></div>
+          <div class="cpu-bar-wrap">
+            <span style="color:${barColor(p.cpu_percent||0)};min-width:36px">${(p.cpu_percent||0).toFixed(1)}%</span>
+            <div class="cpu-bar"><div class="cpu-bar-fill" style="width:${pct(p.cpu_percent)}%;background:${barColor(p.cpu_percent||0)}"></div></div>
+          </div>
         </td>
-        <td style="color:var(--muted)">${(p.memory_percent||0).toFixed(1)}%</td>
-        <td><span class="tag" style="background:var(--bg3);color:var(--muted)">${p.status||''}</span></td>
+        <td style="color:var(--text-muted)">${(p.memory_percent||0).toFixed(1)}%</td>
+        <td><span style="font-size:10px;color:var(--text-dim)">${escHtml(p.status||'')}</span></td>
       </tr>`).join('')}
+      </tbody>
     </table>`;
   }
 
   else if (tab === 'network') {
     const snap  = await fetch(`/api/device/${id}/snapshot`).then(r=>r.json()).catch(()=>({}));
     const conns = snap.network || [];
-    if (!conns.length) { el.innerHTML = '<div class="empty"><big>🌐</big>No network data yet.</div>'; return; }
-    const ext = conns.filter(c => c.raddr && !c.raddr.match(/^(127\.|192\.168\.|10\.|172\.|::1)/));
+    if (!conns.length) {
+      el.innerHTML = `<div class="empty"><div class="empty-icon">◈</div><div class="empty-title">No network data yet</div><div class="empty-sub">Network connections appear after the first agent cycle.</div></div>`;
+      return;
+    }
+    const ext = conns.filter(c => c.raddr && !c.raddr.match(/^(127\.|192\.168\.|10\.|172\.|::1|0\.0\.)/));
     const loc = conns.filter(c => !ext.includes(c));
+
     const tbl = (list, lbl) => !list.length ? '' : `
-      <div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:1px;padding:8px 0 4px;">${lbl} (${list.length})</div>
+      <div class="section-eyebrow" style="margin-top:${lbl.includes('Local')?'16px':'0'}">${escHtml(lbl)} <span style="color:var(--text-dim)">(${list.length})</span></div>
       <table>
-        <tr><th>Proto</th><th>Local</th><th>Remote</th><th>Status</th><th>PID</th></tr>
+        <thead><tr><th>Proto</th><th>Local</th><th>Remote</th><th>State</th><th>PID</th></tr></thead>
+        <tbody>
         ${list.map(c=>`<tr>
-          <td style="color:var(--cyan2)">${c.proto||'?'}</td>
-          <td class="mono" style="color:var(--muted)">${c.laddr||'—'}</td>
-          <td class="mono" style="${ext.includes(c)?'color:var(--amber)':''}">${c.raddr||'—'}</td>
-          <td style="color:var(--muted)">${c.status||'—'}</td>
-          <td class="mono" style="color:var(--muted)">${c.pid||'—'}</td>
+          <td style="color:var(--teal);font-size:11px;font-weight:600">${c.proto||'?'}</td>
+          <td class="mono" style="color:var(--text-muted)">${escHtml(c.laddr||'—')}</td>
+          <td class="mono" style="color:${ext.includes(c)?'var(--teal)':'var(--text-muted)'}">${escHtml(c.raddr||'—')}</td>
+          <td>${netStateBadge(c.status)}</td>
+          <td class="mono" style="color:var(--text-dim)">${c.pid||'—'}</td>
         </tr>`).join('')}
+        </tbody>
       </table>`;
-    el.innerHTML = tbl(ext,'External Connections') + tbl(loc,'Local/Internal');
+    el.innerHTML = tbl(ext,'External Connections') + tbl(loc,'Local / Internal');
   }
 
   else if (tab === 'files') {
@@ -561,70 +1360,95 @@ async function loadDeviceTab(id, tab) {
 
   else if (tab === 'events') {
     const events = await fetch(`/api/device/${id}/events?limit=100`).then(r=>r.json()).catch(()=>[]);
-    if (!events.length) { el.innerHTML = '<div class="empty"><big>📋</big>No events yet.</div>'; return; }
+    if (!events.length) {
+      el.innerHTML = `<div class="empty"><div class="empty-icon">◈</div><div class="empty-title">No events yet</div><div class="empty-sub">Events appear when processes start or stop, CPU spikes, or new connections appear.</div></div>`;
+      return;
+    }
     el.innerHTML = events.map(e=>`
-      <div class="event-row">
-        <span class="evt-time">${fmt(e.ts)}</span>
-        <div class="evt-body">
-          <span class="badge ${sevClass(e.severity)}">${e.type}</span>
-          <span class="evt-detail" style="margin-left:6px;">${e.detail||''}</span>
+      <div class="timeline-item ${tlSevClass(e.severity)}">
+        <span class="tl-time">${fmt(e.ts)}</span>
+        <span class="tl-icon">${evtIcon(e.type)}</span>
+        <div class="tl-body">
+          <div class="tl-type">${escHtml(e.type?.replace(/_/g,' '))}</div>
+          <div class="tl-detail">${escHtml(e.detail||'')}</div>
         </div>
+        <span class="badge ${sevClass(e.severity)}" style="flex-shrink:0;align-self:flex-start">${e.severity||'info'}</span>
       </div>`).join('');
   }
 
   else if (tab === 'agentlog') {
     const data = await fetch(`/api/device/${id}/logs`).then(r=>r.json()).catch(()=>({lines:[]}));
-    el.innerHTML = `<div class="log-box">${(data.lines||[]).join('\n')||'(no log data yet)'}</div>`;
+    el.innerHTML = `<div class="log-box">${escHtml((data.lines||[]).join('\n'))||'(no log data yet)'}</div>`;
   }
 }
 
 // ── file browser ───────────────────────────────────────────────────────────
 async function loadFilesBrowser(deviceId, el) {
-  const data = await fetch(`/api/device/${deviceId}/files`).then(r=>r.json()).catch(()=>({files:[]}));
+  const data  = await fetch(`/api/device/${deviceId}/files`).then(r=>r.json()).catch(()=>({files:[]}));
   const files = data.files || [];
 
   if (!files.length) {
-    el.innerHTML = `<div class="empty"><big>📁</big>No file listing yet.<br>
-      Agent pushes file list periodically (every few cycles).<br>
-      <span style="font-size:11px">Documents, Desktop, Downloads are scanned.</span></div>`;
+    el.innerHTML = `<div class="empty">
+      <div class="empty-icon">◈</div>
+      <div class="empty-title">No files indexed yet</div>
+      <div class="empty-sub">Documents, Desktop, and Downloads are scanned every few agent cycles.</div>
+    </div>`;
     return;
   }
 
   el.innerHTML = `
-    <div class="file-ts">File listing from agent — last updated: ${fmt(data.ts)} — ${files.length} files</div>
+    <div class="file-ts">Last indexed: ${fmt(data.ts)} — ${files.length} files</div>
     <input class="file-search" type="text" placeholder="Search files…" id="fileSearch_${deviceId}" oninput="filterFiles('${deviceId}')">
-    <div id="fileTable_${deviceId}"></div>`;
+    <div id="fileTable_${deviceId}"></div>
+    <div class="access-log-section" id="accessLogSection_${deviceId}"></div>`;
 
   renderFileTable(deviceId, files);
+  loadAccessLogSection(deviceId);
+}
+
+async function loadAccessLogSection(deviceId) {
+  const el = document.getElementById(`accessLogSection_${deviceId}`);
+  if (!el) return;
+  const data = await fetch(`/api/device/${deviceId}/status`).then(r=>r.json()).catch(()=>({}));
+  // Access log is synced separately — just show a heading
+  el.innerHTML = `<h4>Files accessed by administrator</h4>
+    <div style="font-size:11px;color:var(--text-muted)">Access log is visible in the agent's local transparency page (tray icon → "What's being monitored?").</div>`;
 }
 
 function renderFileTable(deviceId, files, filter='') {
   const el = document.getElementById(`fileTable_${deviceId}`);
   if (!el) return;
-  const shown = filter ? files.filter(f => f.rel.toLowerCase().includes(filter.toLowerCase()) || f.name.toLowerCase().includes(filter.toLowerCase())) : files;
-  if (!shown.length) { el.innerHTML = '<div class="empty" style="padding:20px;">No files match.</div>'; return; }
+  const shown = filter
+    ? files.filter(f => f.rel.toLowerCase().includes(filter.toLowerCase()) || f.name.toLowerCase().includes(filter.toLowerCase()))
+    : files;
+  if (!shown.length) {
+    el.innerHTML = '<div class="empty" style="padding:20px;">No files match that search.</div>';
+    return;
+  }
 
   el.innerHTML = `<table>
-    <tr><th>Name</th><th>Path</th><th>Modified</th><th>Size</th><th>Action</th></tr>
-    ${shown.slice(0, 200).map(f => {
+    <thead><tr><th>Name</th><th>Path</th><th>Modified</th><th>Size</th><th>Action</th></tr></thead>
+    <tbody>
+    ${shown.slice(0,200).map(f => {
       const rid = fileRequests[f.path];
       let actionHtml = `<span class="file-req-badge" onclick="requestFileDownload('${escAttr(deviceId)}','${escAttr(escJs(f.path))}','${escAttr(escJs(f.name))}',this)">Request Download</span>`;
       if (rid) {
         const st = rid.status;
-        if (st === 'pending') actionHtml = `<span class="file-req-badge pending">Uploading… wait for next sync</span>`;
-        else if (st === 'ready') actionHtml = `<a href="/api/device/${escAttr(deviceId)}/download/${escAttr(rid.request_id)}" download="${escAttr(f.name)}" class="file-req-badge download">&#11015; Download Now</a>`;
-        else if (st === 'error') actionHtml = `<span class="file-req-badge error" title="${escAttr(rid.error||'')}">Error</span>`;
+        if (st === 'pending')  actionHtml = `<span class="file-req-badge pending">Uploading… wait for next sync</span>`;
+        else if (st === 'ready')   actionHtml = `<a href="/api/device/${escAttr(deviceId)}/download/${escAttr(rid.request_id)}" download="${escAttr(f.name)}" class="file-req-badge download">⬇ Download Now</a>`;
+        else if (st === 'error')   actionHtml = `<span class="file-req-badge error" title="${escAttr(rid.error||'')}">Error</span>`;
       }
       return `<tr>
-        <td><strong>${escHtml(f.name)}</strong></td>
-        <td class="mono" style="color:var(--muted);font-size:10px;">${escHtml(f.rel)}</td>
-        <td style="color:var(--muted)">${fmt(f.modified)}</td>
-        <td style="color:var(--muted)">${fmtSize(f.size_kb)}</td>
+        <td><strong style="color:var(--text-bright)">${escHtml(f.name)}</strong></td>
+        <td class="mono" style="color:var(--text-dim);font-size:10px">${escHtml(f.rel)}</td>
+        <td style="color:var(--text-muted);white-space:nowrap">${fmt(f.modified)}</td>
+        <td style="color:var(--text-muted);white-space:nowrap">${fmtSize(f.size_kb)}</td>
         <td>${actionHtml}</td>
       </tr>`;
     }).join('')}
+    </tbody>
   </table>
-  ${shown.length > 200 ? `<div class="hint" style="padding:8px 0;">Showing first 200 of ${shown.length} files. Use search to narrow down.</div>` : ''}`;
+  ${shown.length > 200 ? `<div class="modal-hint" style="padding:8px 0">Showing first 200 of ${shown.length} files. Use search to filter.</div>` : ''}`;
 }
 
 let _fileListCache = {};
@@ -656,13 +1480,12 @@ async function requestFileDownload(deviceId, filePath, filename, badgeEl) {
   fileRequests[filePath] = {request_id: rid, status: 'pending'};
   badgeEl.textContent = 'Uploading… wait for next agent sync';
 
-  // Poll for completion
   const poll = setInterval(async () => {
     const st = await fetch(`/api/device/${deviceId}/file-status/${rid}`).then(r=>r.json()).catch(()=>({}));
     if (st.status === 'ready') {
       clearInterval(poll);
       fileRequests[filePath] = {request_id: rid, status: 'ready'};
-      badgeEl.outerHTML = `<a href="/api/device/${deviceId}/download/${rid}" download="${escAttr(filename)}" class="file-req-badge download">⬇ Download Now</a>`;
+      badgeEl.outerHTML = `<a href="/api/device/${escAttr(deviceId)}/download/${escAttr(rid)}" download="${escAttr(filename)}" class="file-req-badge download">⬇ Download Now</a>`;
     } else if (st.status === 'error') {
       clearInterval(poll);
       fileRequests[filePath] = {request_id: rid, status: 'error', error: st.error};
@@ -681,7 +1504,6 @@ async function openEnroll() {
   document.getElementById('enrollName').value = '';
   document.getElementById('enrollURL').textContent = 'Enter a device name above…';
   document.getElementById('enrollMsg').className = 'modal-msg';
-  // Load base URL
   const s = await fetch('/api/settings').then(r=>r.json()).catch(()=>({}));
   enrollBaseURL = s.enrollment_base_url || 'http://localhost:8888';
   document.getElementById('enrollModal').classList.add('open');
@@ -697,12 +1519,12 @@ function selOS(os) {
 }
 
 function updateEnrollURL() {
-  const name = document.getElementById('enrollName').value.trim().replace(/[^a-zA-Z0-9_\-]/g,'_');
-  const ext  = enrollOS === 'win' ? 'bat' : 'sh';
+  const name  = document.getElementById('enrollName').value.trim().replace(/[^a-zA-Z0-9_\-]/g,'_');
+  const ext   = enrollOS === 'win' ? 'bat' : 'sh';
   const urlEl = document.getElementById('enrollURL');
-  if (!name) { urlEl.innerHTML = 'Enter a device name above…'; return; }
+  if (!name) { urlEl.textContent = 'Enter a device name above…'; urlEl.style.color=''; return; }
   const url = `${enrollBaseURL}/enroll/${name}.${ext}`;
-  urlEl.innerHTML = `<a href="${escAttr(url)}" target="_blank" style="color:var(--cyan);text-decoration:underline;">${escAttr(url)}</a>`;
+  urlEl.innerHTML = `<a href="${escAttr(url)}" target="_blank" style="color:var(--teal);text-decoration:underline">${escHtml(url)}</a>`;
 }
 
 function _getEnrollURL() {
@@ -714,7 +1536,7 @@ function copyEnrollLink() {
   const url = _getEnrollURL();
   if (!url) { showModalMsg('enrollMsg','err','Enter a device name first.'); return; }
   navigator.clipboard.writeText(url).then(()=>{
-    showModalMsg('enrollMsg','ok','Link copied! Send it to the staff member — they open it in a browser to download the setup script.');
+    showModalMsg('enrollMsg','ok','Link copied — send it to the staff member. They open it in a browser to download the script.');
   }).catch(()=>{ showModalMsg('enrollMsg','err','Copy failed. Select the link manually and copy it.'); });
 }
 
@@ -726,7 +1548,7 @@ async function downloadEnrollScript() {
   a.click();
   const os = enrollOS === 'win'
     ? 'Double-click the .bat file to run it.'
-    : 'Run: bash enroll-devicename.sh  (do not double-click on Windows)';
+    : 'Run: bash enroll-devicename.sh  (do not double-click — opens in text editor)';
   showModalMsg('enrollMsg','ok', `Script downloading. ${os}`);
 }
 
@@ -745,15 +1567,18 @@ async function openSettings() {
 function closeSettings() { document.getElementById('settingsModal').classList.remove('open'); }
 
 async function saveSettings() {
-  const body = {};
   const ov = document.getElementById('settingsURLOverride').value.trim();
-  body.commander_url_override = ov;   // empty string clears the override → back to LAN mode
-  const r = await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json()).catch(()=>({}));
+  const r = await fetch('/api/settings', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({commander_url_override: ov}),
+  }).then(r=>r.json()).catch(()=>({}));
   if (r.ok) {
-    const msg = ov ? 'Saved. New enrollment links will use the Cloudflare URL.' : 'Saved. Back to LAN-only mode.';
-    showModalMsg('settingsMsg','ok', msg);
-    setTimeout(closeSettings,1800);
-  } else showModalMsg('settingsMsg','err','Save failed.');
+    showModalMsg('settingsMsg','ok', ov ? 'Saved. New enrollment links will use the Cloudflare URL.' : 'Saved. Back to LAN-only mode.');
+    setTimeout(closeSettings, 1800);
+  } else {
+    showModalMsg('settingsMsg','err','Save failed.');
+  }
 }
 
 async function revokeDevice() {
@@ -762,9 +1587,9 @@ async function revokeDevice() {
   if (!confirm(
     `Revoke "${name}"?\n\n` +
     `This will:\n` +
-    `  • Invalidate the device token (agent stops checking in)\n` +
-    `  • Clear the consent record\n` +
-    `  • Keep all historical logs\n\n` +
+    `  - Invalidate the device token (agent stops checking in)\n` +
+    `  - Clear the consent record\n` +
+    `  - Keep all historical logs\n\n` +
     `The device must be re-enrolled with a new link to resume monitoring.`
   )) return;
   const r = await fetch(`/api/device/${selectedDevice}/revoke`, {method:'POST'})
@@ -784,10 +1609,10 @@ function showModalMsg(id, type, msg) {
   el.textContent = msg;
 }
 
-// Close on overlay click
+// Close overlays on backdrop click
 ['enrollModal','settingsModal'].forEach(id => {
   document.getElementById(id).addEventListener('click', e => {
-    if (e.target===e.currentTarget) document.getElementById(id).classList.remove('open');
+    if (e.target === e.currentTarget) document.getElementById(id).classList.remove('open');
   });
 });
 
