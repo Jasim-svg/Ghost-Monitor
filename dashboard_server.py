@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Ghost Monitor — Agency Security Dashboard Server
-No git, no GitHub. Agents push data over HTTP on your LAN.
+Ghost Monitor v2 — Agency Security Dashboard Server
+Per-device token auth. Consent gate. Access logging.
 
 Install:  pip install flask flask-cors
 Run:      python dashboard_server.py
@@ -10,6 +10,7 @@ Run:      python dashboard_server.py
 import json
 import re
 import uuid
+import hashlib
 import secrets
 import socket
 import base64
@@ -35,13 +36,39 @@ LOGS_DIR      = DATA_DIR / "logs"
 FILES_DIR     = DATA_DIR / "file_browser"
 TASKS_DIR     = DATA_DIR / "agent_tasks"
 FILE_CACHE    = DATA_DIR / "file_cache"
-SETTINGS_FILE = BASE_DIR / "monitor_settings.json"   # gitignored, local only
+CONSENT_DIR   = DATA_DIR / "consent"
+SETTINGS_FILE = BASE_DIR / "monitor_settings.json"   # gitignored
+TOKENS_FILE   = BASE_DIR / "tokens.json"              # gitignored
 
 PORT = 8888
 OFFLINE_THRESHOLD_MINUTES = 30
+POLICY_VERSION = "1.0"
 app.config["MAX_CONTENT_LENGTH"] = 150 * 1024 * 1024   # 150 MB upload limit
 
-for _d in [DATA_DIR, DEVICES_DIR, LOGS_DIR, FILES_DIR, TASKS_DIR, FILE_CACHE]:
+POLICY_TEXT = """GHOST MONITOR — MONITORING POLICY (v1.0)
+
+This device is monitored by your agency administrator.
+The following data is collected every 5–10 minutes:
+
+  • Processes      — running program names, CPU%, memory usage
+  • Network        — active connections, external IPs flagged
+  • System metrics — CPU%, RAM%, disk usage
+  • Active window  — title of the currently focused window
+  • File listings  — names and sizes in Documents, Desktop, Downloads
+                     (file contents are NOT read unless an admin
+                      explicitly requests a download of a specific file)
+
+Data is sent only to the agency commander PC.
+Only your administrator can view it.
+
+If a file is downloaded by an administrator, it is recorded in
+your local transparency log (right-click the tray icon to view).
+
+Questions? Contact your agency administrator.
+"""
+
+for _d in [DATA_DIR, DEVICES_DIR, LOGS_DIR, FILES_DIR, TASKS_DIR,
+           FILE_CACHE, CONSENT_DIR]:
     _d.mkdir(parents=True, exist_ok=True)
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -87,21 +114,6 @@ def _save_settings(data: dict):
     SETTINGS_FILE.write_text(json.dumps(data, indent=2), encoding="utf-8")
 
 
-def _get_secret() -> str:
-    s = _load_settings()
-    if not s.get("agency_secret"):
-        s["agency_secret"] = secrets.token_hex(16)
-        _save_settings(s)
-        log.info(f"Generated agency secret: {s['agency_secret']}")
-    return s["agency_secret"]
-
-
-def _auth(req) -> bool:
-    expected = _get_secret()
-    provided = req.headers.get("X-Agent-Secret", "")
-    return secrets.compare_digest(expected, provided)
-
-
 def _get_lan_ip() -> str:
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -111,6 +123,77 @@ def _get_lan_ip() -> str:
         return ip
     except Exception:
         return "127.0.0.1"
+
+
+# ── Per-device token management ─────────────────────────────────────────────
+
+def _load_tokens() -> dict:
+    return _load_json(TOKENS_FILE) or {}
+
+
+def _save_tokens(tokens: dict):
+    TOKENS_FILE.write_text(json.dumps(tokens, indent=2), encoding="utf-8")
+
+
+def _generate_token() -> str:
+    return secrets.token_hex(16)
+
+
+def _save_token(device_id: str, token: str) -> None:
+    tokens = _load_tokens()
+    tokens[device_id] = token
+    _save_tokens(tokens)
+
+
+def _get_device_token(device_id: str):
+    return _load_tokens().get(device_id)
+
+
+def _auth(req, device_id: str) -> bool:
+    """Per-device token auth. Compares X-Agent-Token header against stored token."""
+    expected = _get_device_token(device_id)
+    if not expected:
+        return False
+    provided = req.headers.get("X-Agent-Token", "")
+    if not provided:
+        return False
+    return secrets.compare_digest(expected, provided)
+
+
+def _get_or_create_enrollment(device_name: str) -> tuple:
+    """Return (device_id, token) for a device name. Creates token on first call.
+    Idempotent: same name always returns the same device_id, and reuses the token
+    if one already exists (so re-downloading the enrollment link is safe)."""
+    device_id = "dev_" + hashlib.md5(device_name.encode()).hexdigest()[:8]
+    tokens = _load_tokens()
+    if device_id in tokens:
+        return device_id, tokens[device_id]
+    token = _generate_token()
+    _save_token(device_id, token)
+    log.info(f"Enrollment created: {device_name} → {device_id}")
+    return device_id, token
+
+
+# ── Access log ───────────────────────────────────────────────────────────────
+
+def _append_access_log(device_id: str, entry: dict, dedup_key: str = None):
+    """Append an entry to the device's consent/access_log.json.
+    If dedup_key is provided, skips the append if the last entry has the same key
+    (prevents spamming the log with repeated 'monitoring paused' entries)."""
+    log_path = CONSENT_DIR / device_id / "access_log.json"
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    entries = []
+    if log_path.exists():
+        try:
+            entries = json.loads(log_path.read_text(encoding="utf-8"))
+        except Exception:
+            entries = []
+    if dedup_key and entries and entries[-1].get("_dedup") == dedup_key:
+        return
+    if dedup_key:
+        entry["_dedup"] = dedup_key
+    entries.append(entry)
+    log_path.write_text(json.dumps(entries, indent=2), encoding="utf-8")
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  Static
@@ -127,30 +210,77 @@ def serve_agent_script():
     return send_from_directory("agent", "monitor_agent.py",
                                as_attachment=False, mimetype="text/plain")
 
+
+@app.route("/agent/tray_icon.py")
+def serve_tray_script():
+    """Enrollment scripts download the tray indicator from here."""
+    return send_from_directory("agent", "tray_icon.py",
+                               as_attachment=False, mimetype="text/plain")
+
+
+@app.route("/api/policy")
+def get_policy():
+    """Returns the plain-text monitoring policy shown to staff at enrollment."""
+    return Response(POLICY_TEXT, mimetype="text/plain")
+
 # ═══════════════════════════════════════════════════════════════════════════
-#  Agent API — agents POST data here
+#  Consent endpoint (no auth required — called before token is used)
+# ═══════════════════════════════════════════════════════════════════════════
+
+@app.route("/api/consent/ack", methods=["POST"])
+def consent_ack():
+    """Records that a staff member acknowledged the monitoring policy.
+    No auth required — the device does not have a usable token until after this step.
+    The device_id must already exist in tokens.json (created at link-generation time)
+    so that only legitimately enrolled devices can record consent."""
+    data      = request.get_json(silent=True) or {}
+    device_id = _safe_id(data.get("device_id", ""))
+    if not device_id:
+        return jsonify({"error": "device_id required"}), 400
+    if not _get_device_token(device_id):
+        return jsonify({"error": "unknown device — generate an enrollment link first"}), 404
+
+    ack = {
+        "device_id":      device_id,
+        "ack_by":         data.get("ack_by", "enrollment"),
+        "ts":             datetime.now(timezone.utc).isoformat(),
+        "policy_version": data.get("policy_version", POLICY_VERSION),
+    }
+    _write_json(CONSENT_DIR / device_id / "ack.json", ack)
+    log.info(f"Consent ACK: {device_id} (policy v{ack['policy_version']})")
+    return jsonify({"ok": True})
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  Agent API — agents POST data here (all require per-device X-Agent-Token)
 # ═══════════════════════════════════════════════════════════════════════════
 
 @app.route("/api/agent/checkin", methods=["POST"])
 def agent_checkin():
-    if not _auth(request):
-        return jsonify({"error": "unauthorized"}), 401
     data = request.get_json(silent=True) or {}
     sid  = _safe_id(data.get("device_id", ""))
-    if not sid:
-        return jsonify({"error": "no device_id"}), 400
+    if not sid or not _auth(request, sid):
+        return jsonify({"error": "unauthorized"}), 401
+
     _write_json(DEVICES_DIR / sid / "status.json", data)
+
+    # Log pause events to the access log (with dedup so we only log once per pause)
+    if data.get("paused"):
+        paused_until = data.get("paused_until", "")
+        _append_access_log(sid, {
+            "type":          "monitoring_paused",
+            "paused_until":  paused_until,
+            "ts":            datetime.now(timezone.utc).isoformat(),
+        }, dedup_key=f"paused_{paused_until}")
+
     return jsonify({"ok": True})
 
 
 @app.route("/api/agent/snapshot", methods=["POST"])
 def agent_snapshot():
-    if not _auth(request):
-        return jsonify({"error": "unauthorized"}), 401
     data = request.get_json(silent=True) or {}
     sid  = _safe_id(data.get("device_id", ""))
-    if not sid:
-        return jsonify({"error": "no device_id"}), 400
+    if not sid or not _auth(request, sid):
+        return jsonify({"error": "unauthorized"}), 401
 
     snap     = data.get("snapshot", {})
     now      = datetime.now()
@@ -172,12 +302,10 @@ def agent_snapshot():
 
 @app.route("/api/agent/events", methods=["POST"])
 def agent_events():
-    if not _auth(request):
-        return jsonify({"error": "unauthorized"}), 401
     data = request.get_json(silent=True) or {}
     sid  = _safe_id(data.get("device_id", ""))
-    if not sid:
-        return jsonify({"error": "no device_id"}), 400
+    if not sid or not _auth(request, sid):
+        return jsonify({"error": "unauthorized"}), 401
 
     now       = datetime.now()
     ts        = now.strftime("%Y-%m-%dT%H-%M-%S")
@@ -195,12 +323,10 @@ def agent_events():
 
 @app.route("/api/agent/log", methods=["POST"])
 def agent_log():
-    if not _auth(request):
-        return jsonify({"error": "unauthorized"}), 401
     data = request.get_json(silent=True) or {}
     sid  = _safe_id(data.get("device_id", ""))
-    if not sid:
-        return jsonify({"error": "no device_id"}), 400
+    if not sid or not _auth(request, sid):
+        return jsonify({"error": "unauthorized"}), 401
 
     lines    = data.get("lines", [])
     log_path = LOGS_DIR / sid / "agent.log"
@@ -211,25 +337,23 @@ def agent_log():
 
 @app.route("/api/agent/files", methods=["POST"])
 def agent_files():
-    if not _auth(request):
-        return jsonify({"error": "unauthorized"}), 401
     data = request.get_json(silent=True) or {}
     sid  = _safe_id(data.get("device_id", ""))
-    if not sid:
-        return jsonify({"error": "no device_id"}), 400
+    if not sid or not _auth(request, sid):
+        return jsonify({"error": "unauthorized"}), 401
     _write_json(FILES_DIR / sid / "listing.json", data)
     return jsonify({"ok": True})
 
 
 @app.route("/api/agent/file-content", methods=["POST"])
 def agent_file_content():
-    if not _auth(request):
-        return jsonify({"error": "unauthorized"}), 401
     data = request.get_json(silent=True) or {}
     sid  = _safe_id(data.get("device_id", ""))
     rid  = _safe_id(data.get("request_id", ""))
-    if not sid or not rid:
-        return jsonify({"error": "missing fields"}), 400
+    if not sid or not _auth(request, sid):
+        return jsonify({"error": "unauthorized"}), 401
+    if not rid:
+        return jsonify({"error": "missing request_id"}), 400
 
     # Remove the pending task
     (TASKS_DIR / sid / f"{rid}.json").unlink(missing_ok=True)
@@ -252,6 +376,14 @@ def agent_file_content():
             "path":     data.get("path", ""),
         })
         log.info(f"File cached: {sid}/{rid}/{filename} ({len(content)} bytes)")
+
+        # Section 4: Log file access in the consent access log
+        _append_access_log(sid, {
+            "type": "file_access",
+            "file": filename,
+            "path": data.get("path", ""),
+            "ts":   datetime.now(timezone.utc).isoformat(),
+        })
     except Exception as e:
         _write_json(cache_dir / "status.json", {"status": "error", "error": str(e)})
 
@@ -261,9 +393,9 @@ def agent_file_content():
 @app.route("/api/agent/tasks/<device_id>")
 def agent_tasks(device_id: str):
     """Agents poll this for pending file-download requests."""
-    if not _auth(request):
+    sid = _safe_id(device_id)
+    if not _auth(request, sid):
         return jsonify({"error": "unauthorized"}), 401
-    sid      = _safe_id(device_id)
     task_dir = TASKS_DIR / sid
     if not task_dir.exists():
         return jsonify([])
@@ -275,9 +407,37 @@ def agent_tasks(device_id: str):
                 tasks.append(d)
     return jsonify(tasks)
 
+
+@app.route("/api/agent/access-log/<device_id>")
+def agent_access_log_sync(device_id: str):
+    """Agent polls this to sync the access log to its local copy.
+    Returns entries newer than the 'since' query param (ISO timestamp)."""
+    sid = _safe_id(device_id)
+    if not _auth(request, sid):
+        return jsonify({"error": "unauthorized"}), 401
+
+    since    = request.args.get("since", "")
+    log_path = CONSENT_DIR / sid / "access_log.json"
+    entries  = []
+    if log_path.exists():
+        try:
+            entries = json.loads(log_path.read_text(encoding="utf-8"))
+        except Exception:
+            entries = []
+    if since:
+        entries = [e for e in entries if e.get("ts", "") > since]
+    return jsonify(entries)
+
 # ═══════════════════════════════════════════════════════════════════════════
 #  Dashboard API — served to the browser
 # ═══════════════════════════════════════════════════════════════════════════
+
+def _consent_info(device_id: str) -> dict:
+    ack = _load_json(CONSENT_DIR / device_id / "ack.json")
+    if ack:
+        return {"consented": True, "consent_ts": ack.get("ts"), "policy_version": ack.get("policy_version")}
+    return {"consented": False, "consent_ts": None, "policy_version": None}
+
 
 @app.route("/api/fleet")
 def fleet():
@@ -288,7 +448,8 @@ def fleet():
                 continue
             data = _load_json(d / "status.json")
             if data:
-                data["online"] = _is_online(data.get("last_seen", ""))
+                data["online"]  = _is_online(data.get("last_seen", ""))
+                data.update(_consent_info(_safe_id(data.get("device_id", d.name))))
                 devices.append(data)
     devices.sort(key=lambda d: d.get("last_seen", ""), reverse=True)
     return jsonify(devices)
@@ -305,8 +466,10 @@ def stats():
             if data:
                 devices.append(data)
 
-    online  = sum(1 for d in devices if _is_online(d.get("last_seen", "")))
-    offline = len(devices) - online
+    online    = sum(1 for d in devices if _is_online(d.get("last_seen", "")))
+    offline   = len(devices) - online
+    consented = sum(1 for d in devices
+                    if (CONSENT_DIR / _safe_id(d.get("device_id", "")) / "ack.json").exists())
 
     cutoff      = (datetime.now(timezone.utc) - timedelta(hours=1)).isoformat()
     alert_count = 0
@@ -323,11 +486,12 @@ def stats():
                             alert_count += 1
 
     return jsonify({
-        "devices_online":  online,
-        "devices_offline": offline,
-        "devices_total":   len(devices),
-        "alerts_1h":       alert_count,
-        "server_time":     datetime.now(timezone.utc).isoformat(),
+        "devices_online":    online,
+        "devices_offline":   offline,
+        "devices_total":     len(devices),
+        "devices_consented": consented,
+        "alerts_1h":         alert_count,
+        "server_time":       datetime.now(timezone.utc).isoformat(),
     })
 
 
@@ -338,6 +502,7 @@ def device_status(device_id: str):
     if not data:
         return jsonify({"error": "not found"}), 404
     data["online"] = _is_online(data.get("last_seen", ""))
+    data.update(_consent_info(sid))
     return jsonify(data)
 
 
@@ -391,7 +556,6 @@ def device_logs(device_id: str):
 
 @app.route("/api/device/<device_id>/files")
 def device_files(device_id: str):
-    """Full file listing pushed by the agent."""
     sid  = _safe_id(device_id)
     data = _load_json(FILES_DIR / sid / "listing.json")
     if not data:
@@ -401,7 +565,6 @@ def device_files(device_id: str):
 
 @app.route("/api/device/<device_id>/request-file", methods=["POST"])
 def request_file(device_id: str):
-    """Dashboard requests a file from the agent."""
     sid  = _safe_id(device_id)
     body = request.get_json(silent=True) or {}
     file_path = (body.get("path") or "").strip()
@@ -442,11 +605,27 @@ def download_file(device_id: str, request_id: str):
     status = _load_json(cache / "status.json")
     if not status or status.get("status") != "ready":
         return jsonify({"error": "not ready yet"}), 404
-    filename   = status.get("filename", "download")
-    file_path  = cache / filename
+    filename  = status.get("filename", "download")
+    file_path = cache / filename
     if not file_path.exists():
         return jsonify({"error": "file missing"}), 404
     return send_file(file_path, as_attachment=True, download_name=filename)
+
+
+@app.route("/api/device/<device_id>/revoke", methods=["POST"])
+def revoke_device(device_id: str):
+    """Revoke a device's token. Clears consent record too.
+    Historical logs are kept. Device must be re-enrolled to resume monitoring."""
+    sid    = _safe_id(device_id)
+    tokens = _load_tokens()
+    if sid in tokens:
+        del tokens[sid]
+        _save_tokens(tokens)
+        log.info(f"Device revoked: {sid}")
+    # Clear consent so it shows as not-consented in dashboard
+    ack_path = CONSENT_DIR / sid / "ack.json"
+    ack_path.unlink(missing_ok=True)
+    return jsonify({"ok": True})
 
 
 @app.route("/api/alerts")
@@ -499,11 +678,9 @@ def activity_feed():
 
 @app.route("/api/settings", methods=["GET"])
 def get_settings():
-    secret  = _get_secret()
-    lan_ip  = _get_lan_ip()
-    s       = _load_settings()
+    lan_ip = _get_lan_ip()
+    s      = _load_settings()
     return jsonify({
-        "agency_secret":         secret,
         "lan_ip":                lan_ip,
         "port":                  PORT,
         "commander_url_override": s.get("commander_url_override", ""),
@@ -515,168 +692,303 @@ def get_settings():
 def save_settings():
     body = request.get_json(silent=True) or {}
     s    = _load_settings()
-    if body.get("regenerate_secret"):
-        s["agency_secret"] = secrets.token_hex(16)
-        log.warning("Agency secret regenerated — existing agents must be re-enrolled")
     if "commander_url_override" in body:
         val = (body["commander_url_override"] or "").strip()
-        s["commander_url_override"] = val   # empty string = clear (back to LAN mode)
+        s["commander_url_override"] = val
     _save_settings(s)
-    return jsonify({"ok": True, "agency_secret": s.get("agency_secret", _get_secret())})
+    return jsonify({"ok": True})
 
 # ═══════════════════════════════════════════════════════════════════════════
-#  Enrollment script generation
+#  Enrollment script generation (v2 — consent gate + per-device token + tray)
 # ═══════════════════════════════════════════════════════════════════════════
 
-def _make_windows_script(device_name: str, commander_url: str, secret: str) -> str:
+def _make_windows_script(device_name: str, device_id: str,
+                         commander_url: str, token: str) -> str:
+    generated = datetime.now().strftime('%Y-%m-%d %H:%M')
     return f"""@echo off
 setlocal EnableDelayedExpansion
-:: ============================================================
-::  Ghost Monitor — Device Setup
+:: ================================================================
+::  Ghost Monitor v2 — Device Setup
 ::  Device:    {device_name}
 ::  Commander: {commander_url}
-::  Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}
-:: ============================================================
+::  Generated: {generated}
+:: ================================================================
+set DEVICE_ID={device_id}
 set DEVICE_NAME={device_name}
 set COMMANDER_URL={commander_url}
-set AGENT_SECRET={secret}
+set DEVICE_TOKEN={token}
 set INSTALL_DIR=%USERPROFILE%\\GhostMonitor
 
+:: ── Step 1: Consent Disclosure ───────────────────────────────────
 echo.
-echo [Ghost Monitor] Setting up: %DEVICE_NAME%
+echo ================================================================
+echo  GHOST MONITOR ^| MONITORING DISCLOSURE
+echo ================================================================
+echo.
+echo  This device will be monitored by your agency administrator.
+echo  The following data is collected every 5-10 minutes:
+echo.
+echo    Processes      - running program names, CPU%%, memory
+echo    Network        - connections ^(external IPs flagged^)
+echo    System metrics - CPU%%, RAM%%, disk usage
+echo    Active window  - title of the currently focused window
+echo    File listings  - names/sizes in Documents, Desktop, Downloads
+echo.
+echo  File contents are NOT read unless an admin explicitly requests
+echo  a specific file download. Every such access is logged locally
+echo  and visible to you via the tray icon.
+echo.
+echo  Data goes only to your agency's commander PC.
+echo  Contact your administrator with any questions.
+echo.
+echo ================================================================
+echo.
+set /p CONSENT=Type Y to accept and continue, anything else to cancel:
+if /i not "%%CONSENT%%"=="Y" (
+    echo.
+    echo  Setup cancelled. No files written, nothing installed.
+    echo.
+    pause
+    exit /b 0
+)
 echo.
 
-:: ── Check Python ─────────────────────────────────────────
+:: ── Step 2: Check Python ─────────────────────────────────────────
 python --version >nul 2>&1
-if %errorlevel% neq 0 (
+if %%errorlevel%% neq 0 (
     echo ERROR: Python not found.
     echo Install Python 3.8+ from https://python.org  ^(check "Add to PATH"^)
     pause & exit /b 1
 )
 
-:: ── Create directory ─────────────────────────────────────
-if not exist "%INSTALL_DIR%" mkdir "%INSTALL_DIR%"
-
-:: ── Download agent from commander ────────────────────────
-echo [1/4] Downloading agent...
-powershell -Command "try {{ Invoke-WebRequest '%COMMANDER_URL%/agent/monitor_agent.py' -OutFile '%INSTALL_DIR%\\monitor_agent.py' -UseBasicParsing }} catch {{ Write-Host $_.Exception.Message; exit 1 }}"
-if %errorlevel% neq 0 (
-    echo ERROR: Could not download agent.
-    echo Make sure the commander PC is running and reachable on the network.
+:: ── Step 3: Record consent with commander ────────────────────────
+echo [1/6] Recording consent...
+set GM_DID=%DEVICE_ID%
+set GM_URL=%COMMANDER_URL%
+python -c "
+import urllib.request, json, os, sys
+b = json.dumps({{'device_id': os.environ['GM_DID'], 'ack_by': 'enrollment', 'policy_version': '1.0'}}).encode()
+r = urllib.request.Request(os.environ['GM_URL'] + '/api/consent/ack', data=b, method='POST')
+r.add_header('Content-Type', 'application/json')
+try:
+    urllib.request.urlopen(r, timeout=15)
+    print('Consent recorded with commander.')
+except Exception as e:
+    print('ERROR:', e)
+    sys.exit(1)
+"
+if %%errorlevel%% neq 0 (
+    echo ERROR: Could not reach commander to record consent.
+    echo Make sure the commander PC is running and network-reachable.
+    echo Setup cancelled — no files were written.
     pause & exit /b 1
 )
 
-:: ── Install dependency ────────────────────────────────────
-echo [2/4] Installing psutil...
-python -m pip install psutil --quiet
+:: ── Step 4: Create install directory ─────────────────────────────
+if not exist "%INSTALL_DIR%" mkdir "%INSTALL_DIR%"
 
-:: ── Write device config (use expanduser so spaces in username work) ──────────
-echo [3/4] Configuring device...
+:: ── Step 5: Download agent and tray indicator ────────────────────
+echo [2/6] Downloading monitoring agent...
+powershell -Command "try {{ Invoke-WebRequest '%COMMANDER_URL%/agent/monitor_agent.py' -OutFile '%INSTALL_DIR%\\monitor_agent.py' -UseBasicParsing }} catch {{ Write-Host $_.Exception.Message; exit 1 }}"
+if %%errorlevel%% neq 0 (
+    echo ERROR: Could not download agent. Is the commander running?
+    pause & exit /b 1
+)
+
+echo [2/6] Downloading tray indicator...
+powershell -Command "try {{ Invoke-WebRequest '%COMMANDER_URL%/agent/tray_icon.py' -OutFile '%INSTALL_DIR%\\tray_icon.py' -UseBasicParsing }} catch {{ Write-Host $_.Exception.Message; exit 1 }}"
+if %%errorlevel%% neq 0 (
+    echo ERROR: Could not download tray indicator. Is the commander running?
+    pause & exit /b 1
+)
+
+:: ── Step 6: Install dependencies ─────────────────────────────────
+echo [3/6] Installing dependencies (psutil pystray Pillow)...
+python -m pip install psutil pystray plyer Pillow --quiet
+
+:: ── Step 7: Write device config + consent record ─────────────────
+echo [4/6] Writing configuration...
 set GM_NAME=%DEVICE_NAME%
-set GM_URL=%COMMANDER_URL%
-set GM_SECRET=%AGENT_SECRET%
+set GM_TOKEN=%DEVICE_TOKEN%
 python -c "
-import json, hashlib, socket, os, sys
-install_dir = os.path.join(os.path.expanduser('~'), 'GhostMonitor')
-n   = os.environ['GM_NAME']
-url = os.environ['GM_URL']
-sec = os.environ['GM_SECRET']
-did = 'dev_' + hashlib.md5((socket.gethostname() + n).encode()).hexdigest()[:8]
-cfg = {{'device_id': did, 'display_name': n, 'commander_url': url, 'secret': sec}}
-open(os.path.join(install_dir, '.device_id'), 'w').write(did)
-open(os.path.join(install_dir, 'local_config.json'), 'w').write(json.dumps(cfg, indent=2))
+import json, os, datetime
+d     = os.path.join(os.path.expanduser('~'), 'GhostMonitor')
+did   = os.environ['GM_DID']
+name  = os.environ['GM_NAME']
+url   = os.environ['GM_URL']
+tok   = os.environ['GM_TOKEN']
+cfg   = {{'device_id': did, 'display_name': name, 'commander_url': url, 'token': tok}}
+ack   = {{'device_id': did, 'ack_by': 'enrollment', 'ts': datetime.datetime.utcnow().isoformat()+'Z', 'policy_version': '1.0'}}
+open(os.path.join(d, 'local_config.json'), 'w').write(json.dumps(cfg, indent=2))
+open(os.path.join(d, 'consent_ack.json'), 'w').write(json.dumps(ack, indent=2))
 print('Device ID:', did)
 "
-if %errorlevel% neq 0 (
+if %%errorlevel%% neq 0 (
     echo ERROR: Configuration failed.
     pause & exit /b 1
 )
 
-:: ── Detect pythonw (silent) or fall back to python minimised ──────────────
+:: ── Step 8: Register two startup tasks ───────────────────────────
+echo [5/6] Creating startup tasks...
 set PYWIN=pythonw
 pythonw --version >nul 2>&1
-if %errorlevel% neq 0 set PYWIN=python
+if %%errorlevel%% neq 0 set PYWIN=python
 
-:: ── Create silent scheduled task ─────────────────────────
-echo [4/4] Creating startup task...
-schtasks /create /tn "GhostMonitorAgent" /tr "%PYWIN% \\"%INSTALL_DIR%\\monitor_agent.py\\"" /sc onlogon /ru "%USERNAME%" /rl highest /f >nul 2>&1
-if %errorlevel% neq 0 (
-    echo WARNING: Could not create scheduled task ^(try running as Administrator^).
-    echo You can start manually: %PYWIN% "%INSTALL_DIR%\\monitor_agent.py"
+schtasks /create /tn "GhostMonitorAgent" /tr "%%PYWIN%% \\"%INSTALL_DIR%\\monitor_agent.py\\"" /sc onlogon /ru "%%USERNAME%%" /rl highest /f >nul 2>&1
+if %%errorlevel%% neq 0 (
+    echo WARNING: Could not create agent task ^(try running as Administrator^).
 ) else (
-    echo Startup task created — agent will start silently on every login.
+    echo Agent startup task created.
+)
+schtasks /create /tn "GhostMonitorTray" /tr "pythonw \\"%INSTALL_DIR%\\tray_icon.py\\"" /sc onlogon /ru "%%USERNAME%%" /f >nul 2>&1
+if %%errorlevel%% neq 0 (
+    echo WARNING: Could not create tray task ^(try running as Administrator^).
+) else (
+    echo Tray indicator startup task created.
 )
 
-:: ── Start immediately ─────────────────────────────────────
-echo.
-echo Starting agent now...
-start "" /min %PYWIN% "%INSTALL_DIR%\\monitor_agent.py"
+:: ── Step 9: Start both processes now ─────────────────────────────
+echo [6/6] Starting monitoring now...
+start "" /min %%PYWIN%% "%INSTALL_DIR%\\monitor_agent.py"
+start "" pythonw "%INSTALL_DIR%\\tray_icon.py"
 
 echo.
-echo ============================================================
-echo  Setup complete!  Device "%DEVICE_NAME%" is now monitored.
-echo  The agent runs silently in the background.
-echo ============================================================
+echo ================================================================
+echo  Setup complete!  "{device_name}" is now monitored.
+echo.
+echo  A shield icon will appear in your system tray shortly.
+echo  Right-click it anytime to see what data is being collected
+echo  and to view any files an administrator has downloaded.
+echo ================================================================
 echo.
 pause
 """
 
 
-def _make_linux_script(device_name: str, commander_url: str, secret: str) -> str:
+def _make_linux_script(device_name: str, device_id: str,
+                       commander_url: str, token: str) -> str:
+    generated = datetime.now().strftime('%Y-%m-%d %H:%M')
     return f"""#!/bin/bash
-# ============================================================
-#  Ghost Monitor — Device Setup
+# ================================================================
+#  Ghost Monitor v2 — Device Setup
 #  Device:    {device_name}
 #  Commander: {commander_url}
-#  Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}
-# ============================================================
-set -e
+#  Generated: {generated}
+# ================================================================
+DEVICE_ID="{device_id}"
 DEVICE_NAME="{device_name}"
 COMMANDER_URL="{commander_url}"
-AGENT_SECRET="{secret}"
+DEVICE_TOKEN="{token}"
 INSTALL_DIR="$HOME/GhostMonitor"
 
+# ── Step 1: Consent Disclosure ──────────────────────────────────
 echo ""
-echo "[Ghost Monitor] Setting up: $DEVICE_NAME"
+echo "================================================================"
+echo " GHOST MONITOR | MONITORING DISCLOSURE"
+echo "================================================================"
+echo ""
+echo " This device will be monitored by your agency administrator."
+echo " The following data is collected every 5-10 minutes:"
+echo ""
+echo "   Processes      - running program names, CPU%, memory"
+echo "   Network        - connections (external IPs flagged)"
+echo "   System metrics - CPU%, RAM%, disk usage"
+echo "   Active window  - title of the currently focused window"
+echo "   File listings  - names/sizes in Documents, Desktop, Downloads"
+echo ""
+echo " File contents are NOT read unless an admin requests a specific"
+echo " file download. Every such access is logged and visible to you"
+echo " via the tray icon."
+echo ""
+echo " Data goes only to your agency's commander PC."
+echo " Contact your administrator with any questions."
+echo ""
+echo "================================================================"
+echo ""
+read -r -p "Type Y to accept and continue, anything else to cancel: " CONSENT
+if [ "$CONSENT" != "Y" ] && [ "$CONSENT" != "y" ]; then
+    echo ""
+    echo " Setup cancelled. No files written, nothing installed."
+    echo ""
+    exit 0
+fi
 echo ""
 
+# ── Step 2: Check Python ────────────────────────────────────────
 command -v python3 >/dev/null 2>&1 || {{ echo "ERROR: python3 not found."; exit 1; }}
 PIP=$(command -v pip3 2>/dev/null || command -v pip 2>/dev/null)
 [ -z "$PIP" ] && {{ echo "ERROR: pip not found."; exit 1; }}
 
-mkdir -p "$INSTALL_DIR"
-
-echo "[1/4] Downloading agent..."
-curl -sf "$COMMANDER_URL/agent/monitor_agent.py" -o "$INSTALL_DIR/monitor_agent.py" || {{
-    wget -q "$COMMANDER_URL/agent/monitor_agent.py" -O "$INSTALL_DIR/monitor_agent.py" || {{
-        echo "ERROR: Could not download agent. Is the commander running?"
-        exit 1
-    }}
+# ── Step 3: Record consent with commander ───────────────────────
+echo "[1/6] Recording consent..."
+export CONSENT_URL="$COMMANDER_URL/api/consent/ack"
+export DEV_ID="$DEVICE_ID"
+python3 -c "
+import urllib.request, json, sys, os
+url  = os.environ['CONSENT_URL']
+body = json.dumps({{'device_id': os.environ['DEV_ID'], 'ack_by': 'enrollment', 'policy_version': '1.0'}}).encode()
+req  = urllib.request.Request(url, data=body, method='POST')
+req.add_header('Content-Type', 'application/json')
+try:
+    urllib.request.urlopen(req, timeout=15)
+    print('Consent recorded with commander.')
+except Exception as e:
+    print('ERROR:', e); sys.exit(1)
+" || {{
+    echo "ERROR: Could not record consent. Setup cancelled — no files were written."
+    exit 1
 }}
 
-echo "[2/4] Installing psutil..."
-$PIP install psutil --quiet
+mkdir -p "$INSTALL_DIR"
 
-echo "[3/4] Configuring device..."
+# ── Step 5: Download agent and tray indicator ───────────────────
+echo "[2/6] Downloading monitoring agent..."
+curl -sf "$COMMANDER_URL/agent/monitor_agent.py" -o "$INSTALL_DIR/monitor_agent.py" || \\
+  wget -q "$COMMANDER_URL/agent/monitor_agent.py" -O "$INSTALL_DIR/monitor_agent.py" || {{
+    echo "ERROR: Could not download agent."; exit 1;
+}}
+
+echo "[2/6] Downloading tray indicator..."
+curl -sf "$COMMANDER_URL/agent/tray_icon.py" -o "$INSTALL_DIR/tray_icon.py" || \\
+  wget -q "$COMMANDER_URL/agent/tray_icon.py" -O "$INSTALL_DIR/tray_icon.py" || {{
+    echo "ERROR: Could not download tray indicator."; exit 1;
+}}
+
+# ── Step 6: Install dependencies ────────────────────────────────
+echo "[3/6] Installing dependencies (psutil pystray Pillow)..."
+$PIP install psutil pystray plyer Pillow --quiet
+
+# ── Step 7: Write device config + consent record ────────────────
+echo "[4/6] Writing configuration..."
+export GM_DID="$DEVICE_ID"
+export GM_NAME="$DEVICE_NAME"
+export GM_URL="$COMMANDER_URL"
+export GM_TOKEN="$DEVICE_TOKEN"
 python3 -c "
-import json, hashlib, socket
-n = '$DEVICE_NAME'
-did = 'dev_' + hashlib.md5((socket.gethostname() + n).encode()).hexdigest()[:8]
-cfg = {{'device_id': did, 'display_name': n, 'commander_url': '$COMMANDER_URL', 'secret': '$AGENT_SECRET'}}
-open('$INSTALL_DIR/.device_id', 'w').write(did)
-open('$INSTALL_DIR/local_config.json', 'w').write(json.dumps(cfg, indent=2))
+import json, os, datetime
+d     = os.path.join(os.path.expanduser('~'), 'GhostMonitor')
+did   = os.environ['GM_DID']
+name  = os.environ['GM_NAME']
+url   = os.environ['GM_URL']
+tok   = os.environ['GM_TOKEN']
+cfg   = {{'device_id': did, 'display_name': name, 'commander_url': url, 'token': tok}}
+ack   = {{'device_id': did, 'ack_by': 'enrollment', 'ts': datetime.datetime.utcnow().isoformat()+'Z', 'policy_version': '1.0'}}
+open(os.path.join(d, 'local_config.json'), 'w').write(json.dumps(cfg, indent=2))
+open(os.path.join(d, 'consent_ack.json'),  'w').write(json.dumps(ack, indent=2))
 print('Device ID:', did)
-"
+" || {{ echo "ERROR: Configuration failed."; exit 1; }}
 
-echo "[4/4] Creating cron job..."
-# Wrapper script checks pidfile so only one instance runs at a time
+# ── Step 8: Register startup entries ────────────────────────────
+echo "[5/6] Setting up startup..."
+
+# Agent: cron wrapper with pidfile lock
 cat > "$INSTALL_DIR/run_agent.sh" << 'RUNEOF'
 #!/bin/bash
 PIDFILE="$HOME/GhostMonitor/agent.pid"
 if [ -f "$PIDFILE" ]; then
     OLD_PID=$(cat "$PIDFILE")
     if kill -0 "$OLD_PID" 2>/dev/null; then
-        exit 0   # already running
+        exit 0
     fi
 fi
 echo $$ > "$PIDFILE"
@@ -685,27 +997,35 @@ rm -f "$PIDFILE"
 RUNEOF
 chmod +x "$INSTALL_DIR/run_agent.sh"
 
-CRON_LINE="*/8 * * * * $INSTALL_DIR/run_agent.sh"
-( crontab -l 2>/dev/null | grep -v 'GhostMonitor' ; echo "$CRON_LINE" ) | crontab -
+CRON_AGENT="*/8 * * * * $INSTALL_DIR/run_agent.sh"
+CRON_TRAY="@reboot python3 $INSTALL_DIR/tray_icon.py >> $INSTALL_DIR/tray.log 2>&1 &"
+( crontab -l 2>/dev/null | grep -v 'GhostMonitor' ; echo "$CRON_AGENT" ; echo "$CRON_TRAY" ) | crontab -
 
-echo ""
-echo "Starting agent now..."
+# ── Step 9: Start both now ───────────────────────────────────────
+echo "[6/6] Starting monitoring now..."
 nohup python3 "$INSTALL_DIR/monitor_agent.py" >> "$INSTALL_DIR/agent.log" 2>&1 &
+disown
+nohup python3 "$INSTALL_DIR/tray_icon.py" >> "$INSTALL_DIR/tray.log" 2>&1 &
 disown
 
 echo ""
-echo "============================================================"
-echo " Setup complete!  Device '$DEVICE_NAME' is now monitored."
-echo " Agent runs silently. Cron keeps it running."
-echo "============================================================"
+echo "================================================================"
+echo " Setup complete!  '{device_name}' is now monitored."
+echo ""
+echo " The tray icon will appear in your desktop notification area."
+echo " Click it to see what data is being collected."
+echo "================================================================"
 """
 
 
 @app.route("/enroll/<filename>")
 def enroll_script(filename: str):
     """
-    GET /enroll/john-laptop.bat  → Windows setup script
-    GET /enroll/john-laptop.sh   → Linux / macOS setup script
+    GET /enroll/john-laptop.bat  → Windows setup script (v2)
+    GET /enroll/john-laptop.sh   → Linux / macOS setup script (v2)
+
+    Generates (or retrieves existing) per-device token at link-generation time.
+    Token is embedded in the script — no shared secret needed.
     """
     if "." not in filename:
         return "Bad request", 400
@@ -717,21 +1037,23 @@ def enroll_script(filename: str):
     if not device_name:
         return "Invalid name", 400
 
-    secret       = _get_secret()
-    s            = _load_settings()
-    lan_ip       = _get_lan_ip()
+    s             = _load_settings()
+    lan_ip        = _get_lan_ip()
     commander_url = s.get("commander_url_override") or f"http://{lan_ip}:{PORT}"
 
+    # Generate or retrieve the per-device token (idempotent per device name)
+    device_id, token = _get_or_create_enrollment(device_name)
+
     if ext == "bat":
-        script  = _make_windows_script(device_name, commander_url, secret)
+        script  = _make_windows_script(device_name, device_id, commander_url, token)
         dl_name = f"ghost_monitor_{device_name}.bat"
         mime    = "application/octet-stream"
     else:
-        script  = _make_linux_script(device_name, commander_url, secret)
+        script  = _make_linux_script(device_name, device_id, commander_url, token)
         dl_name = f"ghost_monitor_{device_name}.sh"
         mime    = "application/x-sh"
 
-    log.info(f"Enrollment script generated: {device_name} ({ext}) → {commander_url}")
+    log.info(f"Enrollment script: {device_name} ({device_id}) [{ext}] → {commander_url}")
     return Response(
         script,
         mimetype=mime,
@@ -746,16 +1068,15 @@ if __name__ == "__main__":
     import webbrowser
 
     lan_ip = _get_lan_ip()
-    secret = _get_secret()
 
-    print("\n" + "═" * 54)
-    print("  Ghost Monitor — Agency Security Dashboard")
-    print(f"  Your dashboard:  http://localhost:{PORT}")
-    print(f"  Network access:  http://{lan_ip}:{PORT}")
-    print(f"  Agency secret:   {secret}")
-    print(f"  Enrollment URL:  http://{lan_ip}:{PORT}/enroll/<name>.bat")
+    print("\n" + "═" * 58)
+    print("  Ghost Monitor v2 — Agency Security Dashboard")
+    print(f"  Dashboard:     http://localhost:{PORT}")
+    print(f"  Network:       http://{lan_ip}:{PORT}")
+    print(f"  Auth:          per-device tokens  (tokens.json)")
+    print(f"  Enrollment:    http://{lan_ip}:{PORT}/enroll/<name>.bat")
     print("  Press Ctrl+C to stop")
-    print("═" * 54 + "\n")
+    print("═" * 58 + "\n")
 
     threading.Timer(1.5, lambda: webbrowser.open(f"http://localhost:{PORT}")).start()
     app.run(host="0.0.0.0", port=PORT, debug=False, use_reloader=False)

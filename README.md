@@ -1,6 +1,10 @@
-# Ghost Monitor
+# Ghost Monitor v2
 
-**Agency-grade passive security monitoring.** A commander PC runs the server; agents installed on staff machines push activity data over HTTP. No GitHub. No git. No manual setup on agent devices — just share a link.
+**Agency-grade passive security monitoring with full consent and transparency.**  
+A commander PC runs the server; agents installed on staff machines push activity data over HTTP.  
+No GitHub. No git. No manual setup on agent devices — just share a link.
+
+v2 adds a hard consent gate, per-device token auth, a system tray indicator on every monitored machine, a local transparency page staff can open any time, and logged access for every file an admin downloads.
 
 ---
 
@@ -9,8 +13,13 @@
 - **Watches** every monitored machine: running processes, network connections, CPU / RAM / disk, active window title, recently modified files
 - **Alerts** on high CPU/RAM, new external network connections, suspicious process activity
 - **File browser** — browse the file system of any staff machine and download any file on demand
-- **Enrollment** — generate a one-click setup link per device; staff member opens it in a browser, double-clicks the downloaded script, done
+- **Enrollment** — generate a one-click setup link per device; staff member reads the policy, types Y, and the script does the rest
 - **Remote access** — Cloudflare Tunnel support so staff in different cities connect over the internet with zero router configuration
+- **Consent gate** — the agent refuses to start without a local consent record; enrolling without seeing the policy is impossible
+- **Tray indicator** — a green/amber dot lives in the system tray on every monitored machine for the agent's entire lifetime; right-click it to see exactly what's being collected
+- **Transparency page** — a local HTML report (no internet needed) showing what's collected, every file an admin has downloaded, and every pause the user has triggered
+- **Quiet hours** — staff can pause monitoring for 1–2 hours from the tray; capped at 2 uses per day; admin always sees paused state (never looks like offline)
+- **Per-device revoke** — one click in the dashboard invalidates a single device's token without touching any other device
 
 ---
 
@@ -20,32 +29,37 @@
 |---|---|
 | **Commander server** | Python 3.8+, Flask, flask-cors |
 | **Agent** | Python 3.8+, psutil (stdlib only otherwise) |
+| **Tray indicator** | Python 3.8+, pystray, Pillow |
 | **Dashboard** | Vanilla HTML/CSS/JS — no build step, no framework |
 | **Transport** | Plain HTTP POST (LAN) or HTTPS via Cloudflare Tunnel (WAN) |
-| **Auth** | Per-agency secret token in `X-Agent-Secret` header |
+| **Auth** | Per-device token in `X-Agent-Token` header — each enrolled device gets its own token; revoking one device leaves all others working |
 | **Remote tunneling** | Cloudflare Tunnel (`cloudflared`) — free, no account required for quick tunnels |
 | **Persistence** | JSON files in `data/` on the commander (no database) |
-| **Startup** | Windows Scheduled Task (agents) / cron with pidfile lock (Linux/macOS) |
+| **Startup** | Windows: two Scheduled Tasks (agent + tray) / Linux/macOS: cron + pidfile for agent, `@reboot` cron for tray |
 
 ---
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────┐
-│                 YOUR COMMANDER PC                   │
-│                                                     │
+┌──────────────────────────────────────────────────────┐
+│                  YOUR COMMANDER PC                   │
+│                                                      │
 │  python dashboard_server.py  →  http://localhost:8888│
-│                                                     │
-│  data/                                              │
-│  ├── devices/<id>/status.json    ← heartbeat        │
-│  ├── logs/<id>/snapshots/        ← full snapshots   │
-│  ├── logs/<id>/events/           ← diffs & alerts   │
-│  ├── logs/<id>/agent.log         ← agent output     │
-│  ├── file_browser/<id>/          ← file listings    │
-│  ├── agent_tasks/<id>/           ← download queue   │
-│  └── file_cache/<id>/            ← downloaded files │
-└──────────────┬──────────────────────────────────────┘
+│                                                      │
+│  tokens.json            ← per-device tokens          │
+│  data/                                               │
+│  ├── devices/<id>/status.json   ← heartbeat          │
+│  ├── logs/<id>/snapshots/       ← full snapshots     │
+│  ├── logs/<id>/events/          ← diffs & alerts     │
+│  ├── logs/<id>/agent.log        ← agent output       │
+│  ├── file_browser/<id>/         ← file listings      │
+│  ├── agent_tasks/<id>/          ← download queue     │
+│  ├── file_cache/<id>/           ← downloaded files   │
+│  └── consent/<id>/              ← consent ack +      │
+│       ├── ack.json                  access log       │
+│       └── access_log.json                            │
+└──────────────┬───────────────────────────────────────┘
                │  HTTP POST  (LAN or Cloudflare HTTPS)
                │
    ┌───────────┴────────────┐
@@ -56,7 +70,10 @@
 │ monitor_    │     │ monitor_     │
 │ agent.py    │     │ agent.py     │
 │             │     │              │
-│ local_data/ │     │ local_data/  │  ← always written locally too
+│ tray_icon.py│     │ tray_icon.py │  ← always visible in tray
+│             │     │              │
+│ local_data/ │     │ local_data/  │  ← always written locally
+│  summary.html     │  summary.html│  ← transparency page
 └─────────────┘     └──────────────┘
 ```
 
@@ -72,7 +89,7 @@
 ### Agent devices (staff machines)
 
 - Python 3.8+ (must be on PATH)
-- `psutil` — installed automatically by the enrollment script
+- `psutil`, `pystray`, `plyer`, `Pillow` — all installed automatically by the enrollment script
 
 ---
 
@@ -88,16 +105,17 @@ python dashboard_server.py
 
 Dashboard opens at **http://localhost:8888**
 
-On startup the terminal prints your LAN IP and agency secret:
+On startup the terminal prints your network address and enrollment URL:
 
 ```
-══════════════════════════════════════════════════════
-  Ghost Monitor — Agency Security Dashboard
-  Your dashboard:  http://localhost:8888
-  Network access:  http://192.168.1.5:8888
-  Agency secret:   a3f8c2d1...
-  Enrollment URL:  http://192.168.1.5:8888/enroll/<name>.bat
-══════════════════════════════════════════════════════
+══════════════════════════════════════════════════════════
+  Ghost Monitor v2 — Agency Security Dashboard
+  Dashboard:     http://localhost:8888
+  Network:       http://192.168.1.5:8888
+  Auth:          per-device tokens  (tokens.json)
+  Enrollment:    http://192.168.1.5:8888/enroll/<name>.bat
+  Press Ctrl+C to stop
+══════════════════════════════════════════════════════════
 ```
 
 ### 2. Enroll a Staff Device
@@ -108,17 +126,20 @@ On startup the terminal prints your LAN IP and agency secret:
 4. Click **Copy Link** and send it to the staff member  
    — or click **Download Script** to send the file yourself
 
-**Staff member on Windows:** opens the link in a browser → double-clicks the downloaded `.bat` file → done.  
-**Staff member on Linux / macOS:** opens the link in a browser → runs `bash ghost_monitor_devicename.sh` in a terminal.
+**What happens when the staff member runs the script (v2 flow):**
 
-The script automatically:
-- Downloads the monitoring agent from your commander
-- Installs `psutil`
-- Configures the device ID and secret
-- Creates a silent startup task (Windows Scheduled Task / cron)
-- Starts monitoring immediately
+1. The script prints the full monitoring policy and asks: `Type Y to continue, anything else to cancel`  
+   → If they type anything other than Y, **zero files are written and zero network calls are made**
+2. Consent is posted to the commander (if the commander is unreachable, the script stops — no silent installs)
+3. Python is checked
+4. `monitor_agent.py` **and** `tray_icon.py` are downloaded from your commander
+5. `psutil`, `pystray`, `Pillow` are installed
+6. `local_config.json` and `consent_ack.json` are written locally
+7. **Two** startup entries are created — one for the agent, one for the tray indicator
+8. Both processes start immediately
 
-The device appears in the dashboard within **5–10 minutes**.
+The device appears in the dashboard within **5–10 minutes**.  
+A shield/dot icon appears in the staff member's system tray immediately.
 
 ---
 
@@ -156,8 +177,19 @@ All new enrollment links will now use the Cloudflare URL. Staff anywhere in the 
 
 ## Dashboard Features
 
+### Stats Bar
+
+| Stat | Meaning |
+|---|---|
+| **Online** | Devices that checked in within the last 30 minutes |
+| **Offline** | Devices not seen recently (or revoked) |
+| **Total** | All enrolled devices |
+| **Consented** | Devices with a valid consent record (turns amber if any device is missing one) |
+| **Alerts (1h)** | Warning/critical events in the last hour |
+
 ### Fleet Sidebar
-Device cards with online/offline badge, last-seen time, and live CPU/RAM mini-bars.
+
+Device cards show online/offline/paused badge, a `✓` (consented) or `!` (no consent) indicator, last-seen time, and live CPU/RAM mini-bars.
 
 ### Per-Device Tabs
 
@@ -169,11 +201,19 @@ Device cards with online/offline badge, last-seen time, and live CPU/RAM mini-ba
 | **Events** | Timeline of diffs: new/stopped processes, high CPU/RAM, new external connections |
 | **Agent Log** | Last 100 lines of the agent's own log on that device |
 
+### Device Detail Header
+
+Alongside the name and online badge you'll see:
+- **✓ CONSENTED** badge (with timestamp) or **! NO CONSENT** warning
+- **✕ Revoke Device** button — immediately invalidates that device's token; all other devices are unaffected; the device must be re-enrolled with a new link to resume
+
 ### File Browser + On-Demand Download
 
 In the **Files** tab, click **Request Download** next to any file.  
 The agent uploads it on its next cycle (5–10 min). A **Download Now** link appears when ready.  
 File size limit: 100 MB.
+
+Every download is logged in the device's `data/consent/<id>/access_log.json` and synced to the device's local transparency page within one agent cycle.
 
 ### Activity Feed
 Global timeline of all events across all devices.
@@ -182,9 +222,26 @@ Global timeline of all events across all devices.
 Right sidebar shows all recent high-CPU, high-RAM, and external-connection alerts.
 
 ### Settings Modal
-- View your LAN IP and agency secret
+- View your LAN IP
+- Read the current monitoring policy (exactly what staff see at enrollment)
 - Set Cloudflare Tunnel URL for remote access
-- Regenerate the agency secret (invalidates all existing agents — requires re-enrollment)
+
+---
+
+## Tray Indicator (Staff Side)
+
+The tray icon runs on the staff machine continuously, independent of whether the commander is reachable.
+
+| Icon color | Meaning |
+|---|---|
+| **Green** | Agent synced within the last 35 minutes — monitoring is active |
+| **Amber** | Agent hasn't synced recently, or monitoring is paused |
+
+Right-click the icon to:
+- See when monitoring last synced
+- Open **What's being monitored?** — a local HTML page showing all data categories, every file an admin has downloaded, and every pause you've triggered. Opens with zero network dependency.
+- Open **View monitoring policy** — the full policy text from the commander
+- **Pause monitoring for 1 hour / 2 hours** — capped at 2 pauses per day. While paused the agent still sends a lightweight heartbeat so the admin sees "PAUSED" not "OFFLINE".
 
 ---
 
@@ -192,12 +249,16 @@ Right sidebar shows all recent high-CPU, high-RAM, and external-connection alert
 
 | Feature | Detail |
 |---|---|
-| **Authentication** | Every agent request carries `X-Agent-Secret` header. Requests without a valid secret return 401 |
-| **Secret storage** | Auto-generated `secrets.token_hex(16)`, stored in `monitor_settings.json` (gitignored) |
-| **In transit** | LAN: plain HTTP. Remote: HTTPS via Cloudflare Tunnel (end-to-end encrypted) |
-| **Upload limit** | Server rejects payloads > 150 MB to prevent OOM attacks |
-| **Passive only** | Agents never execute commands. The server has zero command-dispatch endpoints |
-| **Local resilience** | Agents always write to `local_data/` on the device regardless of commander connectivity |
+| **Per-device auth** | Each device gets its own `secrets.token_hex(16)` token at enrollment. Stored in `tokens.json` (gitignored). Revoking one device does not affect others. |
+| **Token header** | Every agent request carries `X-Agent-Token`. Requests with a missing or wrong token return 401. Comparison uses `secrets.compare_digest` (constant-time, timing-attack resistant). |
+| **Consent gate** | Agent refuses to start if `consent_ack.json` is absent. This file is only created by the enrollment script, after the staff member explicitly types Y. Copying `monitor_agent.py` to a machine by hand does nothing — it exits immediately. |
+| **Consent recorded twice** | Server writes `data/consent/<id>/ack.json`. Enrollment script writes `consent_ack.json` locally. Both must exist independently — neither one is derived from the other. |
+| **Access log** | Every file download by an admin is appended to `data/consent/<id>/access_log.json` on the server and synced to the device within one agent cycle. The log is append-only — no endpoint edits or deletes past entries. |
+| **Pause transparency** | Every pause event is logged to the same access log so the admin sees paused state too. Mutual transparency — not a hidden escape hatch. |
+| **In transit** | LAN: plain HTTP. Remote: HTTPS via Cloudflare Tunnel (end-to-end encrypted). |
+| **Upload limit** | Server rejects payloads > 150 MB to prevent OOM attacks. |
+| **Passive only** | Agents never execute commands. The server has zero command-dispatch endpoints. |
+| **Local resilience** | Agents always write to `local_data/` on the device regardless of commander connectivity. |
 
 ---
 
@@ -207,35 +268,62 @@ Right sidebar shows all recent high-CPU, high-RAM, and external-connection alert
 ghost-sync/
 │
 ├── dashboard_server.py       ← Commander server (Flask, port 8888)
-├── monitor_settings.json     ← Auto-generated, gitignored (holds secret + URL override)
+├── monitor_settings.json     ← Auto-generated, gitignored (URL override only)
+├── tokens.json               ← Auto-generated, gitignored (per-device tokens)
 │
 ├── agent/
 │   ├── monitor_agent.py      ← Agent daemon (installed on each staff machine)
-│   ├── requirements.txt      ← psutil only
-│   ├── start_agent.bat       ← Manual start (Windows)
+│   ├── tray_icon.py          ← Tray indicator (installed alongside agent)
+│   ├── requirements.txt      ← psutil, pystray, plyer, Pillow
+│   ├── start_agent.bat       ← Manual start (Windows, for testing)
 │   └── start_agent_silent.vbs← Silent start helper
 │
 ├── dashboard/
 │   └── index.html            ← Dashboard UI (dark theme, no build step)
 │
 └── data/                     ← All runtime data (gitignored)
-    ├── devices/              ← Device heartbeats
+    ├── devices/              ← Device heartbeats + paused state
     ├── logs/                 ← Snapshots, events, agent logs
     ├── file_browser/         ← File listings from agents
     ├── agent_tasks/          ← Pending file-download requests
-    └── file_cache/           ← Downloaded files waiting for you
+    ├── file_cache/           ← Downloaded files waiting for you
+    └── consent/              ← Consent records + access logs
+        └── <device_id>/
+            ├── ack.json          ← Consent acknowledgment
+            └── access_log.json   ← File downloads + pause events
+```
+
+On the **staff machine** (`~/GhostMonitor/` after enrollment):
+
+```
+~/GhostMonitor/
+├── monitor_agent.py      ← agent daemon
+├── tray_icon.py          ← tray indicator
+├── local_config.json     ← device_id, display_name, commander_url, token
+├── consent_ack.json      ← local consent record (agent won't start without this)
+├── monitor_agent.log     ← agent log
+└── local_data/
+    ├── snapshots/        ← local copies of all snapshots
+    ├── events/           ← local event log
+    ├── access_log.json   ← synced file-access + pause log
+    ├── paused_until.json ← written by tray when user pauses
+    └── summary.html      ← transparency page (opened by tray icon)
 ```
 
 ---
 
 ## Agent Behaviour
 
+- **Consent gate** — exits immediately with a clear log message if `consent_ack.json` is absent
 - Runs every **5–10 minutes** (random interval to avoid sync storms)
 - Collects: processes, network connections, system metrics, active window title, recently modified files
+- **If paused** — skips data collection, sends a lightweight `{"paused": true}` heartbeat only; still syncs the access log and regenerates the transparency page
 - Always writes to `local_data/` on the device first, then pushes to commander
 - Polls for file-download tasks from the commander on every cycle
-- On Linux/macOS: cron wrapper with pidfile lock prevents multiple instances
-- On Windows: runs as a Scheduled Task via `pythonw` (silent, no console window)
+- Syncs the server-side access log to `local_data/access_log.json` every cycle
+- Regenerates `local_data/summary.html` (the transparency page) every cycle
+- On Linux/macOS: cron wrapper with pidfile lock prevents multiple agent instances; tray runs via `@reboot` cron
+- On Windows: agent runs as a Scheduled Task via `pythonw` (silent); tray has its own Scheduled Task
 
 ---
 
@@ -244,11 +332,11 @@ ghost-sync/
 **Device not appearing in dashboard**
 
 ```
-# On the staff machine, check if the agent is running
+# Check if the agent is running on the staff machine:
 # Windows: Task Manager → look for pythonw or python
-# Linux: ps aux | grep monitor_agent
+# Linux:   ps aux | grep monitor_agent
 
-# Check the agent log on the device:
+# Check the agent log:
 # Windows: %USERPROFILE%\GhostMonitor\monitor_agent.log
 # Linux:   ~/GhostMonitor/agent.log
 ```
@@ -258,9 +346,22 @@ Common causes:
 - Wrong commander URL in the enrollment script — re-enroll with the correct URL
 - Firewall blocking port 8888 — allow inbound on the commander
 
+**Agent log shows "No local consent record — refusing to start"**
+
+The `consent_ack.json` file is missing. This means the agent was installed without going through the enrollment script, or the file was deleted. Re-run the enrollment script on the device.
+
+**Device shows NO CONSENT badge in dashboard**
+
+The consent ACK was not recorded on the server (e.g., the commander was unreachable when the staff member ran the script, or the device was revoked). Re-enroll the device with a new enrollment link.
+
 **Device shows OFFLINE even though it's running**
 
-Agent is considered offline after 30 minutes without a check-in. If the agent just started, wait one cycle (up to 10 min). If using Cloudflare, make sure the tunnel is still running.
+Agent is considered offline after 30 minutes without a check-in. If the agent just started, wait one cycle (up to 10 min). If the device is paused, the dashboard shows **PAUSED** (amber) instead of OFFLINE — this is expected and correct.
+
+**Tray icon not appearing after enrollment**
+
+- Windows: check Task Manager for a `pythonw` process running `tray_icon.py`. If missing, run `pythonw "%USERPROFILE%\GhostMonitor\tray_icon.py"` manually and check for errors.
+- Linux: check `~/GhostMonitor/tray.log`. The tray requires a desktop environment with a system tray (most standard desktop environments work).
 
 **File download stuck at "Uploading… wait for next agent sync"**
 
@@ -268,7 +369,7 @@ The agent uploads on its next cycle. Wait up to 10 minutes. If it stays stuck, t
 
 **"Could not download agent" during enrollment**
 
-The enrollment script downloads `monitor_agent.py` from your commander. Make sure:
+The enrollment script downloads `monitor_agent.py` and `tray_icon.py` from your commander. Make sure:
 1. `python dashboard_server.py` is running on the commander
 2. The enrollment URL uses the correct IP (LAN) or Cloudflare URL (remote)
 3. Port 8888 is not blocked by a firewall

@@ -182,6 +182,7 @@
   <div class="stat-card"><div class="stat-label">Online</div><div class="stat-value v-green" id="s-online">—</div></div>
   <div class="stat-card"><div class="stat-label">Offline</div><div class="stat-value v-amber" id="s-offline">—</div></div>
   <div class="stat-card"><div class="stat-label">Total Devices</div><div class="stat-value v-cyan" id="s-total">—</div></div>
+  <div class="stat-card"><div class="stat-label">Consented</div><div class="stat-value v-green" id="s-consented">—</div></div>
   <div class="stat-card"><div class="stat-label">Alerts (1h)</div><div class="stat-value v-amber" id="s-alerts">—</div></div>
 </div>
 
@@ -206,11 +207,13 @@
 
     <!-- Device detail view -->
     <div id="viewDevice" style="display:none">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
         <button class="btn" onclick="clearDevice()">← All Devices</button>
         <span id="dTitle" style="color:var(--cyan);font-size:15px;font-weight:bold;"></span>
         <span id="dBadge"></span>
+        <span id="dConsentBadge"></span>
         <span id="dIP" style="color:var(--muted);font-size:11px;"></span>
+        <button id="dRevokeBtn" class="btn" style="color:var(--red);border-color:var(--red);margin-left:auto;display:none;" onclick="revokeDevice()">✕ Revoke Device</button>
       </div>
       <div id="activeWin" class="active-win" style="display:none">
         <div class="active-win-lbl">Active Window</div>
@@ -283,16 +286,17 @@
 
     <label>Commander Network Address</label>
     <div class="secret-box" id="settingsLanIP">Detecting…</div>
-    <div class="hint">This is the address staff machines connect to. Must be reachable on your LAN.</div>
+    <div class="hint">Address staff machines connect to. Must be reachable on your LAN.</div>
 
-    <label>Agency Secret</label>
-    <div class="secret-box" id="settingsSecret">—</div>
-    <div class="hint">
-      All agents use this secret to authenticate with your commander.<br>
-      It is embedded in every enrollment script automatically.<br>
-      Regenerating invalidates all existing agents — they must be re-enrolled.
+    <label>Auth Model</label>
+    <div class="hint" style="margin-top:4px;">
+      v2 uses <strong>per-device tokens</strong> stored in <code style="background:var(--bg3);padding:1px 4px;border-radius:3px;">tokens.json</code>.
+      Each enrollment link generates a unique token for that device.
+      Revoking a device from its detail view instantly invalidates its token.
     </div>
-    <button class="btn" style="margin-top:6px;" onclick="regenerateSecret()">↺ Regenerate Secret</button>
+
+    <label>Monitoring Policy <span style="color:var(--muted);font-weight:400;">(shown to staff at enrollment)</span></label>
+    <div id="settingsPolicy" style="background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:9px 12px;font-size:11px;line-height:1.7;color:#94a3b8;white-space:pre-wrap;max-height:160px;overflow-y:auto;margin-top:4px;">Loading…</div>
 
     <label>Public URL Override <span style="color:var(--muted);font-weight:400;">(for remote / internet access)</span></label>
     <input id="settingsURLOverride" type="text" placeholder="https://your-tunnel.trycloudflare.com">
@@ -352,10 +356,16 @@ function fmtSize(kb) {
 // ── stats ──────────────────────────────────────────────────────────────────
 async function loadStats() {
   const d = await fetch('/api/stats').then(r=>r.json()).catch(()=>({}));
-  document.getElementById('s-online').textContent  = d.devices_online  ?? '—';
-  document.getElementById('s-offline').textContent = d.devices_offline ?? '—';
-  document.getElementById('s-total').textContent   = d.devices_total   ?? '—';
-  document.getElementById('s-alerts').textContent  = d.alerts_1h       ?? '—';
+  document.getElementById('s-online').textContent    = d.devices_online    ?? '—';
+  document.getElementById('s-offline').textContent   = d.devices_offline   ?? '—';
+  document.getElementById('s-total').textContent     = d.devices_total     ?? '—';
+  document.getElementById('s-consented').textContent = d.devices_consented != null
+    ? `${d.devices_consented}/${d.devices_total ?? '?'}`
+    : '—';
+  document.getElementById('s-consented').style.color =
+    (d.devices_consented != null && d.devices_consented < (d.devices_total ?? 0))
+      ? 'var(--amber)' : 'var(--green)';
+  document.getElementById('s-alerts').textContent  = d.alerts_1h ?? '—';
   document.getElementById('s-alerts').style.color  = (d.alerts_1h > 0) ? 'var(--red)' : 'var(--amber)';
   if (d.server_time) document.getElementById('serverTime').textContent = new Date(d.server_time).toLocaleTimeString();
 }
@@ -371,10 +381,17 @@ async function loadFleet() {
   el.innerHTML = devices.map(d => {
     const cpu = d.metrics?.cpu_percent || 0;
     const ram = d.metrics?.ram_percent || 0;
+    const statusBadge = d.paused
+      ? `<span class="badge warn">PAUSED</span>`
+      : `<span class="badge ${d.online?'online':'offline'}">${d.online?'ONLINE':'OFFLINE'}</span>`;
+    const consentBadge = d.consented
+      ? `<span class="badge info" title="Consented ${d.consent_ts ? ago(d.consent_ts) : ''}">✓</span>`
+      : `<span class="badge warn" title="No consent record">!</span>`;
     return `<div class="device-card${selectedDevice===d.device_id?' active':''}" onclick="selectDevice('${d.device_id}')">
       <div class="device-name">${d.display_name||d.device_id}</div>
       <div class="device-meta">
-        <span class="badge ${d.online?'online':'offline'}">${d.online?'ONLINE':'OFFLINE'}</span>
+        ${statusBadge}
+        ${consentBadge}
         <span>${d.os||''}</span>
       </div>
       <div class="device-meta" style="margin-top:2px;">${ago(d.last_seen)}</div>
@@ -435,8 +452,16 @@ async function selectDevice(id) {
 
   const status = await fetch(`/api/device/${id}/status`).then(r=>r.json()).catch(()=>({}));
   document.getElementById('dTitle').textContent = status.display_name || id;
-  document.getElementById('dBadge').innerHTML   = `<span class="badge ${status.online?'online':'offline'}">${status.online?'ONLINE':'OFFLINE'}</span>`;
-  document.getElementById('dIP').textContent    = status.ip ? `(${status.ip})` : '';
+  const onlineBadge = status.paused
+    ? `<span class="badge warn">PAUSED</span>`
+    : `<span class="badge ${status.online?'online':'offline'}">${status.online?'ONLINE':'OFFLINE'}</span>`;
+  document.getElementById('dBadge').innerHTML = onlineBadge;
+  const consentHtml = status.consented
+    ? `<span class="badge info" title="Policy v${status.policy_version||'1.0'}">✓ CONSENTED ${status.consent_ts ? ago(status.consent_ts) : ''}</span>`
+    : `<span class="badge warn" title="No consent on record — re-enroll device">! NO CONSENT</span>`;
+  document.getElementById('dConsentBadge').innerHTML = consentHtml;
+  document.getElementById('dIP').textContent = status.ip ? `(${status.ip})` : '';
+  document.getElementById('dRevokeBtn').style.display = 'inline-block';
 
   if (status.active_window) {
     document.getElementById('activeWin').style.display = 'block';
@@ -464,6 +489,7 @@ function clearDevice() {
   selectedDevice = null;
   document.getElementById('viewAll').style.display    = 'block';
   document.getElementById('viewDevice').style.display = 'none';
+  document.getElementById('dRevokeBtn').style.display = 'none';
   loadFleet();
 }
 
@@ -706,23 +732,17 @@ async function downloadEnrollScript() {
 
 // ── settings modal ─────────────────────────────────────────────────────────
 async function openSettings() {
-  const s = await fetch('/api/settings').then(r=>r.json()).catch(()=>({}));
-  document.getElementById('settingsLanIP').textContent     = `http://${s.lan_ip}:${s.port}`;
-  document.getElementById('settingsSecret').textContent    = s.agency_secret || '(not set)';
-  document.getElementById('settingsURLOverride').value     = s.commander_url_override || '';
+  const [s, policy] = await Promise.all([
+    fetch('/api/settings').then(r=>r.json()).catch(()=>({})),
+    fetch('/api/policy').then(r=>r.text()).catch(()=>'(policy unavailable)'),
+  ]);
+  document.getElementById('settingsLanIP').textContent  = `http://${s.lan_ip}:${s.port}`;
+  document.getElementById('settingsPolicy').textContent = policy;
+  document.getElementById('settingsURLOverride').value  = s.commander_url_override || '';
   document.getElementById('settingsMsg').className = 'modal-msg';
   document.getElementById('settingsModal').classList.add('open');
 }
 function closeSettings() { document.getElementById('settingsModal').classList.remove('open'); }
-
-async function regenerateSecret() {
-  if (!confirm('Regenerate secret? All existing agents will stop working and must be re-enrolled.')) return;
-  const r = await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({regenerate_secret:true})}).then(r=>r.json()).catch(()=>({}));
-  if (r.ok) {
-    document.getElementById('settingsSecret').textContent = r.agency_secret;
-    showModalMsg('settingsMsg','ok','Secret regenerated. Re-enroll all agents with the new enrollment link.');
-  }
-}
 
 async function saveSettings() {
   const body = {};
@@ -734,6 +754,28 @@ async function saveSettings() {
     showModalMsg('settingsMsg','ok', msg);
     setTimeout(closeSettings,1800);
   } else showModalMsg('settingsMsg','err','Save failed.');
+}
+
+async function revokeDevice() {
+  if (!selectedDevice) return;
+  const name = document.getElementById('dTitle').textContent || selectedDevice;
+  if (!confirm(
+    `Revoke "${name}"?\n\n` +
+    `This will:\n` +
+    `  • Invalidate the device token (agent stops checking in)\n` +
+    `  • Clear the consent record\n` +
+    `  • Keep all historical logs\n\n` +
+    `The device must be re-enrolled with a new link to resume monitoring.`
+  )) return;
+  const r = await fetch(`/api/device/${selectedDevice}/revoke`, {method:'POST'})
+    .then(r=>r.json()).catch(()=>({}));
+  if (r.ok) {
+    alert(`"${name}" revoked. Generate a new enrollment link to re-add it.`);
+    clearDevice();
+    refreshAll();
+  } else {
+    alert('Revoke failed — check the server.');
+  }
 }
 
 function showModalMsg(id, type, msg) {

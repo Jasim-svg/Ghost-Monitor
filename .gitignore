@@ -28,3 +28,5 @@ agent/local_config.json
 scratch/
 tmp/
 monitor_settings.json
+tokens.json
+data/

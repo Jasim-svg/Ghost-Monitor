@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
-Ghost Monitor Agent — passive activity collector
+Ghost Monitor Agent v2 — passive activity collector
 Pushes snapshots to the commander dashboard over HTTP.
-No git. No GitHub. LAN HTTP only.
+Per-device token auth. Consent gate at startup.
+Local transparency page generated each cycle.
 
-Install:  pip install psutil
-Run:      python monitor_agent.py
+Install:  pip install psutil pystray plyer Pillow
+Run:      (use the enrollment script — do not run directly)
 """
 
 import os
@@ -13,7 +14,6 @@ import sys
 import json
 import time
 import socket
-import hashlib
 import platform
 import datetime
 import logging
@@ -28,17 +28,17 @@ from pathlib import Path
 try:
     import psutil
 except ImportError:
-    print("[MONITOR] Missing deps. Run: pip install psutil")
+    print("[MONITOR] Missing psutil. Run: pip install psutil")
     sys.exit(1)
 
-# ── Paths ────────────────────────────────────────────────────────────────────
+# ── Paths ─────────────────────────────────────────────────────────────────────
 SCRIPT_DIR    = Path(__file__).parent.resolve()
 CONFIG_FILE   = SCRIPT_DIR / "local_config.json"
-IDENTITY_FILE = SCRIPT_DIR / ".device_id"
+CONSENT_FILE  = SCRIPT_DIR / "consent_ack.json"    # written by enrollment script
 LOG_FILE      = SCRIPT_DIR / "monitor_agent.log"
-LOCAL_DATA    = SCRIPT_DIR / "local_data"     # always written, regardless of connectivity
+LOCAL_DATA    = SCRIPT_DIR / "local_data"
 
-# ── Logging ──────────────────────────────────────────────────────────────────
+# ── Logging ───────────────────────────────────────────────────────────────────
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -50,55 +50,71 @@ logging.basicConfig(
 log = logging.getLogger("monitor")
 
 # ═══════════════════════════════════════════════════════════════════════════
-#  Identity
+#  Section 2 — Consent gate
 # ═══════════════════════════════════════════════════════════════════════════
 
-def get_or_create_identity():
-    """Return (device_id, display_name, commander_url, secret).
-    If config doesn't exist, runs a first-time setup prompt.
-    """
-    if CONFIG_FILE.exists() and IDENTITY_FILE.exists():
-        cfg = json.loads(CONFIG_FILE.read_text(encoding="utf-8"))
-        return (
-            cfg["device_id"],
-            cfg["display_name"],
-            cfg["commander_url"].rstrip("/"),
-            cfg["secret"],
-        )
+def _consent_acknowledged() -> bool:
+    """Returns True only if the local consent record exists.
+    This file is written by the enrollment script — it cannot be created
+    any other way, so running monitor_agent.py without enrolling always exits."""
+    return CONSENT_FILE.exists()
 
-    print("\n=== Ghost Monitor — First Run Setup ===")
+
+def _load_consent_ack() -> dict:
     try:
-        commander_url = input("Commander URL (e.g. http://192.168.1.100:8888): ").strip().rstrip("/")
-        display_name  = input("Device name (e.g. john-laptop): ").strip()
-        secret        = input("Agency secret (from dashboard Settings): ").strip()
-    except EOFError:
-        commander_url, display_name, secret = "", "", ""
+        return json.loads(CONSENT_FILE.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
 
-    if not display_name:
-        display_name = socket.gethostname()
+# ═══════════════════════════════════════════════════════════════════════════
+#  Section 1 — Identity (reads token, not shared secret)
+# ═══════════════════════════════════════════════════════════════════════════
 
-    device_id = "dev_" + hashlib.md5(
-        (socket.gethostname() + display_name).encode()
-    ).hexdigest()[:8]
+def get_identity():
+    """Return (device_id, display_name, commander_url, token).
+    Exits immediately if local_config.json doesn't exist —
+    the enrollment script must run first."""
+    if not CONFIG_FILE.exists():
+        log.error("local_config.json not found. Run the enrollment script first.")
+        sys.exit(1)
+    cfg = json.loads(CONFIG_FILE.read_text(encoding="utf-8"))
+    return (
+        cfg["device_id"],
+        cfg["display_name"],
+        cfg["commander_url"].rstrip("/"),
+        cfg["token"],
+    )
 
-    cfg = {
-        "device_id":     device_id,
-        "display_name":  display_name,
-        "commander_url": commander_url,
-        "secret":        secret,
-    }
-    IDENTITY_FILE.write_text(device_id, encoding="utf-8")
-    CONFIG_FILE.write_text(json.dumps(cfg, indent=2), encoding="utf-8")
-    log.info(f"Identity set: {display_name} ({device_id})")
-    return device_id, display_name, commander_url, secret
+# ═══════════════════════════════════════════════════════════════════════════
+#  Section 6 — Quiet hours / self-pause
+# ═══════════════════════════════════════════════════════════════════════════
+
+PAUSED_FILE        = LOCAL_DATA / "paused_until.json"
+MAX_PAUSES_PER_DAY = 2   # tray icon enforces this; agent just respects the file
+
+def _check_paused() -> tuple:
+    """Returns (is_paused: bool, paused_until_iso: str)."""
+    if not PAUSED_FILE.exists():
+        return False, ""
+    try:
+        data  = json.loads(PAUSED_FILE.read_text(encoding="utf-8"))
+        until_str = data.get("until", "")
+        until = datetime.datetime.fromisoformat(until_str)
+        now   = datetime.datetime.now(datetime.timezone.utc)
+        if until.tzinfo is None:
+            until = until.replace(tzinfo=datetime.timezone.utc)
+        if now < until:
+            return True, until_str
+    except Exception:
+        pass
+    return False, ""
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  Data collection — read-only observation
 # ═══════════════════════════════════════════════════════════════════════════
 
 def collect_processes():
-    # First call to cpu_percent always returns 0.0 — warm up with a short interval
-    psutil.cpu_percent(interval=0.1)
+    psutil.cpu_percent(interval=0.1)   # warm up — first call always returns 0.0
     procs = []
     for p in psutil.process_iter(["pid", "name", "username", "cpu_percent",
                                    "memory_percent", "create_time", "status"]):
@@ -128,7 +144,7 @@ def collect_network():
             except Exception:
                 pass
     except psutil.AccessDenied:
-        log.warning("Network access denied — run as Administrator for full data")
+        log.warning("Network access denied — run as Administrator for full network data")
     return conns
 
 
@@ -196,11 +212,11 @@ def collect_recent_files(hours: int = 1):
 
 
 def collect_file_listing(time_budget: float = 25.0):
-    """Full file listing from user dirs — used for file browser on dashboard.
-    Stops early if scanning takes longer than time_budget seconds."""
-    home      = Path.home()
-    files     = []
-    deadline  = time.time() + time_budget
+    """Full file listing for the dashboard's file browser.
+    Returns partial results if scanning exceeds time_budget seconds."""
+    home     = Path.home()
+    files    = []
+    deadline = time.time() + time_budget
     for dir_name in ("Documents", "Desktop", "Downloads"):
         scan = home / dir_name
         if not scan.exists():
@@ -208,7 +224,7 @@ def collect_file_listing(time_budget: float = 25.0):
         try:
             for f in scan.rglob("*"):
                 if time.time() > deadline:
-                    log.warning("collect_file_listing: time budget exceeded, returning partial list")
+                    log.warning("collect_file_listing: time budget exceeded, returning partial")
                     return sorted(files, key=lambda x: x["modified"], reverse=True)[:500]
                 if not f.is_file():
                     continue
@@ -264,15 +280,15 @@ def detect_events(snapshot: dict, prev: dict) -> list:
     return events
 
 # ═══════════════════════════════════════════════════════════════════════════
-#  HTTP helpers
+#  Section 1 — HTTP helpers (X-Agent-Token replaces X-Agent-Secret)
 # ═══════════════════════════════════════════════════════════════════════════
 
-def http_post(url: str, data: dict, secret: str, timeout: int = 20):
+def http_post(url: str, data: dict, token: str, timeout: int = 20):
     try:
         body = json.dumps(data).encode("utf-8")
         req  = urllib.request.Request(url, data=body, method="POST")
-        req.add_header("Content-Type",   "application/json")
-        req.add_header("X-Agent-Secret", secret)
+        req.add_header("Content-Type",  "application/json")
+        req.add_header("X-Agent-Token", token)
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             return json.loads(resp.read())
     except Exception as e:
@@ -280,11 +296,11 @@ def http_post(url: str, data: dict, secret: str, timeout: int = 20):
         return None
 
 
-def http_get(url: str, secret: str):
+def http_get(url: str, token: str, timeout: int = 20):
     try:
         req = urllib.request.Request(url)
-        req.add_header("X-Agent-Secret", secret)
-        with urllib.request.urlopen(req, timeout=20) as resp:
+        req.add_header("X-Agent-Token", token)
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
             return json.loads(resp.read())
     except Exception as e:
         log.warning(f"GET {url} failed: {e}")
@@ -305,7 +321,7 @@ def write_local(sub: str, filename: str, data: dict):
 
 FILE_SIZE_LIMIT = 100 * 1024 * 1024   # 100 MB
 
-def handle_file_requests(tasks: list, commander_url: str, device_id: str, secret: str):
+def handle_file_requests(tasks: list, commander_url: str, device_id: str, token: str):
     for task in tasks:
         if task.get("type") != "get_file":
             continue
@@ -323,7 +339,7 @@ def handle_file_requests(tasks: list, commander_url: str, device_id: str, secret
                 http_post(endpoint, {
                     "device_id": device_id, "request_id": request_id,
                     "error": f"File not found: {file_path}",
-                }, secret)
+                }, token)
                 continue
 
             size = p.stat().st_size
@@ -331,7 +347,7 @@ def handle_file_requests(tasks: list, commander_url: str, device_id: str, secret
                 http_post(endpoint, {
                     "device_id": device_id, "request_id": request_id,
                     "error": f"File too large ({size // 1024 // 1024} MB > 100 MB limit)",
-                }, secret)
+                }, token)
                 continue
 
             content_b64 = base64.b64encode(p.read_bytes()).decode()
@@ -342,7 +358,7 @@ def handle_file_requests(tasks: list, commander_url: str, device_id: str, secret
                 "filename":    p.name,
                 "content_b64": content_b64,
                 "size":        size,
-            }, secret, timeout=300)   # allow up to 5 min for large file upload
+            }, token, timeout=300)
             log.info(f"File uploaded: {p.name} ({size} bytes)")
 
         except Exception as e:
@@ -350,18 +366,195 @@ def handle_file_requests(tasks: list, commander_url: str, device_id: str, secret
             http_post(endpoint, {
                 "device_id": device_id, "request_id": request_id,
                 "error": str(e),
-            }, secret)
+            }, token)
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  Section 4 — Access log sync
+# ═══════════════════════════════════════════════════════════════════════════
+
+ACCESS_LOG_FILE = LOCAL_DATA / "access_log.json"
+
+def sync_access_log(commander_url: str, device_id: str, token: str) -> list:
+    """Fetches new access-log entries from the commander and merges them into
+    local_data/access_log.json. Returns the full merged list."""
+    existing = []
+    since    = ""
+    if ACCESS_LOG_FILE.exists():
+        try:
+            existing = json.loads(ACCESS_LOG_FILE.read_text(encoding="utf-8"))
+            # Find the most recent entry's timestamp for incremental fetch
+            ts_list = [e.get("ts", "") for e in existing if e.get("ts")]
+            if ts_list:
+                since = max(ts_list)
+        except Exception:
+            pass
+
+    url = f"{commander_url}/api/agent/access-log/{device_id}"
+    if since:
+        url += f"?since={since}"
+
+    new_entries = http_get(url, token) or []
+    # Merge: append only entries not already present (by ts+type dedup)
+    existing_keys = {(e.get("ts", ""), e.get("type", "")) for e in existing}
+    for entry in new_entries:
+        key = (entry.get("ts", ""), entry.get("type", ""))
+        if key not in existing_keys:
+            existing.append(entry)
+            existing_keys.add(key)
+
+    ACCESS_LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+    ACCESS_LOG_FILE.write_text(json.dumps(existing, indent=2), encoding="utf-8")
+    return existing
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  Section 5 — Local transparency page
+# ═══════════════════════════════════════════════════════════════════════════
+
+def generate_transparency_page(device_id: str, display_name: str,
+                                snapshot: dict, access_log: list):
+    """Writes local_data/summary.html — opened by the tray icon's
+    'What's being monitored?' menu item. Requires zero network access."""
+    consent    = _load_consent_ack()
+    enrolled   = consent.get("ts", "unknown")
+    policy_ver = consent.get("policy_version", "1.0")
+
+    ts  = snapshot.get("timestamp", "—")
+    cpu = snapshot.get("metrics", {}).get("cpu_percent", "—")
+    ram = snapshot.get("metrics", {}).get("ram_percent", "—")
+
+    # Build access log rows (most recent first, hide internal _dedup key)
+    visible_log = [e for e in reversed(access_log) if e.get("type") != "monitoring_paused"]
+    pause_log   = [e for e in reversed(access_log) if e.get("type") == "monitoring_paused"]
+
+    def _log_rows(entries, cols):
+        if not entries:
+            return '<tr><td colspan="{}" style="color:#94a3b8;font-style:italic;">None recorded.</td></tr>'.format(len(cols))
+        rows = ""
+        for e in entries[:30]:
+            rows += "<tr>" + "".join(f"<td>{e.get(c,'—')}</td>" for c in cols) + "</tr>"
+        return rows
+
+    file_rows  = _log_rows(visible_log, ["ts", "file", "path"])
+    pause_rows = _log_rows(pause_log,   ["ts", "paused_until"])
+
+    now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ghost Monitor — What's Being Monitored?</title>
+<style>
+  body {{ font-family: Arial, sans-serif; max-width: 740px; margin: 40px auto;
+          padding: 0 24px; color: #1e293b; line-height: 1.65; }}
+  h1   {{ color: #0ea5e9; font-size: 22px; margin-bottom: 4px; }}
+  h2   {{ color: #334155; font-size: 15px; margin-top: 28px;
+          border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }}
+  .info  {{ background: #f0f9ff; border: 1px solid #bae6fd;
+             border-radius: 6px; padding: 13px 17px; margin: 14px 0; }}
+  .box   {{ background: #f8fafc; border-left: 4px solid #0ea5e9;
+             padding: 10px 16px; margin: 10px 0; }}
+  .box li {{ margin: 5px 0; }}
+  table  {{ width: 100%; border-collapse: collapse; font-size: 12.5px; }}
+  th     {{ text-align: left; padding: 6px 10px; background: #f1f5f9;
+             color: #64748b; font-size: 10px; text-transform: uppercase;
+             letter-spacing: 1px; }}
+  td     {{ padding: 5px 10px; border-bottom: 1px solid #f1f5f9;
+             word-break: break-all; }}
+  .none  {{ color: #94a3b8; font-style: italic; }}
+  .meta  {{ color: #64748b; font-size: 12px; }}
+  footer {{ color: #94a3b8; font-size: 11px; margin-top: 36px;
+             border-top: 1px solid #f1f5f9; padding-top: 10px; }}
+</style>
+</head>
+<body>
+
+<h1>Ghost Monitor — Transparency Report</h1>
+<p class="meta">Generated: {now_str} &nbsp;·&nbsp; This page is local — no internet connection needed.</p>
+
+<div class="info">
+  <strong>Device: {display_name}</strong> &nbsp;(ID: {device_id})<br>
+  Enrolled: <strong>{enrolled}</strong> &nbsp;·&nbsp; Policy version: {policy_ver}
+</div>
+
+<h2>What Is Being Collected</h2>
+<div class="box">
+  <ul>
+    <li><strong>Running processes</strong> — program names, CPU% and memory usage</li>
+    <li><strong>Network connections</strong> — active connections; external IPs are flagged</li>
+    <li><strong>System metrics</strong> — CPU%, RAM%, disk usage</li>
+    <li><strong>Active window title</strong> — title of the currently focused window</li>
+    <li><strong>File listings</strong> — file names and sizes in Documents, Desktop, Downloads<br>
+        <em>(file contents are not read unless an administrator explicitly requests a download)</em></li>
+  </ul>
+</div>
+<p>Data is collected every 5–10 minutes and sent to your agency's commander PC.
+Only your administrator can view it.</p>
+
+<h2>Files Downloaded by Administrator</h2>
+<table>
+  <tr><th>Time</th><th>Filename</th><th>Full Path</th></tr>
+  {file_rows}
+</table>
+
+<h2>Monitoring Paused by You</h2>
+<table>
+  <tr><th>Paused At</th><th>Paused Until</th></tr>
+  {pause_rows}
+</table>
+
+<h2>Current Agent Status</h2>
+<p class="meta">Last sync: <strong>{ts}</strong></p>
+<p class="meta">CPU: {cpu}% &nbsp;·&nbsp; RAM: {ram}%</p>
+
+<h2>Questions or Concerns?</h2>
+<p>Contact your agency administrator with any questions about what data is collected
+or to request a copy of your monitoring records.</p>
+
+<footer>
+  Ghost Monitor v2 &nbsp;·&nbsp; Local transparency report &nbsp;·&nbsp;
+  Device: {display_name} ({device_id})
+</footer>
+</body>
+</html>"""
+
+    summary_path = LOCAL_DATA / "summary.html"
+    summary_path.parent.mkdir(parents=True, exist_ok=True)
+    summary_path.write_text(html, encoding="utf-8")
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  Main cycle
 # ═══════════════════════════════════════════════════════════════════════════
 
-def run_cycle(device_id: str, display_name: str, commander_url: str, secret: str, prev_snapshot):
+def run_cycle(device_id: str, display_name: str, commander_url: str,
+              token: str, prev_snapshot):
     now      = datetime.datetime.now()
     ts       = now.strftime("%Y-%m-%dT%H-%M-%S")
     date_str = now.strftime("%Y-%m-%d")
     log.info(f"--- Cycle {ts} ---")
 
+    is_paused, paused_until = _check_paused()
+    base = commander_url
+
+    if is_paused:
+        # Section 6: Send lightweight paused checkin — never go fully dark
+        http_post(f"{base}/api/agent/checkin", {
+            "device_id":    device_id,
+            "display_name": display_name,
+            "last_seen":    now.isoformat(),
+            "os":           platform.system(),
+            "hostname":     socket.gethostname(),
+            "paused":       True,
+            "paused_until": paused_until,
+        }, token)
+        log.info(f"Monitoring paused until {paused_until} — sent lightweight checkin")
+
+        # Still sync access log + refresh transparency page while paused
+        access_log = sync_access_log(commander_url, device_id, token)
+        generate_transparency_page(device_id, display_name, {}, access_log)
+        return prev_snapshot   # skip full data collection
+
+    # ── Full data collection cycle ────────────────────────────────────────
     metrics  = collect_metrics()
     try:
         my_ip = socket.gethostbyname(socket.gethostname())
@@ -383,22 +576,19 @@ def run_cycle(device_id: str, display_name: str, commander_url: str, secret: str
     }
     events = detect_events(snapshot, prev_snapshot)
 
-    # ── Always write locally ────────────────────────────────────────────────
+    # ── Always write locally first ────────────────────────────────────────
     write_local(f"snapshots/{date_str}", f"{ts}.json", snapshot)
     if events:
         write_local("events", f"{ts}_events.json", {
             "events": events, "device_id": device_id, "display_name": display_name,
         })
-    # Prune old local snapshots (keep last 2 days)
     snap_root = LOCAL_DATA / "snapshots"
     if snap_root.exists():
         days = sorted(d for d in snap_root.iterdir() if d.is_dir())
         for old in days[:-2]:
             shutil.rmtree(old, ignore_errors=True)
 
-    # ── Push to commander ────────────────────────────────────────────────────
-    base = commander_url
-
+    # ── Push to commander ─────────────────────────────────────────────────
     http_post(f"{base}/api/agent/checkin", {
         "device_id":     device_id,
         "display_name":  display_name,
@@ -408,25 +598,26 @@ def run_cycle(device_id: str, display_name: str, commander_url: str, secret: str
         "ip":            my_ip,
         "metrics":       metrics,
         "active_window": snapshot.get("active_window"),
-    }, secret)
+        "paused":        False,
+    }, token)
 
     http_post(f"{base}/api/agent/snapshot", {
         "device_id": device_id,
         "snapshot":  snapshot,
-    }, secret)
+    }, token)
 
     if events:
         http_post(f"{base}/api/agent/events", {
             "device_id":    device_id,
             "display_name": display_name,
             "events":       events,
-        }, secret)
+        }, token)
         log.info(f"{len(events)} events pushed")
 
     # Push log tail
     try:
         lines = LOG_FILE.read_text(encoding="utf-8", errors="replace").splitlines()[-200:]
-        http_post(f"{base}/api/agent/log", {"device_id": device_id, "lines": lines}, secret)
+        http_post(f"{base}/api/agent/log", {"device_id": device_id, "lines": lines}, token)
     except Exception:
         pass
 
@@ -437,21 +628,34 @@ def run_cycle(device_id: str, display_name: str, commander_url: str, secret: str
             "device_id": device_id,
             "files":     files,
             "ts":        now.isoformat(),
-        }, secret)
+        }, token)
 
     # Poll for pending tasks (file download requests from dashboard)
-    tasks = http_get(f"{base}/api/agent/tasks/{device_id}", secret) or []
+    tasks = http_get(f"{base}/api/agent/tasks/{device_id}", token) or []
     if tasks:
         log.info(f"Handling {len(tasks)} pending task(s)")
-        handle_file_requests(tasks, commander_url, device_id, secret)
+        handle_file_requests(tasks, commander_url, device_id, token)
+
+    # ── Section 4+5: Sync access log and regenerate transparency page ─────
+    access_log = sync_access_log(commander_url, device_id, token)
+    generate_transparency_page(device_id, display_name, snapshot, access_log)
 
     log.info(f"--- Done (CPU {metrics['cpu_percent']}%  RAM {metrics['ram_percent']}%) ---")
     return snapshot
 
 
 def main():
-    device_id, display_name, commander_url, secret = get_or_create_identity()
-    log.info(f"Ghost Monitor: {display_name} ({device_id})")
+    # Section 2: Hard consent gate — exits if no local consent record
+    if not _consent_acknowledged():
+        log.error(
+            "No local consent record found. "
+            "Ghost Monitor will not start without explicit consent. "
+            "Run the enrollment script to set up this device properly."
+        )
+        sys.exit(1)
+
+    device_id, display_name, commander_url, token = get_identity()
+    log.info(f"Ghost Monitor v2: {display_name} ({device_id})")
     log.info(f"Commander: {commander_url}")
 
     LOCAL_DATA.mkdir(parents=True, exist_ok=True)
@@ -460,7 +664,8 @@ def main():
 
     while True:
         try:
-            prev_snapshot = run_cycle(device_id, display_name, commander_url, secret, prev_snapshot)
+            prev_snapshot = run_cycle(device_id, display_name, commander_url,
+                                      token, prev_snapshot)
         except Exception as e:
             log.error(f"Cycle error: {e}", exc_info=True)
         log.info(f"Sleeping {interval}s …")
