@@ -1,4 +1,12 @@
 @echo off
-echo Starting Ghost Monitor Agent...
-start "" "C:\Users\Hp\AppData\Local\Python\pythoncore-3.14-64\pythonw.exe" "C:\Users\Hp\Desktop\ghost-sync\agent\monitor_agent.py"
-echo Monitor agent launched in background.
+echo Starting Ghost Monitor...
+
+set PYTHON=pythonw.exe
+set AGENT=%~dp0monitor_agent.py
+set TRAY=%~dp0tray_icon.py
+
+start "" "%PYTHON%" "%AGENT%"
+start "" "%PYTHON%" "%TRAY%"
+
+echo Ghost Monitor agent and tray indicator launched.
+echo Check your system tray for the Ghost Monitor icon.
