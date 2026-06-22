@@ -708,7 +708,7 @@ def _make_windows_script(device_name: str, device_id: str,
     return f"""@echo off
 setlocal EnableDelayedExpansion
 :: ================================================================
-::  Ghost Monitor v2 — Device Setup
+::  Ghost Monitor v2 -- Device Setup
 ::  Device:    {device_name}
 ::  Commander: {commander_url}
 ::  Generated: {generated}
@@ -719,7 +719,7 @@ set COMMANDER_URL={commander_url}
 set DEVICE_TOKEN={token}
 set INSTALL_DIR=%USERPROFILE%\\GhostMonitor
 
-:: ── Step 1: Consent Disclosure ───────────────────────────────────
+:: -- Step 1: Consent Disclosure ------------------------------------
 echo.
 echo ================================================================
 echo  GHOST MONITOR ^| MONITORING DISCLOSURE
@@ -753,7 +753,7 @@ if /i not "%%CONSENT%%"=="Y" (
 )
 echo.
 
-:: ── Step 2: Check Python ─────────────────────────────────────────
+:: -- Step 2: Check Python -----------------------------------------
 python --version >nul 2>&1
 if %%errorlevel%% neq 0 (
     echo ERROR: Python not found.
@@ -761,7 +761,7 @@ if %%errorlevel%% neq 0 (
     pause & exit /b 1
 )
 
-:: ── Step 3: Record consent with commander ────────────────────────
+:: -- Step 3: Record consent with commander ------------------------
 echo [1/6] Recording consent...
 set GM_DID=%DEVICE_ID%
 set GM_URL=%COMMANDER_URL%
@@ -780,14 +780,14 @@ except Exception as e:
 if %%errorlevel%% neq 0 (
     echo ERROR: Could not reach commander to record consent.
     echo Make sure the commander PC is running and network-reachable.
-    echo Setup cancelled — no files were written.
+    echo Setup cancelled -- no files were written.
     pause & exit /b 1
 )
 
-:: ── Step 4: Create install directory ─────────────────────────────
+:: -- Step 4: Create install directory ----------------------------
 if not exist "%INSTALL_DIR%" mkdir "%INSTALL_DIR%"
 
-:: ── Step 5: Download agent and tray indicator ────────────────────
+:: -- Step 5: Download agent and tray indicator -------------------
 echo [2/6] Downloading monitoring agent...
 powershell -Command "try {{ Invoke-WebRequest '%COMMANDER_URL%/agent/monitor_agent.py' -OutFile '%INSTALL_DIR%\\monitor_agent.py' -UseBasicParsing }} catch {{ Write-Host $_.Exception.Message; exit 1 }}"
 if %%errorlevel%% neq 0 (
@@ -802,11 +802,11 @@ if %%errorlevel%% neq 0 (
     pause & exit /b 1
 )
 
-:: ── Step 6: Install dependencies ─────────────────────────────────
+:: -- Step 6: Install dependencies --------------------------------
 echo [3/6] Installing dependencies (psutil pystray Pillow)...
 python -m pip install psutil pystray plyer Pillow --quiet
 
-:: ── Step 7: Write device config + consent record ─────────────────
+:: -- Step 7: Write device config + consent record ----------------
 echo [4/6] Writing configuration...
 set GM_NAME=%DEVICE_NAME%
 set GM_TOKEN=%DEVICE_TOKEN%
@@ -828,7 +828,7 @@ if %%errorlevel%% neq 0 (
     pause & exit /b 1
 )
 
-:: ── Step 8: Register two startup tasks ───────────────────────────
+:: -- Step 8: Register two startup tasks --------------------------
 echo [5/6] Creating startup tasks...
 set PYWIN=pythonw
 pythonw --version >nul 2>&1
@@ -847,7 +847,7 @@ if %%errorlevel%% neq 0 (
     echo Tray indicator startup task created.
 )
 
-:: ── Step 9: Start both processes now ─────────────────────────────
+:: -- Step 9: Start both processes now ----------------------------
 echo [6/6] Starting monitoring now...
 start "" /min %%PYWIN%% "%INSTALL_DIR%\\monitor_agent.py"
 start "" pythonw "%INSTALL_DIR%\\tray_icon.py"
@@ -870,7 +870,7 @@ def _make_linux_script(device_name: str, device_id: str,
     generated = datetime.now().strftime('%Y-%m-%d %H:%M')
     return f"""#!/bin/bash
 # ================================================================
-#  Ghost Monitor v2 — Device Setup
+#  Ghost Monitor v2 -- Device Setup
 #  Device:    {device_name}
 #  Commander: {commander_url}
 #  Generated: {generated}
@@ -1069,14 +1069,15 @@ if __name__ == "__main__":
 
     lan_ip = _get_lan_ip()
 
-    print("\n" + "═" * 58)
-    print("  Ghost Monitor v2 — Agency Security Dashboard")
+    sep = "=" * 58
+    print(f"\n{sep}")
+    print("  Ghost Monitor v2 -- Agency Security Dashboard")
     print(f"  Dashboard:     http://localhost:{PORT}")
     print(f"  Network:       http://{lan_ip}:{PORT}")
     print(f"  Auth:          per-device tokens  (tokens.json)")
     print(f"  Enrollment:    http://{lan_ip}:{PORT}/enroll/<name>.bat")
     print("  Press Ctrl+C to stop")
-    print("═" * 58 + "\n")
+    print(f"{sep}\n")
 
     threading.Timer(1.5, lambda: webbrowser.open(f"http://localhost:{PORT}")).start()
     app.run(host="0.0.0.0", port=PORT, debug=False, use_reloader=False)
