@@ -1,0 +1,14 @@
+[
+  {
+    "file": "requirements.txt",
+    "path": "C:/Users/Hp/Desktop/ghost-sync/agent/requirements.txt",
+    "ts": "2026-06-22T20:50:12.430414+00:00",
+    "type": "file_access"
+  },
+  {
+    "_dedup": "paused_2026-06-22T21:52:35.794016+00:00",
+    "paused_until": "2026-06-22T21:52:35.794016+00:00",
+    "ts": "2026-06-22T20:52:37.959525+00:00",
+    "type": "monitoring_paused"
+  }
+]

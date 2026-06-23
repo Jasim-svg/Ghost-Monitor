@@ -1,0 +1,4652 @@
+{
+  "device_id": "dev_5f2e19af",
+  "display_name": "test-device",
+  "timestamp": "2026-06-23T02:05:23.766258",
+  "os": "Windows",
+  "hostname": "DESKTOP-DDPKQIC",
+  "ip": "172.25.16.1",
+  "metrics": {
+    "cpu_percent": 17.7,
+    "ram_percent": 82.7,
+    "ram_used_gb": 6.5,
+    "ram_total_gb": 7.9,
+    "disk": {
+      "percent": 89.8,
+      "used_gb": 108.4,
+      "total_gb": 120.6
+    },
+    "boot_time": "2026-06-20T01:10:27.242391"
+  },
+  "processes": [
+    {
+      "status": "running",
+      "pid": 0,
+      "cpu_percent": 0.0,
+      "name": "System Idle Process",
+      "memory_percent": 9.678902412466426e-05,
+      "username": "NT AUTHORITY\\SYSTEM",
+      "create_time": 0.0
+    },
+    {
+      "status": "running",
+      "pid": 4,
+      "cpu_percent": 0.0,
+      "name": "System",
+      "memory_percent": 0.0016454134101192923,
+      "username": "NT AUTHORITY\\SYSTEM",
+      "create_time": 0.0
+    },
+    {
+      "status": "running",
+      "pid": 32,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 4.121760592348828,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T02:13:05.951401"
+    },
+    {
+      "status": "stopped",
+      "pid": 56,
+      "cpu_percent": 0.0,
+      "name": "",
+      "memory_percent": 0.26070123647978316,
+      "username": null,
+      "create_time": "2026-06-20T01:10:27.522607"
+    },
+    {
+      "status": "running",
+      "pid": 108,
+      "cpu_percent": 0.0,
+      "name": "Registry",
+      "memory_percent": 0.5259031625813633,
+      "username": null,
+      "create_time": "2026-06-20T01:10:27.578690"
+    },
+    {
+      "status": "running",
+      "pid": 260,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.16788056234423018,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:21.884564"
+    },
+    {
+      "status": "running",
+      "pid": 432,
+      "cpu_percent": 0.0,
+      "name": "smss.exe",
+      "memory_percent": 0.007839910954097805,
+      "username": null,
+      "create_time": "2026-06-20T01:10:29.843571"
+    },
+    {
+      "status": "running",
+      "pid": 456,
+      "cpu_percent": 0.0,
+      "name": "conhost.exe",
+      "memory_percent": 0.046652309628088175,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:05.677343"
+    },
+    {
+      "status": "running",
+      "pid": 476,
+      "cpu_percent": 0.0,
+      "name": "WUDFHost.exe",
+      "memory_percent": 0.1046773295908244,
+      "username": null,
+      "create_time": "2026-06-20T01:10:35.524690"
+    },
+    {
+      "status": "running",
+      "pid": 600,
+      "cpu_percent": 0.0,
+      "name": "csrss.exe",
+      "memory_percent": 0.04582960292302853,
+      "username": null,
+      "create_time": "2026-06-20T01:10:34.567768"
+    },
+    {
+      "status": "running",
+      "pid": 684,
+      "cpu_percent": 0.0,
+      "name": "wininit.exe",
+      "memory_percent": 0.04220001451835362,
+      "username": null,
+      "create_time": "2026-06-20T01:10:34.875842"
+    },
+    {
+      "status": "running",
+      "pid": 800,
+      "cpu_percent": 0.0,
+      "name": "services.exe",
+      "memory_percent": 0.15055532702591526,
+      "username": null,
+      "create_time": "2026-06-20T01:10:35.000797"
+    },
+    {
+      "status": "running",
+      "pid": 836,
+      "cpu_percent": 0.0,
+      "name": "LsaIso.exe",
+      "memory_percent": 0.035763544414063445,
+      "username": null,
+      "create_time": "2026-06-20T01:10:35.049987"
+    },
+    {
+      "status": "running",
+      "pid": 852,
+      "cpu_percent": 0.0,
+      "name": "lsass.exe",
+      "memory_percent": 0.2626370169622765,
+      "username": null,
+      "create_time": "2026-06-20T01:10:35.053777"
+    },
+    {
+      "status": "running",
+      "pid": 936,
+      "cpu_percent": 0.0,
+      "name": "msedgewebview2.exe",
+      "memory_percent": 0.0,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:15:10.031129"
+    },
+    {
+      "status": "running",
+      "pid": 952,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 2.0121954170397074,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:32:58.948182"
+    },
+    {
+      "status": "running",
+      "pid": 964,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.32564667166743294,
+      "username": null,
+      "create_time": "2026-06-20T01:10:35.471556"
+    },
+    {
+      "status": "running",
+      "pid": 980,
+      "cpu_percent": 0.0,
+      "name": "fontdrvhost.exe",
+      "memory_percent": 0.04224840903041595,
+      "username": null,
+      "create_time": "2026-06-20T01:10:35.477692"
+    },
+    {
+      "status": "running",
+      "pid": 1076,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.227889757301522,
+      "username": null,
+      "create_time": "2026-06-20T01:10:35.723285"
+    },
+    {
+      "status": "running",
+      "pid": 1148,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.08014131197522201,
+      "username": null,
+      "create_time": "2026-06-20T01:10:35.778700"
+    },
+    {
+      "status": "running",
+      "pid": 1292,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.0636871778740291,
+      "username": null,
+      "create_time": "2026-06-20T01:10:35.954201"
+    },
+    {
+      "status": "running",
+      "pid": 1300,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.03677982916737242,
+      "username": null,
+      "create_time": "2026-06-20T01:10:35.959002"
+    },
+    {
+      "status": "running",
+      "pid": 1376,
+      "cpu_percent": 0.0,
+      "name": "postgres.exe",
+      "memory_percent": 0.04442616207322089,
+      "username": null,
+      "create_time": "2026-06-20T01:10:44.433838"
+    },
+    {
+      "status": "running",
+      "pid": 1396,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.09020737048418709,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.019410"
+    },
+    {
+      "status": "running",
+      "pid": 1404,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.08139956928884264,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.020898"
+    },
+    {
+      "status": "running",
+      "pid": 1416,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.11464659907566481,
+      "username": null,
+      "create_time": "2026-06-20T01:10:37.584611"
+    },
+    {
+      "status": "running",
+      "pid": 1524,
+      "cpu_percent": 0.0,
+      "name": "explorer.exe",
+      "memory_percent": 1.595373484646841,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:23.038438"
+    },
+    {
+      "status": "running",
+      "pid": 1568,
+      "cpu_percent": 0.0,
+      "name": "IntelCpHDCPSvc.exe",
+      "memory_percent": 0.04103854622885765,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.093720"
+    },
+    {
+      "status": "running",
+      "pid": 1612,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.14779683983836234,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.120727"
+    },
+    {
+      "status": "running",
+      "pid": 1620,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.06068671812616449,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.124615"
+    },
+    {
+      "status": "running",
+      "pid": 1700,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.16512207515667723,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.163154"
+    },
+    {
+      "status": "running",
+      "pid": 1712,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.08817480097756915,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.165763"
+    },
+    {
+      "status": "running",
+      "pid": 1840,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.044184189512909235,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.210532"
+    },
+    {
+      "status": "running",
+      "pid": 1868,
+      "cpu_percent": 0.0,
+      "name": "wslhost.exe",
+      "memory_percent": 0.05579887240786895,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:34.763232"
+    },
+    {
+      "status": "running",
+      "pid": 1912,
+      "cpu_percent": 0.0,
+      "name": "IntelCpHeciSvc.exe",
+      "memory_percent": 0.04645873157983885,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.238168"
+    },
+    {
+      "status": "running",
+      "pid": 1928,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.09180438938224406,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.242704"
+    },
+    {
+      "status": "running",
+      "pid": 2008,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.12398673990369492,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.282195"
+    },
+    {
+      "status": "running",
+      "pid": 2084,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.07554383332930047,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.395591"
+    },
+    {
+      "status": "running",
+      "pid": 2096,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.07897984368572604,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.409347"
+    },
+    {
+      "status": "running",
+      "pid": 2172,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.08415805647639557,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.452693"
+    },
+    {
+      "status": "running",
+      "pid": 2184,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.11072664359861592,
+      "username": null,
+      "create_time": "2026-06-20T01:40:22.589661"
+    },
+    {
+      "status": "running",
+      "pid": 2188,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.2256152152345924,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.477366"
+    },
+    {
+      "status": "running",
+      "pid": 2224,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.066881215670143,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.498585"
+    },
+    {
+      "status": "running",
+      "pid": 2236,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.07031722602656859,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.505672"
+    },
+    {
+      "status": "running",
+      "pid": 2264,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.2457957267645849,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.528299"
+    },
+    {
+      "status": "running",
+      "pid": 2412,
+      "cpu_percent": 0.0,
+      "name": "MemCompression",
+      "memory_percent": 3.344012388995088,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.592861"
+    },
+    {
+      "status": "running",
+      "pid": 2468,
+      "cpu_percent": 0.0,
+      "name": "SecurityHealthService.exe",
+      "memory_percent": 0.18055992450456118,
+      "username": null,
+      "create_time": "2026-06-20T01:11:15.329326"
+    },
+    {
+      "status": "running",
+      "pid": 2480,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.09161081133399472,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.641076"
+    },
+    {
+      "status": "running",
+      "pid": 2512,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.15282986909284488,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.661612"
+    },
+    {
+      "status": "running",
+      "pid": 2580,
+      "cpu_percent": 0.0,
+      "name": "igfxCUIService.exe",
+      "memory_percent": 0.09940232777603021,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.740002"
+    },
+    {
+      "status": "running",
+      "pid": 2632,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.09146562779780773,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.802675"
+    },
+    {
+      "status": "running",
+      "pid": 2640,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.07104314370750356,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.811826"
+    },
+    {
+      "status": "running",
+      "pid": 2652,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.22842209693420767,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.820505"
+    },
+    {
+      "status": "running",
+      "pid": 2688,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.1414571587581968,
+      "username": null,
+      "create_time": "2026-06-20T01:10:36.854369"
+    },
+    {
+      "status": "running",
+      "pid": 2720,
+      "cpu_percent": 0.0,
+      "name": "RuntimeBroker.exe",
+      "memory_percent": 0.17189730684540372,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:36.545462"
+    },
+    {
+      "status": "running",
+      "pid": 2736,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.0778667699082924,
+      "username": null,
+      "create_time": "2026-06-20T01:10:37.604725"
+    },
+    {
+      "status": "running",
+      "pid": 2748,
+      "cpu_percent": 0.0,
+      "name": "StartMenuExperienceHost.exe",
+      "memory_percent": 0.4593607084956566,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:29.433616"
+    },
+    {
+      "status": "running",
+      "pid": 2852,
+      "cpu_percent": 0.0,
+      "name": "cowork-svc.exe",
+      "memory_percent": 0.13424637646090934,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.331386"
+    },
+    {
+      "status": "running",
+      "pid": 2888,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.12868100757374112,
+      "username": null,
+      "create_time": "2026-06-20T01:10:37.116741"
+    },
+    {
+      "status": "running",
+      "pid": 3008,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.09383695888886201,
+      "username": null,
+      "create_time": "2026-06-20T01:10:37.454603"
+    },
+    {
+      "status": "running",
+      "pid": 3020,
+      "cpu_percent": 0.0,
+      "name": "msedgewebview2.exe",
+      "memory_percent": 0.08648099305538752,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:19:30.954063"
+    },
+    {
+      "status": "running",
+      "pid": 3036,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.1428122050959421,
+      "username": null,
+      "create_time": "2026-06-20T01:10:37.492427"
+    },
+    {
+      "status": "running",
+      "pid": 3096,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.22900283107895564,
+      "username": null,
+      "create_time": "2026-06-20T01:10:37.771076"
+    },
+    {
+      "status": "running",
+      "pid": 3104,
+      "cpu_percent": 0.0,
+      "name": "msedgewebview2.exe",
+      "memory_percent": 0.08517434122970455,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:15:10.000584"
+    },
+    {
+      "status": "running",
+      "pid": 3132,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.09359498632855034,
+      "username": null,
+      "create_time": "2026-06-20T01:10:37.873470"
+    },
+    {
+      "status": "running",
+      "pid": 3176,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.1600890459021947,
+      "username": null,
+      "create_time": "2026-06-20T01:10:38.068182"
+    },
+    {
+      "status": "running",
+      "pid": 3192,
+      "cpu_percent": 0.0,
+      "name": "CxUtilSvc.exe",
+      "memory_percent": 0.0855614973262032,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.343479"
+    },
+    {
+      "status": "running",
+      "pid": 3240,
+      "cpu_percent": 0.0,
+      "name": "HotKeyServiceUWP.exe",
+      "memory_percent": 0.16115372516756601,
+      "username": null,
+      "create_time": "2026-06-20T01:10:38.223962"
+    },
+    {
+      "status": "stopped",
+      "pid": 3308,
+      "cpu_percent": 0.0,
+      "name": "ShellExperienceHost.exe",
+      "memory_percent": 0.3076923076923077,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T02:17:43.264933"
+    },
+    {
+      "status": "running",
+      "pid": 3356,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.08894911317056646,
+      "username": null,
+      "create_time": "2026-06-20T01:10:38.360018"
+    },
+    {
+      "status": "running",
+      "pid": 3400,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.07946378880634936,
+      "username": null,
+      "create_time": "2026-06-20T01:10:38.387157"
+    },
+    {
+      "status": "running",
+      "pid": 3408,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.12519660270525323,
+      "username": null,
+      "create_time": "2026-06-20T01:10:38.387171"
+    },
+    {
+      "status": "running",
+      "pid": 3484,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.5198538485735718,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T02:13:23.679128"
+    },
+    {
+      "status": "running",
+      "pid": 3548,
+      "cpu_percent": 0.0,
+      "name": "POWERPNT.EXE",
+      "memory_percent": 0.22837370242214536,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T18:35:04.335385"
+    },
+    {
+      "status": "running",
+      "pid": 3596,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.20954823722989813,
+      "username": null,
+      "create_time": "2026-06-20T01:10:38.556481"
+    },
+    {
+      "status": "running",
+      "pid": 3664,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.17325235318314902,
+      "username": null,
+      "create_time": "2026-06-20T01:10:38.796564"
+    },
+    {
+      "status": "running",
+      "pid": 3716,
+      "cpu_percent": 0.0,
+      "name": "fontdrvhost.exe",
+      "memory_percent": 0.0659617199409587,
+      "username": null,
+      "create_time": "2026-06-20T03:36:18.489210"
+    },
+    {
+      "status": "running",
+      "pid": 3736,
+      "cpu_percent": 0.0,
+      "name": "wlanext.exe",
+      "memory_percent": 0.06271928763278244,
+      "username": null,
+      "create_time": "2026-06-20T01:10:38.849495"
+    },
+    {
+      "status": "running",
+      "pid": 3748,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.3840104532146055,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.398318"
+    },
+    {
+      "status": "running",
+      "pid": 3780,
+      "cpu_percent": 0.0,
+      "name": "spoolsv.exe",
+      "memory_percent": 0.1324073850025407,
+      "username": null,
+      "create_time": "2026-06-20T01:10:38.892325"
+    },
+    {
+      "status": "running",
+      "pid": 3788,
+      "cpu_percent": 0.0,
+      "name": "conhost.exe",
+      "memory_percent": 0.06165460836741113,
+      "username": null,
+      "create_time": "2026-06-20T01:10:38.892813"
+    },
+    {
+      "status": "running",
+      "pid": 3792,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.4865584242746872,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.400084"
+    },
+    {
+      "status": "running",
+      "pid": 3872,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.1453771142352457,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.023273"
+    },
+    {
+      "status": "running",
+      "pid": 3924,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.09064292109274809,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.106969"
+    },
+    {
+      "status": "running",
+      "pid": 4036,
+      "cpu_percent": 0.0,
+      "name": "AnyDesk.exe",
+      "memory_percent": 0.09785370339003556,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.257371"
+    },
+    {
+      "status": "running",
+      "pid": 4056,
+      "cpu_percent": 0.0,
+      "name": "OfficeClickToRun.exe",
+      "memory_percent": 0.25416797735136837,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.282037"
+    },
+    {
+      "status": "running",
+      "pid": 4068,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.17238125196602705,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.303861"
+    },
+    {
+      "status": "running",
+      "pid": 4084,
+      "cpu_percent": 0.0,
+      "name": "CxMonSvc.exe",
+      "memory_percent": 0.23606842984005613,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.314392"
+    },
+    {
+      "status": "running",
+      "pid": 4112,
+      "cpu_percent": 0.0,
+      "name": "conhost.exe",
+      "memory_percent": 0.046361942555714186,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:05.952548"
+    },
+    {
+      "status": "running",
+      "pid": 4140,
+      "cpu_percent": 0.0,
+      "name": "fpCSEvtSvc.exe",
+      "memory_percent": 0.06673603213395601,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.455910"
+    },
+    {
+      "status": "running",
+      "pid": 4176,
+      "cpu_percent": 0.0,
+      "name": "MicTray64.exe",
+      "memory_percent": 0.028068816996152636,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:22.062894"
+    },
+    {
+      "status": "running",
+      "pid": 4188,
+      "cpu_percent": 0.0,
+      "name": "ibtsiva.exe",
+      "memory_percent": 0.05405666997362499,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.516025"
+    },
+    {
+      "status": "running",
+      "pid": 4212,
+      "cpu_percent": 0.0,
+      "name": "OneApp.IGCC.WinService.exe",
+      "memory_percent": 0.14944225324848162,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.522031"
+    },
+    {
+      "status": "running",
+      "pid": 4240,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.09199796743049339,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.533976"
+    },
+    {
+      "status": "running",
+      "pid": 4280,
+      "cpu_percent": 0.0,
+      "name": "wslhost.exe",
+      "memory_percent": 0.06828465651995064,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:20.233844"
+    },
+    {
+      "status": "running",
+      "pid": 4332,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.12171219783676532,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.601810"
+    },
+    {
+      "status": "running",
+      "pid": 4348,
+      "cpu_percent": 0.0,
+      "name": "jhi_service.exe",
+      "memory_percent": 0.067316766278704,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.606639"
+    },
+    {
+      "status": "running",
+      "pid": 4472,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.12364797831925861,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.697313"
+    },
+    {
+      "status": "running",
+      "pid": 4488,
+      "cpu_percent": 0.0,
+      "name": "OneDrive.Sync.Service.exe",
+      "memory_percent": 0.08483557964526824,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-21T15:14:01.067466"
+    },
+    {
+      "status": "running",
+      "pid": 4496,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.10041861252933917,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.720418"
+    },
+    {
+      "status": "running",
+      "pid": 4524,
+      "cpu_percent": 0.0,
+      "name": "msedgewebview2.exe",
+      "memory_percent": 0.29544849614053764,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:15:13.488526"
+    },
+    {
+      "status": "running",
+      "pid": 4556,
+      "cpu_percent": 0.0,
+      "name": "dllhost.exe",
+      "memory_percent": 0.06291286568103177,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:36:52.538955"
+    },
+    {
+      "status": "running",
+      "pid": 4568,
+      "cpu_percent": 0.0,
+      "name": "LMS.exe",
+      "memory_percent": 0.1962397464127568,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.757594"
+    },
+    {
+      "status": "running",
+      "pid": 4588,
+      "cpu_percent": 0.0,
+      "name": "MpDefenderCoreService.exe",
+      "memory_percent": 0.2214048926851695,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.778010"
+    },
+    {
+      "status": "running",
+      "pid": 4608,
+      "cpu_percent": 0.0,
+      "name": "pg_ctl.exe",
+      "memory_percent": 0.05991240593316718,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.789361"
+    },
+    {
+      "status": "running",
+      "pid": 4636,
+      "cpu_percent": 0.0,
+      "name": "SynTPEnhService.exe",
+      "memory_percent": 0.05357272485300167,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.804710"
+    },
+    {
+      "status": "running",
+      "pid": 4668,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 1.913180245360176,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:54.866258"
+    },
+    {
+      "status": "running",
+      "pid": 4708,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.10133810825852349,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.874340"
+    },
+    {
+      "status": "running",
+      "pid": 4784,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.07317250223824617,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.935348"
+    },
+    {
+      "status": "running",
+      "pid": 4796,
+      "cpu_percent": 0.0,
+      "name": "valWBFPolicyService.exe",
+      "memory_percent": 0.0787862656374767,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.943613"
+    },
+    {
+      "status": "running",
+      "pid": 4804,
+      "cpu_percent": 0.0,
+      "name": "vmware-authd.exe",
+      "memory_percent": 0.09785370339003556,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.943860"
+    },
+    {
+      "status": "running",
+      "pid": 4836,
+      "cpu_percent": 0.0,
+      "name": "vmnetdhcp.exe",
+      "memory_percent": 0.06078350715028916,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.957668"
+    },
+    {
+      "status": "running",
+      "pid": 4848,
+      "cpu_percent": 0.0,
+      "name": "vmnat.exe",
+      "memory_percent": 0.07331768577443318,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.960656"
+    },
+    {
+      "status": "running",
+      "pid": 4856,
+      "cpu_percent": 0.0,
+      "name": "vmware-usbarbitrator64.exe",
+      "memory_percent": 0.12519660270525323,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.961829"
+    },
+    {
+      "status": "running",
+      "pid": 4864,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.06630048152539501,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.964329"
+    },
+    {
+      "status": "running",
+      "pid": 4900,
+      "cpu_percent": 0.0,
+      "name": "MsMpEng.exe",
+      "memory_percent": 2.593607084956566,
+      "username": null,
+      "create_time": "2026-06-20T01:10:39.998427"
+    },
+    {
+      "status": "running",
+      "pid": 4908,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.2063541994337842,
+      "username": null,
+      "create_time": "2026-06-20T01:10:40.005180"
+    },
+    {
+      "status": "running",
+      "pid": 4952,
+      "cpu_percent": 0.0,
+      "name": "wslservice.exe",
+      "memory_percent": 0.12553536428968956,
+      "username": null,
+      "create_time": "2026-06-20T01:10:40.057369"
+    },
+    {
+      "status": "running",
+      "pid": 4968,
+      "cpu_percent": 0.0,
+      "name": "XtuService.exe",
+      "memory_percent": 0.32753405763786386,
+      "username": null,
+      "create_time": "2026-06-20T01:10:40.062352"
+    },
+    {
+      "status": "running",
+      "pid": 5016,
+      "cpu_percent": 0.0,
+      "name": "TextInputHost.exe",
+      "memory_percent": 0.1982239214073124,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:54.742702"
+    },
+    {
+      "status": "running",
+      "pid": 5044,
+      "cpu_percent": 0.0,
+      "name": "postgres.exe",
+      "memory_percent": 0.04524886877828054,
+      "username": null,
+      "create_time": "2026-06-20T01:10:44.431396"
+    },
+    {
+      "status": "running",
+      "pid": 5096,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.06838144554407531,
+      "username": null,
+      "create_time": "2026-06-20T01:10:40.211302"
+    },
+    {
+      "status": "running",
+      "pid": 5344,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.108258523483437,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:53.057328"
+    },
+    {
+      "status": "running",
+      "pid": 5416,
+      "cpu_percent": 0.0,
+      "name": "LanWlanWwanSwitchingServiceUWP.exe",
+      "memory_percent": 0.09557916132310595,
+      "username": null,
+      "create_time": "2026-06-20T01:10:40.699093"
+    },
+    {
+      "status": "running",
+      "pid": 5476,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.6549229317395407,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:52.948342"
+    },
+    {
+      "status": "running",
+      "pid": 5492,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.1492486752002323,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T02:13:33.262268"
+    },
+    {
+      "status": "running",
+      "pid": 5512,
+      "cpu_percent": 0.0,
+      "name": "com.docker.backend.exe",
+      "memory_percent": 0.3750090739710117,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:36:46.348708"
+    },
+    {
+      "status": "running",
+      "pid": 5636,
+      "cpu_percent": 0.0,
+      "name": "wslhost.exe",
+      "memory_percent": 0.0495559803518281,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:05.905552"
+    },
+    {
+      "status": "running",
+      "pid": 5680,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 2.8721658963873495,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:52.209347"
+    },
+    {
+      "status": "running",
+      "pid": 5692,
+      "cpu_percent": 0.0,
+      "name": "HPHotkeyNotification.exe",
+      "memory_percent": 0.09296585767174002,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:21.231188"
+    },
+    {
+      "status": "running",
+      "pid": 5700,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.07264016260556053,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:52.324575"
+    },
+    {
+      "status": "running",
+      "pid": 5804,
+      "cpu_percent": 0.0,
+      "name": "wslhost.exe",
+      "memory_percent": 0.04950758583976577,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:05.913622"
+    },
+    {
+      "status": "running",
+      "pid": 5864,
+      "cpu_percent": 0.0,
+      "name": "dllhost.exe",
+      "memory_percent": 0.09901517167953154,
+      "username": null,
+      "create_time": "2026-06-20T01:10:44.072680"
+    },
+    {
+      "status": "stopped",
+      "pid": 5884,
+      "cpu_percent": 0.0,
+      "name": "SystemSettings.exe",
+      "memory_percent": 0.024874779200038714,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:16:48.787002"
+    },
+    {
+      "status": "running",
+      "pid": 5936,
+      "cpu_percent": 0.0,
+      "name": "wsl.exe",
+      "memory_percent": 0.05492777119074697,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:03.200887"
+    },
+    {
+      "status": "running",
+      "pid": 5964,
+      "cpu_percent": 0.0,
+      "name": "unsecapp.exe",
+      "memory_percent": 0.04607157548334019,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:22.900518"
+    },
+    {
+      "status": "running",
+      "pid": 6000,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.08769085585694582,
+      "username": null,
+      "create_time": "2026-06-20T01:10:41.092517"
+    },
+    {
+      "status": "running",
+      "pid": 6056,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.06726837176664166,
+      "username": null,
+      "create_time": "2026-06-20T01:10:41.136362"
+    },
+    {
+      "status": "running",
+      "pid": 6104,
+      "cpu_percent": 0.0,
+      "name": "csrss.exe",
+      "memory_percent": 0.04694267670046216,
+      "username": null,
+      "create_time": "2026-06-20T03:36:18.367066"
+    },
+    {
+      "status": "running",
+      "pid": 6112,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.04592639194715319,
+      "username": null,
+      "create_time": "2026-06-20T01:10:41.174995"
+    },
+    {
+      "status": "running",
+      "pid": 6120,
+      "cpu_percent": 0.0,
+      "name": "SearchIndexer.exe",
+      "memory_percent": 0.38643017881772207,
+      "username": null,
+      "create_time": "2026-06-20T01:10:41.187847"
+    },
+    {
+      "status": "running",
+      "pid": 6296,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.362668473395117,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:21.937865"
+    },
+    {
+      "status": "running",
+      "pid": 6412,
+      "cpu_percent": 0.0,
+      "name": "NisSrv.exe",
+      "memory_percent": 0.18094708060105985,
+      "username": null,
+      "create_time": "2026-06-20T01:11:06.081488"
+    },
+    {
+      "status": "running",
+      "pid": 6536,
+      "cpu_percent": 0.0,
+      "name": "Code.exe",
+      "memory_percent": 0.6177075519636074,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T01:13:53.586956"
+    },
+    {
+      "status": "running",
+      "pid": 6572,
+      "cpu_percent": 0.0,
+      "name": "ApplicationFrameHost.exe",
+      "memory_percent": 0.12901976915817745,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:16:48.790697"
+    },
+    {
+      "status": "running",
+      "pid": 6580,
+      "cpu_percent": 0.0,
+      "name": "postgres.exe",
+      "memory_percent": 0.03682822367943475,
+      "username": null,
+      "create_time": "2026-06-20T01:10:44.326195"
+    },
+    {
+      "status": "running",
+      "pid": 6596,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.13139110024923173,
+      "username": null,
+      "create_time": "2026-06-20T01:10:42.098200"
+    },
+    {
+      "status": "running",
+      "pid": 6640,
+      "cpu_percent": 0.0,
+      "name": "igfxEM.exe",
+      "memory_percent": 0.06847823456819996,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:21.956044"
+    },
+    {
+      "status": "running",
+      "pid": 6780,
+      "cpu_percent": 0.0,
+      "name": "postgres.exe",
+      "memory_percent": 0.050088319984513754,
+      "username": null,
+      "create_time": "2026-06-20T01:10:42.606306"
+    },
+    {
+      "status": "running",
+      "pid": 6812,
+      "cpu_percent": 0.0,
+      "name": "conhost.exe",
+      "memory_percent": 0.045877997435090856,
+      "username": null,
+      "create_time": "2026-06-20T01:10:42.666583"
+    },
+    {
+      "status": "stopped",
+      "pid": 6816,
+      "cpu_percent": 0.0,
+      "name": "msedgewebview2.exe",
+      "memory_percent": 0.3805260483461176,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:19:30.910363"
+    },
+    {
+      "status": "running",
+      "pid": 6844,
+      "cpu_percent": 0.0,
+      "name": "vmmem",
+      "memory_percent": 6.4818157620925785,
+      "username": null,
+      "create_time": "2026-06-22T17:36:52.170146"
+    },
+    {
+      "status": "running",
+      "pid": 6868,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.1563142739613328,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T04:19:50.607878"
+    },
+    {
+      "status": "running",
+      "pid": 6988,
+      "cpu_percent": 0.0,
+      "name": "RuntimeBroker.exe",
+      "memory_percent": 0.07312410772618386,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:41.811041"
+    },
+    {
+      "status": "running",
+      "pid": 7000,
+      "cpu_percent": 0.0,
+      "name": "postgres.exe",
+      "memory_percent": 0.02105161274711448,
+      "username": null,
+      "create_time": "2026-06-20T01:10:44.424565"
+    },
+    {
+      "status": "running",
+      "pid": 7036,
+      "cpu_percent": 0.0,
+      "name": "sihost.exe",
+      "memory_percent": 0.32375928569700196,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:21.853080"
+    },
+    {
+      "status": "running",
+      "pid": 7060,
+      "cpu_percent": 0.0,
+      "name": "postgres.exe",
+      "memory_percent": 0.037989691968930726,
+      "username": null,
+      "create_time": "2026-06-20T01:10:44.429243"
+    },
+    {
+      "status": "running",
+      "pid": 7104,
+      "cpu_percent": 0.0,
+      "name": "postgres.exe",
+      "memory_percent": 0.03794129745686839,
+      "username": null,
+      "create_time": "2026-06-20T01:10:44.426740"
+    },
+    {
+      "status": "running",
+      "pid": 7308,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.1652672586928642,
+      "username": null,
+      "create_time": "2026-06-20T01:10:49.681847"
+    },
+    {
+      "status": "running",
+      "pid": 7500,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.05550850533549496,
+      "username": null,
+      "create_time": "2026-06-20T01:10:50.128154"
+    },
+    {
+      "status": "running",
+      "pid": 7556,
+      "cpu_percent": 0.0,
+      "name": "postgres.exe",
+      "memory_percent": 0.039877077939361676,
+      "username": null,
+      "create_time": "2026-06-20T01:10:45.664154"
+    },
+    {
+      "status": "running",
+      "pid": 7564,
+      "cpu_percent": 0.0,
+      "name": "postgres.exe",
+      "memory_percent": 0.04771698889345948,
+      "username": null,
+      "create_time": "2026-06-20T01:10:45.666267"
+    },
+    {
+      "status": "running",
+      "pid": 7572,
+      "cpu_percent": 0.0,
+      "name": "postgres.exe",
+      "memory_percent": 0.04597478645921552,
+      "username": null,
+      "create_time": "2026-06-20T01:10:45.668850"
+    },
+    {
+      "status": "running",
+      "pid": 7620,
+      "cpu_percent": 0.0,
+      "name": "msedgewebview2.exe",
+      "memory_percent": 0.09504682169042031,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:15:08.500198"
+    },
+    {
+      "status": "running",
+      "pid": 7680,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.1580080818835144,
+      "username": null,
+      "create_time": "2026-06-20T01:10:50.456320"
+    },
+    {
+      "status": "running",
+      "pid": 7696,
+      "cpu_percent": 0.0,
+      "name": "HPAudioAnalytics.exe",
+      "memory_percent": 0.13066518256829676,
+      "username": null,
+      "create_time": "2026-06-23T00:41:59.171554"
+    },
+    {
+      "status": "running",
+      "pid": 7780,
+      "cpu_percent": 0.0,
+      "name": "WmiPrvSE.exe",
+      "memory_percent": 0.16062138553488034,
+      "username": null,
+      "create_time": "2026-06-20T01:10:46.012737"
+    },
+    {
+      "status": "running",
+      "pid": 8024,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.08018970648728434,
+      "username": null,
+      "create_time": "2026-06-20T01:10:46.436790"
+    },
+    {
+      "status": "running",
+      "pid": 8148,
+      "cpu_percent": 0.0,
+      "name": "AggregatorHost.exe",
+      "memory_percent": 0.08444842354876957,
+      "username": null,
+      "create_time": "2026-06-20T01:10:48.371650"
+    },
+    {
+      "status": "running",
+      "pid": 8172,
+      "cpu_percent": 0.0,
+      "name": "WUDFHost.exe",
+      "memory_percent": 0.10550003629588404,
+      "username": null,
+      "create_time": "2026-06-20T20:14:26.982857"
+    },
+    {
+      "status": "running",
+      "pid": 8272,
+      "cpu_percent": 0.0,
+      "name": "vmcompute.exe",
+      "memory_percent": 0.11454981005154016,
+      "username": null,
+      "create_time": "2026-06-20T01:10:54.276296"
+    },
+    {
+      "status": "running",
+      "pid": 8356,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.12166380332470299,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:16:21.984050"
+    },
+    {
+      "status": "running",
+      "pid": 8364,
+      "cpu_percent": 0.0,
+      "name": "RuntimeBroker.exe",
+      "memory_percent": 0.3328574539647204,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:31.696040"
+    },
+    {
+      "status": "running",
+      "pid": 8648,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 1.7215863721054034,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:11:07.542590"
+    },
+    {
+      "status": "running",
+      "pid": 8652,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.24555375420427322,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T02:16:50.620185"
+    },
+    {
+      "status": "running",
+      "pid": 8700,
+      "cpu_percent": 0.0,
+      "name": "SmartAudio3.exe",
+      "memory_percent": 0.3006267089312072,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:25.187246"
+    },
+    {
+      "status": "stopped",
+      "pid": 8724,
+      "cpu_percent": 0.0,
+      "name": "msedgewebview2.exe",
+      "memory_percent": 0.2919156967599874,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:19:31.472203"
+    },
+    {
+      "status": "running",
+      "pid": 8784,
+      "cpu_percent": 0.0,
+      "name": "conhost.exe",
+      "memory_percent": 0.05395988094950032,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:34.796248"
+    },
+    {
+      "status": "running",
+      "pid": 8908,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.3006267089312072,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:53.248337"
+    },
+    {
+      "status": "running",
+      "pid": 8948,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.16275074406562295,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T19:08:32.695305"
+    },
+    {
+      "status": "running",
+      "pid": 9072,
+      "cpu_percent": 0.0,
+      "name": "taskhostw.exe",
+      "memory_percent": 0.1685580855131028,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T00:41:50.663109"
+    },
+    {
+      "status": "running",
+      "pid": 9104,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.1060323759285697,
+      "username": null,
+      "create_time": "2026-06-20T01:10:55.700946"
+    },
+    {
+      "status": "running",
+      "pid": 9124,
+      "cpu_percent": 0.0,
+      "name": "wsl.exe",
+      "memory_percent": 0.042441987078665276,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:34.659783"
+    },
+    {
+      "status": "running",
+      "pid": 9304,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.04863648462264379,
+      "username": null,
+      "create_time": "2026-06-21T15:14:55.359162"
+    },
+    {
+      "status": "running",
+      "pid": 9576,
+      "cpu_percent": 0.0,
+      "name": "RuntimeBroker.exe",
+      "memory_percent": 0.3408425484550052,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:47:51.344869"
+    },
+    {
+      "status": "running",
+      "pid": 9588,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.1801243738960002,
+      "username": null,
+      "create_time": "2026-06-20T01:10:59.740794"
+    },
+    {
+      "status": "stopped",
+      "pid": 9596,
+      "cpu_percent": 0.0,
+      "name": "msedgewebview2.exe",
+      "memory_percent": 0.0636871778740291,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-21T21:29:00.850821"
+    },
+    {
+      "status": "running",
+      "pid": 9616,
+      "cpu_percent": 0.0,
+      "name": "ctfmon.exe",
+      "memory_percent": 0.16391221235511894,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:22.591787"
+    },
+    {
+      "status": "running",
+      "pid": 9624,
+      "cpu_percent": 0.0,
+      "name": "UserOOBEBroker.exe",
+      "memory_percent": 0.0846420015970189,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:16:49.650968"
+    },
+    {
+      "status": "running",
+      "pid": 9668,
+      "cpu_percent": 0.0,
+      "name": "MoUsoCoreWorker.exe",
+      "memory_percent": 0.19159387325477292,
+      "username": null,
+      "create_time": "2026-06-20T01:10:59.860550"
+    },
+    {
+      "status": "running",
+      "pid": 9768,
+      "cpu_percent": 0.0,
+      "name": "msedgewebview2.exe",
+      "memory_percent": 0.03566675538993878,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:15:10.000582"
+    },
+    {
+      "status": "running",
+      "pid": 9780,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.16217000992087496,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:15:04.615402"
+    },
+    {
+      "status": "running",
+      "pid": 9812,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.21148401771239142,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:15:04.614413"
+    },
+    {
+      "status": "running",
+      "pid": 9884,
+      "cpu_percent": 0.0,
+      "name": "dllhost.exe",
+      "memory_percent": 0.056669973624990926,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:01.365020"
+    },
+    {
+      "status": "running",
+      "pid": 9936,
+      "cpu_percent": 0.0,
+      "name": "SynTPHelper.exe",
+      "memory_percent": 0.02521354078447504,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:25.367922"
+    },
+    {
+      "status": "running",
+      "pid": 9952,
+      "cpu_percent": 0.0,
+      "name": "RuntimeBroker.exe",
+      "memory_percent": 0.16860648002516515,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T02:17:43.596833"
+    },
+    {
+      "status": "running",
+      "pid": 10052,
+      "cpu_percent": 0.0,
+      "name": "SecurityHealthSystray.exe",
+      "memory_percent": 0.0710915382195659,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:45.995541"
+    },
+    {
+      "status": "stopped",
+      "pid": 10216,
+      "cpu_percent": 0.0,
+      "name": "SearchApp.exe",
+      "memory_percent": 0.37525104653132335,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:19:30.569752"
+    },
+    {
+      "status": "running",
+      "pid": 10244,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.08531952476589155,
+      "username": null,
+      "create_time": "2026-06-20T01:40:17.429289"
+    },
+    {
+      "status": "running",
+      "pid": 10352,
+      "cpu_percent": 0.0,
+      "name": "msedgewebview2.exe",
+      "memory_percent": 0.29288358700123407,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:15:08.372644"
+    },
+    {
+      "status": "running",
+      "pid": 10876,
+      "cpu_percent": 0.0,
+      "name": "conhost.exe",
+      "memory_percent": 0.13952137827570354,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T02:05:23.365686"
+    },
+    {
+      "status": "running",
+      "pid": 10968,
+      "cpu_percent": 0.0,
+      "name": "dwm.exe",
+      "memory_percent": 0.49817310716964697,
+      "username": null,
+      "create_time": "2026-06-20T03:36:18.539127"
+    },
+    {
+      "status": "running",
+      "pid": 10972,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.20059525249836668,
+      "username": null,
+      "create_time": "2026-06-20T01:11:04.922693"
+    },
+    {
+      "status": "stopped",
+      "pid": 11180,
+      "cpu_percent": 0.0,
+      "name": "msedgewebview2.exe",
+      "memory_percent": 0.05492777119074697,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:19:31.263055"
+    },
+    {
+      "status": "stopped",
+      "pid": 11384,
+      "cpu_percent": 0.0,
+      "name": "msedgewebview2.exe",
+      "memory_percent": 0.18249570498705447,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:19:31.142083"
+    },
+    {
+      "status": "running",
+      "pid": 11528,
+      "cpu_percent": 0.0,
+      "name": "msedgewebview2.exe",
+      "memory_percent": 0.0020809640186802815,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:19:18.105726"
+    },
+    {
+      "status": "running",
+      "pid": 11564,
+      "cpu_percent": 0.0,
+      "name": "RuntimeBroker.exe",
+      "memory_percent": 0.08018970648728434,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:47:17.488566"
+    },
+    {
+      "status": "running",
+      "pid": 11660,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.12161540881264064,
+      "username": null,
+      "create_time": "2026-06-20T01:41:39.128120"
+    },
+    {
+      "status": "stopped",
+      "pid": 12060,
+      "cpu_percent": 0.0,
+      "name": "Video.UI.exe",
+      "memory_percent": 0.014566748130761972,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:47:16.551139"
+    },
+    {
+      "status": "running",
+      "pid": 12080,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.0966922351005396,
+      "username": null,
+      "create_time": "2026-06-23T01:58:05.459566"
+    },
+    {
+      "status": "running",
+      "pid": 12252,
+      "cpu_percent": 0.0,
+      "name": "SearchProtocolHost.exe",
+      "memory_percent": 0.16783216783216784,
+      "username": null,
+      "create_time": "2026-06-23T02:02:31.712216"
+    },
+    {
+      "status": "stopped",
+      "pid": 12412,
+      "cpu_percent": 0.0,
+      "name": "LockApp.exe",
+      "memory_percent": 0.09741815278147457,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:47:50.140628"
+    },
+    {
+      "status": "running",
+      "pid": 12436,
+      "cpu_percent": 0.0,
+      "name": "SynTPEnh.exe",
+      "memory_percent": 0.14227986546325647,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:24.292140"
+    },
+    {
+      "status": "stopped",
+      "pid": 12464,
+      "cpu_percent": 0.0,
+      "name": "SearchApp.exe",
+      "memory_percent": 0.4789120913688388,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:31.239383"
+    },
+    {
+      "status": "running",
+      "pid": 12472,
+      "cpu_percent": 0.0,
+      "name": "vmwp.exe",
+      "memory_percent": 0.1310039441527331,
+      "username": null,
+      "create_time": "2026-06-22T17:36:52.059829"
+    },
+    {
+      "status": "running",
+      "pid": 12532,
+      "cpu_percent": 0.0,
+      "name": "com.docker.build.exe",
+      "memory_percent": 0.296222808333535,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:36:49.768761"
+    },
+    {
+      "status": "running",
+      "pid": 12536,
+      "cpu_percent": 0.0,
+      "name": "taskhostw.exe",
+      "memory_percent": 0.11817939845621506,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-21T18:39:15.099855"
+    },
+    {
+      "status": "running",
+      "pid": 12568,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.11048467103830426,
+      "username": null,
+      "create_time": "2026-06-20T01:40:13.869567"
+    },
+    {
+      "status": "running",
+      "pid": 12572,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 1.4229438381687518,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:52.948020"
+    },
+    {
+      "status": "running",
+      "pid": 12712,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.04858809011058146,
+      "username": null,
+      "create_time": "2026-06-21T18:41:16.167660"
+    },
+    {
+      "status": "running",
+      "pid": 12864,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.24855421395213784,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T02:12:47.784450"
+    },
+    {
+      "status": "running",
+      "pid": 13056,
+      "cpu_percent": 0.0,
+      "name": "CompPkgSrv.exe",
+      "memory_percent": 0.055944055944055944,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:15:06.198000"
+    },
+    {
+      "status": "running",
+      "pid": 13068,
+      "cpu_percent": 0.0,
+      "name": "dllhost.exe",
+      "memory_percent": 0.10700026616981635,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:15:02.949572"
+    },
+    {
+      "status": "running",
+      "pid": 13088,
+      "cpu_percent": 0.0,
+      "name": "python.exe",
+      "memory_percent": 0.5841217605923489,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T02:03:39.268887"
+    },
+    {
+      "status": "running",
+      "pid": 13104,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.20959663174196047,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:27.676510"
+    },
+    {
+      "status": "running",
+      "pid": 13124,
+      "cpu_percent": 0.0,
+      "name": "conhost.exe",
+      "memory_percent": 0.08594865342270186,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T01:14:10.035132"
+    },
+    {
+      "status": "running",
+      "pid": 13248,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.06436470104290173,
+      "username": null,
+      "create_time": "2026-06-20T01:40:23.937142"
+    },
+    {
+      "status": "running",
+      "pid": 13384,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 3.901130011856655,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T04:29:53.333449"
+    },
+    {
+      "status": "stopped",
+      "pid": 13420,
+      "cpu_percent": 0.0,
+      "name": "msedgewebview2.exe",
+      "memory_percent": 0.18912575313959398,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:19:31.142084"
+    },
+    {
+      "status": "running",
+      "pid": 13504,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 1.1243013042321,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T02:04:10.240836"
+    },
+    {
+      "status": "running",
+      "pid": 13508,
+      "cpu_percent": 0.0,
+      "name": "wsl.exe",
+      "memory_percent": 0.0552665327751833,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:03.208055"
+    },
+    {
+      "status": "stopped",
+      "pid": 13512,
+      "cpu_percent": 0.0,
+      "name": "IGCC.exe",
+      "memory_percent": 0.14949064776054397,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:49.524519"
+    },
+    {
+      "status": "running",
+      "pid": 13612,
+      "cpu_percent": 0.0,
+      "name": "WhatsApp.Root.exe",
+      "memory_percent": 1.3593534493188473,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:38.460481"
+    },
+    {
+      "status": "running",
+      "pid": 13644,
+      "cpu_percent": 0.0,
+      "name": "wslrelay.exe",
+      "memory_percent": 0.037312168800058075,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:02.489544"
+    },
+    {
+      "status": "running",
+      "pid": 13656,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.12408352892781958,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T04:16:00.377198"
+    },
+    {
+      "status": "running",
+      "pid": 13700,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.22242117743847847,
+      "username": null,
+      "create_time": "2026-06-20T01:41:38.560476"
+    },
+    {
+      "status": "running",
+      "pid": 13712,
+      "cpu_percent": 0.0,
+      "name": "dllhost.exe",
+      "memory_percent": 0.10762939482662666,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-21T18:38:57.020119"
+    },
+    {
+      "status": "running",
+      "pid": 13916,
+      "cpu_percent": 0.0,
+      "name": "RuntimeBroker.exe",
+      "memory_percent": 0.26224986086577784,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:29.887912"
+    },
+    {
+      "status": "running",
+      "pid": 14080,
+      "cpu_percent": 0.0,
+      "name": "Code.exe",
+      "memory_percent": 0.21666223050306097,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T01:13:49.860084"
+    },
+    {
+      "status": "running",
+      "pid": 14212,
+      "cpu_percent": 0.0,
+      "name": "winlogon.exe",
+      "memory_percent": 0.07031722602656859,
+      "username": null,
+      "create_time": "2026-06-20T03:36:18.385051"
+    },
+    {
+      "status": "running",
+      "pid": 14284,
+      "cpu_percent": 0.0,
+      "name": "bash.exe",
+      "memory_percent": 0.08260943209040095,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T02:03:39.246342"
+    },
+    {
+      "status": "running",
+      "pid": 14320,
+      "cpu_percent": 0.0,
+      "name": "taskhostw.exe",
+      "memory_percent": 0.15186197885159822,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-20T20:14:22.086915"
+    },
+    {
+      "status": "running",
+      "pid": 14416,
+      "cpu_percent": 0.0,
+      "name": "POWERPNT.EXE",
+      "memory_percent": 0.39809325622474406,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T18:35:03.398242"
+    },
+    {
+      "status": "running",
+      "pid": 14584,
+      "cpu_percent": 0.0,
+      "name": "conhost.exe",
+      "memory_percent": 0.054395431558061313,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:20.300290"
+    },
+    {
+      "status": "running",
+      "pid": 15124,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.7030270767294988,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:16:01.848761"
+    },
+    {
+      "status": "running",
+      "pid": 15168,
+      "cpu_percent": 0.0,
+      "name": "wslhost.exe",
+      "memory_percent": 0.05725070776973891,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:05.604577"
+    },
+    {
+      "status": "running",
+      "pid": 15216,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.19154547874271058,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-21T01:12:43.992406"
+    },
+    {
+      "status": "running",
+      "pid": 15532,
+      "cpu_percent": 0.0,
+      "name": "wsl.exe",
+      "memory_percent": 0.03779611392068139,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:03.119009"
+    },
+    {
+      "status": "running",
+      "pid": 15660,
+      "cpu_percent": 0.0,
+      "name": "com.docker.backend.exe",
+      "memory_percent": 1.2747114477218282,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:36:47.220607"
+    },
+    {
+      "status": "running",
+      "pid": 15856,
+      "cpu_percent": 0.0,
+      "name": "head.exe",
+      "memory_percent": 0.05584726691993128,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T02:05:23.503126"
+    },
+    {
+      "status": "running",
+      "pid": 15916,
+      "cpu_percent": 0.0,
+      "name": "wsl.exe",
+      "memory_percent": 0.05957364434873085,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:34.697126"
+    },
+    {
+      "status": "running",
+      "pid": 15944,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.07607617296198611,
+      "username": null,
+      "create_time": "2026-06-21T18:11:42.206164"
+    },
+    {
+      "status": "running",
+      "pid": 15972,
+      "cpu_percent": 0.0,
+      "name": "Code.exe",
+      "memory_percent": 1.7367822488929756,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T01:55:15.952485"
+    },
+    {
+      "status": "running",
+      "pid": 16072,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.057395891305925914,
+      "username": null,
+      "create_time": "2026-06-22T17:24:10.723335"
+    },
+    {
+      "status": "running",
+      "pid": 16168,
+      "cpu_percent": 0.0,
+      "name": "wsl.exe",
+      "memory_percent": 0.07656011808260943,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:08.868409"
+    },
+    {
+      "status": "running",
+      "pid": 16204,
+      "cpu_percent": 0.0,
+      "name": "WmiPrvSE.exe",
+      "memory_percent": 0.13952137827570354,
+      "username": null,
+      "create_time": "2026-06-23T02:03:26.937534"
+    },
+    {
+      "status": "running",
+      "pid": 16236,
+      "cpu_percent": 0.0,
+      "name": "bash.exe",
+      "memory_percent": 0.06547777482033537,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T02:05:23.325226"
+    },
+    {
+      "status": "running",
+      "pid": 16340,
+      "cpu_percent": 0.0,
+      "name": "SearchFilterHost.exe",
+      "memory_percent": 0.09267549059936603,
+      "username": null,
+      "create_time": "2026-06-23T02:04:40.205604"
+    },
+    {
+      "status": "running",
+      "pid": 16412,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 1.0059283277276356,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T00:42:01.636542"
+    },
+    {
+      "status": "running",
+      "pid": 16416,
+      "cpu_percent": 0.0,
+      "name": "python.exe",
+      "memory_percent": 0.3809615989546785,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T02:05:23.525802"
+    },
+    {
+      "status": "running",
+      "pid": 16448,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.6749582597333462,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T14:43:37.944570"
+    },
+    {
+      "status": "running",
+      "pid": 16476,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.06838144554407531,
+      "username": null,
+      "create_time": "2026-06-23T00:41:47.567582"
+    },
+    {
+      "status": "running",
+      "pid": 16528,
+      "cpu_percent": 0.0,
+      "name": "Code.exe",
+      "memory_percent": 0.7198683669271905,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T01:13:53.235438"
+    },
+    {
+      "status": "running",
+      "pid": 16628,
+      "cpu_percent": 0.0,
+      "name": "wsl.exe",
+      "memory_percent": 0.03784450843274373,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:03.112760"
+    },
+    {
+      "status": "running",
+      "pid": 16664,
+      "cpu_percent": 0.0,
+      "name": "OpenConsole.exe",
+      "memory_percent": 0.09364338084061267,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T01:13:55.521240"
+    },
+    {
+      "status": "running",
+      "pid": 16796,
+      "cpu_percent": 0.0,
+      "name": "conhost.exe",
+      "memory_percent": 0.054153458997749655,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:17.080986"
+    },
+    {
+      "status": "running",
+      "pid": 16984,
+      "cpu_percent": 0.0,
+      "name": "conhost.exe",
+      "memory_percent": 0.09340140828030101,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:26.596664"
+    },
+    {
+      "status": "running",
+      "pid": 17088,
+      "cpu_percent": 0.0,
+      "name": "conhost.exe",
+      "memory_percent": 0.13927940571539188,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T02:03:39.145078"
+    },
+    {
+      "status": "running",
+      "pid": 17136,
+      "cpu_percent": 0.0,
+      "name": "Docker Desktop.exe",
+      "memory_percent": 0.49284971084279044,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:36:50.722578"
+    },
+    {
+      "status": "running",
+      "pid": 17256,
+      "cpu_percent": 0.0,
+      "name": "conhost.exe",
+      "memory_percent": 0.046603915116025844,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:05.902319"
+    },
+    {
+      "status": "running",
+      "pid": 17292,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.05270162363587969,
+      "username": null,
+      "create_time": "2026-06-22T17:21:57.545594"
+    },
+    {
+      "status": "running",
+      "pid": 17484,
+      "cpu_percent": 0.0,
+      "name": "docker-sandbox.exe",
+      "memory_percent": 0.08672296561569917,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:36:52.099157"
+    },
+    {
+      "status": "running",
+      "pid": 17492,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.38647857332978436,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T02:04:11.344234"
+    },
+    {
+      "status": "running",
+      "pid": 17668,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.2097902097902098,
+      "username": null,
+      "create_time": "2026-06-23T01:59:11.044787"
+    },
+    {
+      "status": "running",
+      "pid": 18236,
+      "cpu_percent": 0.0,
+      "name": "Code.exe",
+      "memory_percent": 3.8375880175188137,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T01:13:52.048906"
+    },
+    {
+      "status": "running",
+      "pid": 18292,
+      "cpu_percent": 0.0,
+      "name": "conhost.exe",
+      "memory_percent": 0.05565368887168195,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:36:46.357387"
+    },
+    {
+      "status": "running",
+      "pid": 18364,
+      "cpu_percent": 0.0,
+      "name": "Docker Desktop.exe",
+      "memory_percent": 0.2267766835240884,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:36:54.106543"
+    },
+    {
+      "status": "running",
+      "pid": 18380,
+      "cpu_percent": 0.0,
+      "name": "conhost.exe",
+      "memory_percent": 0.04631354804365185,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:05.952136"
+    },
+    {
+      "status": "running",
+      "pid": 18420,
+      "cpu_percent": 0.0,
+      "name": "claude.exe",
+      "memory_percent": 4.38701091296247,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T01:14:09.909704"
+    },
+    {
+      "status": "running",
+      "pid": 18724,
+      "cpu_percent": 0.0,
+      "name": "timeout.exe",
+      "memory_percent": 0.06063832361410216,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T02:05:23.484176"
+    },
+    {
+      "status": "running",
+      "pid": 18772,
+      "cpu_percent": 0.0,
+      "name": "Docker Desktop.exe",
+      "memory_percent": 0.13410119292472233,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:36:54.169774"
+    },
+    {
+      "status": "running",
+      "pid": 18788,
+      "cpu_percent": 0.0,
+      "name": "wslhost.exe",
+      "memory_percent": 0.05028189803276308,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:05.869735"
+    },
+    {
+      "status": "running",
+      "pid": 18860,
+      "cpu_percent": 0.0,
+      "name": "wslhost.exe",
+      "memory_percent": 0.06165460836741113,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:17.022736"
+    },
+    {
+      "status": "running",
+      "pid": 18896,
+      "cpu_percent": 0.0,
+      "name": "Code.exe",
+      "memory_percent": 1.3466740871585163,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T01:13:49.494527"
+    },
+    {
+      "status": "running",
+      "pid": 19036,
+      "cpu_percent": 0.0,
+      "name": "wslhost.exe",
+      "memory_percent": 0.09707939119703825,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:26.564304"
+    },
+    {
+      "status": "running",
+      "pid": 19328,
+      "cpu_percent": 0.0,
+      "name": "wsl.exe",
+      "memory_percent": 0.09388535340092433,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T17:37:08.918389"
+    },
+    {
+      "status": "running",
+      "pid": 19636,
+      "cpu_percent": 0.0,
+      "name": "Code.exe",
+      "memory_percent": 2.6060928690686476,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T01:14:01.832231"
+    },
+    {
+      "status": "running",
+      "pid": 19768,
+      "cpu_percent": 0.0,
+      "name": "powershell.exe",
+      "memory_percent": 0.6423403586033344,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T01:13:55.923584"
+    },
+    {
+      "status": "running",
+      "pid": 20036,
+      "cpu_percent": 0.0,
+      "name": "SnippingTool.exe",
+      "memory_percent": 0.21758172623224525,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T01:20:59.624526"
+    },
+    {
+      "status": "running",
+      "pid": 20328,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 1.021414571587582,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T00:43:18.290917"
+    },
+    {
+      "status": "running",
+      "pid": 20548,
+      "cpu_percent": 0.0,
+      "name": "Code.exe",
+      "memory_percent": 1.5945991724538435,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T01:13:49.944722"
+    },
+    {
+      "status": "running",
+      "pid": 20624,
+      "cpu_percent": 0.0,
+      "name": "timeout.exe",
+      "memory_percent": 0.06126745227091248,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T02:05:23.501882"
+    },
+    {
+      "status": "running",
+      "pid": 20820,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.16178285382437632,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T00:43:19.323036"
+    },
+    {
+      "status": "running",
+      "pid": 20992,
+      "cpu_percent": 0.0,
+      "name": "Code.exe",
+      "memory_percent": 0.5565368887168195,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T01:30:10.924564"
+    },
+    {
+      "status": "running",
+      "pid": 21124,
+      "cpu_percent": 0.0,
+      "name": "Code.exe",
+      "memory_percent": 0.7339511699373291,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T01:13:53.216278"
+    },
+    {
+      "status": "running",
+      "pid": 21456,
+      "cpu_percent": 0.0,
+      "name": "bash.exe",
+      "memory_percent": 0.10695187165775401,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T02:05:23.350867"
+    },
+    {
+      "status": "running",
+      "pid": 21792,
+      "cpu_percent": 0.0,
+      "name": "chrome.exe",
+      "memory_percent": 0.5639896435744186,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T02:03:41.840786"
+    },
+    {
+      "status": "running",
+      "pid": 21928,
+      "cpu_percent": 0.0,
+      "name": "Code.exe",
+      "memory_percent": 0.41595083117574466,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T01:13:49.952625"
+    },
+    {
+      "status": "running",
+      "pid": 22268,
+      "cpu_percent": 0.0,
+      "name": "msrdc.exe",
+      "memory_percent": 0.24845742492801315,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T22:50:37.857726"
+    },
+    {
+      "status": "running",
+      "pid": 22276,
+      "cpu_percent": 0.0,
+      "name": "Code.exe",
+      "memory_percent": 3.017059065501972,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-23T01:13:50.280384"
+    },
+    {
+      "status": "running",
+      "pid": 22356,
+      "cpu_percent": 0.0,
+      "name": "svchost.exe",
+      "memory_percent": 0.09209475645461805,
+      "username": null,
+      "create_time": "2026-06-23T01:56:57.205168"
+    },
+    {
+      "status": "running",
+      "pid": 22456,
+      "cpu_percent": 0.0,
+      "name": "msrdc.exe",
+      "memory_percent": 0.32056524790088803,
+      "username": "DESKTOP-DDPKQIC\\Hp",
+      "create_time": "2026-06-22T22:50:38.092245"
+    }
+  ],
+  "network": [
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51575",
+      "raddr": "2a00:1450:4019:816::2001:443",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.168.1:137",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 4,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "192.168.18.6:64316",
+      "raddr": "169.150.215.47:443",
+      "status": "ESTABLISHED",
+      "pid": 4036,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51624",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": ":::5432",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 6780,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51620",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:58435",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 5476,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::1c3f:2491:8a57:1d33:2177",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 17292,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "0.0.0.0:902",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 4804,
+      "proto": "TCP"
+    },
+    {
+      "laddr": ":::135",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 1076,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51580",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": ":::4500",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 4240,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51605",
+      "raddr": "2a03:2880:f34a:120:face:b00c:0:167:5222",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "172.25.16.1:59145",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51617",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": ":::55802",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 5476,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "0.0.0.0:445",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 4,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51458",
+      "raddr": "2600:1417:7a::17ce:c561:443",
+      "status": "CLOSE_WAIT",
+      "pid": 12464,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51514",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": ":::7070",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 4036,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51594",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": ":::62951",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 3356,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51591",
+      "raddr": "2a00:1450:4019:80f::200e:443",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "::1:49669",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 4348,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:4500",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 4240,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51592",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:49668",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 3780,
+      "proto": "TCP"
+    },
+    {
+      "laddr": ":::49668",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 3780,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51457",
+      "raddr": "2600:1417:7a::17ce:c561:443",
+      "status": "CLOSE_WAIT",
+      "pid": 12464,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51630",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51631",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51526",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "127.0.0.1:51508",
+      "raddr": "127.0.0.1:8888",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51118",
+      "raddr": "2606:4700:4403::ac40:94eb:443",
+      "status": "ESTABLISHED",
+      "pid": 5476,
+      "proto": "TCP"
+    },
+    {
+      "laddr": ":::5353",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 1416,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51565",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.18.6:2177",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 17292,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "0.0.0.0:5353",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 1416,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "0.0.0.0:54581",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 5476,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "127.0.0.1:49671",
+      "raddr": "127.0.0.1:49670",
+      "status": "ESTABLISHED",
+      "pid": 4568,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51576",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51582",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51597",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::e041:5ec1:d957:c70b:1900",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:2177",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 17292,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51556",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51570",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": ":::623",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 4568,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51548",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51629",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": ":::7680",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 13700,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51552",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51550",
+      "raddr": "2001:4860:4802:34::9d:443",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51545",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51581",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51447",
+      "raddr": "2600:1417:7a::17ce:c568:443",
+      "status": "CLOSE_WAIT",
+      "pid": 12464,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51583",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "127.0.0.1:51518",
+      "raddr": "127.0.0.1:8888",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:5040",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 7680,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51557",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": ":::54581",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 5476,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "127.0.0.1:51611",
+      "raddr": "127.0.0.1:8888",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51445",
+      "raddr": "2600:9000:2715:0:3d00:c8:4:9d02:443",
+      "status": "ESTABLISHED",
+      "pid": 5476,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "127.0.0.1:51507",
+      "raddr": "127.0.0.1:8888",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51537",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:3000",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 15660,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.18.6:138",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 4,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::133e:5ea4:fb44:cf2d:59140",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51567",
+      "raddr": "2a00:1450:4019:816::2001:443",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": ":::445",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 4,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51555",
+      "raddr": "2a00:1450:4019:813::200a:443",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.168.1:2177",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 17292,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "127.0.0.1:51528",
+      "raddr": "127.0.0.1:8888",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.18.6:51472",
+      "raddr": "57.155.141.122:443",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:500",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 4240,
+      "proto": "UDP"
+    },
+    {
+      "laddr": ":::3000",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 15660,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "127.0.0.1:51533",
+      "raddr": "127.0.0.1:8888",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:64267",
+      "raddr": "2407:d000:0:107::6532:7113:443",
+      "status": "CLOSE_WAIT",
+      "pid": 12412,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51602",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51559",
+      "raddr": "2a00:1450:4019:817::2003:443",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51618",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.168.1:1900",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": ":::49705",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 5476,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "127.0.0.1:51505",
+      "raddr": "127.0.0.1:8888",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "127.0.0.1:1900",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51590",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "127.0.0.1:59149",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51604",
+      "raddr": "2a03:2880:f34a:120:face:b00c:0:167:443",
+      "status": "ESTABLISHED",
+      "pid": 3104,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:135",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 1076,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:7680",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 13700,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "127.0.0.1:51523",
+      "raddr": "127.0.0.1:8888",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51549",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "127.0.0.1:51534",
+      "raddr": "127.0.0.1:8888",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51625",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "127.0.0.1:11738",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 18236,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51566",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": ":::49695",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 800,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:ace9:6876:9d6b:f9d3:2177",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 17292,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "127.0.0.1:51510",
+      "raddr": "127.0.0.1:8888",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "127.0.0.1:51532",
+      "raddr": "127.0.0.1:8888",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": ":::16992",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 4568,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51614",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:49666",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 1700,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.168.1:59146",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51553",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "172.25.16.1:138",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 4,
+      "proto": "UDP"
+    },
+    {
+      "laddr": ":::49666",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 1700,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51456",
+      "raddr": "2600:1417:7a::17ce:c561:443",
+      "status": "CLOSE_WAIT",
+      "pid": 12464,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51564",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51627",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": ":::49667",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 1612,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:5432",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 6780,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51513",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51522",
+      "raddr": "2a00:1450:4019:817::200a:443",
+      "status": "ESTABLISHED",
+      "pid": 5476,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51569",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:49664",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 852,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51603",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51616",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:62949",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 3356,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "0.0.0.0:912",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 4804,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.203.1:137",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 4,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "172.25.16.1:2177",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 17292,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "0.0.0.0:53",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 3356,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "192.168.18.6:51600",
+      "raddr": "204.79.197.203:80",
+      "status": "ESTABLISHED",
+      "pid": 4588,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.18.6:1900",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "0.0.0.0:5355",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 1416,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:1900",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "0.0.0.0:8888",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 13088,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "::1:42050",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 4488,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.18.6:137",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 4,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51615",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.203.1:1900",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": ":::49665",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 684,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51587",
+      "raddr": "2a00:1450:4019:812::2006:443",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51619",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": ":::5353",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 5680,
+      "proto": "UDP"
+    },
+    {
+      "laddr": ":::57425",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 5476,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::e041:5ec1:d957:c70b:59141",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51578",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51623",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:50259",
+      "raddr": "2607:6bc0::10:443",
+      "status": "ESTABLISHED",
+      "pid": 18420,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.168.1:138",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 4,
+      "proto": "UDP"
+    },
+    {
+      "laddr": ":::500",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 4240,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51613",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:62950",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 3356,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51628",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51572",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:5050",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 7680,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "::1:3000",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 13644,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "127.0.0.1:8828",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 18236,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "127.0.0.1:64722",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 4332,
+      "proto": "UDP"
+    },
+    {
+      "laddr": ":::49664",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 852,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:2177",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 17292,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51562",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51622",
+      "raddr": "2a00:1450:4019:814::2003:443",
+      "status": "ESTABLISHED",
+      "pid": 5476,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51485",
+      "raddr": "2600:1901:0:3084:::443",
+      "status": "ESTABLISHED",
+      "pid": 18420,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51455",
+      "raddr": "2600:1417:7a::17ce:c561:443",
+      "status": "CLOSE_WAIT",
+      "pid": 12464,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51579",
+      "raddr": "2a00:1450:4019:80f::2016:443",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51626",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:64534",
+      "raddr": "2a00:1450:400c:c0a::bc:5228",
+      "status": "ESTABLISHED",
+      "pid": 5476,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51541",
+      "raddr": "2620:1ec:46::48:443",
+      "status": "ESTABLISHED",
+      "pid": 21928,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.203.1:2177",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 17292,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "127.0.0.1:51517",
+      "raddr": "127.0.0.1:8888",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:55354",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 5476,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "192.168.18.6:51607",
+      "raddr": "192.168.18.1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51563",
+      "raddr": "2a00:1450:4019:811::2002:443",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::133e:5ea4:fb44:cf2d:1900",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51574",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.18.6:139",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 4,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "172.25.16.1:1900",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:4ee:5436:59b:8047:2177",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 17292,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51538",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51571",
+      "raddr": "2a00:1450:4019:80f::200e:443",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.18.6:51608",
+      "raddr": "192.168.18.1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:623",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 4568,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "::1:59144",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51573",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:64276",
+      "raddr": "2603:1040:a06:6::1:443",
+      "status": "ESTABLISHED",
+      "pid": 4908,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:dce0:2f8b:380:31aa:2177",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 17292,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "192.168.18.6:59148",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51446",
+      "raddr": "2600:1417:7a::17ce:c568:443",
+      "status": "CLOSE_WAIT",
+      "pid": 12464,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:64533",
+      "raddr": "2a00:1450:400c:c0a::bc:5228",
+      "status": "ESTABLISHED",
+      "pid": 5476,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:50001",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 4036,
+      "proto": "UDP"
+    },
+    {
+      "laddr": ":::5353",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 5476,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51621",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::e041:5ec1:d957:c70b:2177",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 17292,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51584",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51512",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51588",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:49665",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 684,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51547",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": ":::55354",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 5476,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "192.168.18.6:51463",
+      "raddr": "3.173.21.63:443",
+      "status": "ESTABLISHED",
+      "pid": 5476,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:5353",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 5680,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "192.168.18.6:51459",
+      "raddr": "2.16.158.59:443",
+      "status": "CLOSE_WAIT",
+      "pid": 12464,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51519",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:16992",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 4568,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "127.0.0.1:51536",
+      "raddr": "127.0.0.1:8888",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:49695",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 800,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:49705",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 5476,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:59143",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51524",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51554",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.18.6:51551",
+      "raddr": "142.250.187.34:443",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51593",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "::1:1900",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51542",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:7070",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 4036,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51546",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51539",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.203.1:59147",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "127.0.0.1:49670",
+      "raddr": "127.0.0.1:49671",
+      "status": "ESTABLISHED",
+      "pid": 4568,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::1c3f:2491:8a57:1d33:59142",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51598",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51589",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51561",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::133e:5ea4:fb44:cf2d:2177",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 17292,
+      "proto": "UDP"
+    },
+    {
+      "laddr": ":::5355",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 1416,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51520",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "172.25.16.1:139",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 4,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "172.25.16.1:137",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 4,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51596",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.18.6:51162",
+      "raddr": "140.82.112.26:443",
+      "status": "ESTABLISHED",
+      "pid": 5476,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "127.0.0.1:51506",
+      "raddr": "127.0.0.1:8888",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.18.6:51599",
+      "raddr": "51.104.15.253:443",
+      "status": "ESTABLISHED",
+      "pid": 4588,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.203.1:138",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 4,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51521",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:64532",
+      "raddr": "2a00:1450:400c:c0a::bc:5228",
+      "status": "ESTABLISHED",
+      "pid": 5476,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51568",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.168.1:139",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 4,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::1c3f:2491:8a57:1d33:1900",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 13248,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51601",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51544",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.203.1:139",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 4,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51560",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51577",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:55802",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 5476,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "0.0.0.0:49667",
+      "raddr": null,
+      "status": "LISTEN",
+      "pid": 1612,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:57425",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 5476,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51543",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "192.168.18.6:51609",
+      "raddr": "57.155.141.122:443",
+      "status": "ESTABLISHED",
+      "pid": 4900,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51586",
+      "raddr": "2a00:1450:4019:80f::2002:443",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:50828",
+      "raddr": "2606:4700:20::681a:1d6:443",
+      "status": "ESTABLISHED",
+      "pid": 5476,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "0.0.0.0:5353",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 5476,
+      "proto": "UDP"
+    },
+    {
+      "laddr": ":::58435",
+      "raddr": null,
+      "status": "NONE",
+      "pid": 5476,
+      "proto": "UDP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51525",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51595",
+      "raddr": "2001:4860:4802:32::223:443",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51585",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "fe80::b2e:fe5e:4958:a91d:51558",
+      "raddr": "fe80::1:53",
+      "status": "TIME_WAIT",
+      "pid": 0,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:51467",
+      "raddr": "2607:6bc0::10:443",
+      "status": "ESTABLISHED",
+      "pid": 18420,
+      "proto": "TCP"
+    },
+    {
+      "laddr": "2407:d000:603:f260:6da4:c857:a065:3a72:50263",
+      "raddr": "2607:6bc0::10:443",
+      "status": "ESTABLISHED",
+      "pid": 18420,
+      "proto": "TCP"
+    }
+  ],
+  "active_window": "Convert system to securi\u2026 - ghost-sync - Visual Studio Code",
+  "recent_files": [
+    {
+      "path": "Desktop\\ghost-sync\\agent\\monitor_agent.log",
+      "modified": "2026-06-23T02:05:23.765520",
+      "size_kb": 1.6
+    },
+    {
+      "path": "Desktop\\ghost-sync\\.git\\index",
+      "modified": "2026-06-23T02:05:12.769730",
+      "size_kb": 2.8
+    },
+    {
+      "path": "Desktop\\ghost-sync\\agent\\consent_ack.json",
+      "modified": "2026-06-23T02:04:42.512649",
+      "size_kb": 0.1
+    },
+    {
+      "path": "Desktop\\ghost-sync\\data\\consent\\dev_5f2e19af\\ack.json",
+      "modified": "2026-06-23T02:04:42.447651",
+      "size_kb": 0.1
+    },
+    {
+      "path": "Desktop\\ghost-sync\\agent\\consent_ack.json.bak",
+      "modified": "2026-06-23T02:04:12.268702",
+      "size_kb": 0.1
+    },
+    {
+      "path": "Desktop\\ghost-sync\\dashboard\\index.html",
+      "modified": "2026-06-23T01:59:54.313715",
+      "size_kb": 60.0
+    },
+    {
+      "path": "Desktop\\ghost-sync\\.git\\logs\\HEAD",
+      "modified": "2026-06-23T01:55:10.670049",
+      "size_kb": 2.7
+    },
+    {
+      "path": "Desktop\\ghost-sync\\.git\\logs\\refs\\heads\\main",
+      "modified": "2026-06-23T01:55:10.670049",
+      "size_kb": 2.2
+    },
+    {
+      "path": "Desktop\\ghost-sync\\.git\\refs\\heads\\main",
+      "modified": "2026-06-23T01:55:10.669046",
+      "size_kb": 0.0
+    },
+    {
+      "path": "Desktop\\ghost-sync\\.git\\objects\\ab\\e7ba8afd81cd8b679f0747dc7cd2bebf3d8bb6",
+      "modified": "2026-06-23T01:55:10.664049",
+      "size_kb": 0.4
+    },
+    {
+      "path": "Desktop\\ghost-sync\\.git\\COMMIT_EDITMSG",
+      "modified": "2026-06-23T01:55:10.660757",
+      "size_kb": 0.5
+    },
+    {
+      "path": "Desktop\\ghost-sync\\.git\\objects\\f0\\bc7c864c94e04354fd009854bdb64d2850f424",
+      "modified": "2026-06-23T01:55:10.654144",
+      "size_kb": 0.5
+    },
+    {
+      "path": "Desktop\\ghost-sync\\.git\\objects\\f0\\be77c211d5b10a6c2772106ce05de9dea1ba98",
+      "modified": "2026-06-23T01:55:10.653144",
+      "size_kb": 0.1
+    },
+    {
+      "path": "Desktop\\ghost-sync\\.git\\objects\\32\\a3e32f9a54482e005e2483371af4aa205d8e80",
+      "modified": "2026-06-23T01:55:10.652145",
+      "size_kb": 0.1
+    },
+    {
+      "path": "Desktop\\ghost-sync\\.git\\objects\\91\\2b9450955535233d566a09f592c4d64b7a17c1",
+      "modified": "2026-06-23T01:55:10.649146",
+      "size_kb": 0.2
+    },
+    {
+      "path": "Desktop\\ghost-sync\\.git\\objects\\3a\\f13536ce5162a1851083a1abf59dba4e6c0d8d",
+      "modified": "2026-06-23T01:54:55.001020",
+      "size_kb": 0.0
+    },
+    {
+      "path": "Desktop\\ghost-sync\\.git\\objects\\42\\9d519d62472202fde98ed6277b7a3d907f91aa",
+      "modified": "2026-06-23T01:54:54.684805",
+      "size_kb": 11.3
+    },
+    {
+      "path": "Desktop\\ghost-sync\\agent\\local_data\\summary.html",
+      "modified": "2026-06-23T01:52:40.037688",
+      "size_kb": 3.4
+    },
+    {
+      "path": "Desktop\\ghost-sync\\agent\\local_data\\access_log.json",
+      "modified": "2026-06-23T01:52:40.035686",
+      "size_kb": 0.4
+    },
+    {
+      "path": "Desktop\\ghost-sync\\data\\devices\\dev_5f2e19af\\status.json",
+      "modified": "2026-06-23T01:52:37.956543",
+      "size_kb": 0.2
+    },
+    {
+      "path": "Desktop\\ghost-sync\\data\\consent\\dev_5f2e19af\\access_log.json",
+      "modified": "2026-06-23T01:52:37.956543",
+      "size_kb": 0.4
+    },
+    {
+      "path": "Desktop\\ghost-sync\\agent\\local_config.json",
+      "modified": "2026-06-23T01:52:06.492926",
+      "size_kb": 0.2
+    },
+    {
+      "path": "Desktop\\ghost-sync\\tokens.json",
+      "modified": "2026-06-23T01:52:04.405584",
+      "size_kb": 0.1
+    },
+    {
+      "path": "Desktop\\ghost-sync\\data\\file_cache\\dev_5f2e19af\\3c2b417c-1751-4423-a98e-153869b580bc\\requirements.txt",
+      "modified": "2026-06-23T01:50:12.422883",
+      "size_kb": 0.1
+    },
+    {
+      "path": "Desktop\\ghost-sync\\data\\file_cache\\dev_5f2e19af\\3c2b417c-1751-4423-a98e-153869b580bc\\status.json",
+      "modified": "2026-06-23T01:50:12.422883",
+      "size_kb": 0.1
+    },
+    {
+      "path": "Desktop\\ghost-sync\\data\\file_browser\\dev_5f2e19af\\listing.json",
+      "modified": "2026-06-23T01:47:31.307018",
+      "size_kb": 160.9
+    },
+    {
+      "path": "Desktop\\ghost-sync\\data\\logs\\dev_5f2e19af\\agent.log",
+      "modified": "2026-06-23T01:47:21.803902",
+      "size_kb": 0.6
+    },
+    {
+      "path": "Desktop\\ghost-sync\\data\\logs\\dev_5f2e19af\\snapshots\\2026-06-23\\2026-06-23T01-47-19.json",
+      "modified": "2026-06-23T01:47:19.763286",
+      "size_kb": 107.2
+    },
+    {
+      "path": "Desktop\\ghost-sync\\agent\\local_data\\snapshots\\2026-06-23\\2026-06-23T01-47-02.json",
+      "modified": "2026-06-23T01:47:15.653443",
+      "size_kb": 107.2
+    },
+    {
+      "path": "Desktop\\ghost-sync\\agent\\__pycache__\\monitor_agent.cpython-314.pyc",
+      "modified": "2026-06-23T01:47:02.067338",
+      "size_kb": 35.4
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+2026-06-23 01:14:28,767 [ERROR] No local consent record found. Ghost Monitor will not start without explicit consent. Run the enrollment script to set up this device properly.
+2026-06-23 01:19:26,620 [ERROR] No local consent record found. Ghost Monitor will not start without explicit consent. Run the enrollment script to set up this device properly.
+2026-06-23 01:32:11,337 [ERROR] No local consent record found. Ghost Monitor will not start without explicit consent. Run the enrollment script to set up this device properly.
+2026-06-23 01:47:02,250 [INFO] --- Cycle 2026-06-23T01-47-02 ---
+2026-06-23 01:47:35,394 [INFO] --- Done (CPU 18.4%  RAM 87.6%) ---
+2026-06-23 01:50:10,363 [INFO] File request: C:/Users/Hp/Desktop/ghost-sync/agent/requirements.txt
+2026-06-23 01:50:12,440 [INFO] File uploaded: requirements.txt (58 bytes)
+2026-06-23 01:52:35,805 [INFO] --- Cycle 2026-06-23T01-52-35 ---
+2026-06-23 01:52:37,963 [INFO] Monitoring paused until 2026-06-22T21:52:35.794016+00:00 — sent lightweight checkin
+2026-06-23 02:04:12,596 [ERROR] No local consent record found. Ghost Monitor will not start without explicit consent. Run the enrollment script to set up this device properly.
+2026-06-23 02:04:42,835 [INFO] Ghost Monitor v2: test-device (dev_5f2e19af)
+2026-06-23 02:04:42,835 [INFO] Commander: http://localhost:8888
+2026-06-23 02:04:42,836 [INFO] --- Cycle 2026-06-23T02-04-42 ---
+2026-06-23 02:05:23,765 [INFO] Ghost Monitor v2: test-device (dev_5f2e19af)
+2026-06-23 02:05:23,765 [INFO] Commander: http://localhost:8888
+2026-06-23 02:05:23,766 [INFO] --- Cycle 2026-06-23T02-05-23 ---
