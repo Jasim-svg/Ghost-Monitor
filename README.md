@@ -91,8 +91,8 @@ Collected every 5–10 minutes and visible to the monitored person at any time v
 ### Commander (your PC)
 
 ```bash
-git clone https://github.com/Jasim-svg/Ghost-sync.git
-cd Ghost-sync
+git clone https://github.com/Jasim-svg/Ghost-Monitor.git
+cd Ghost-Monitor
 pip install flask flask-cors
 python dashboard_server.py
 # Open http://localhost:8888
