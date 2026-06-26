@@ -3,48 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ghost Monitor — Agency Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Ghost Monitor — Mission Control</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:         #080B1A;
-  --surface:    #0D1628;
-  --surface-2:  #111E33;
-  --surface-3:  #162540;
-  --border:     rgba(148, 170, 200, 0.10);
-  --border-2:   rgba(148, 170, 200, 0.18);
-  --teal:       #00D4AA;
-  --teal-dim:   #00967A;
-  --teal-glow:  rgba(0, 212, 170, 0.15);
-  --brass:      #E0A458;
-  --brass-dim:  #A87C43;
-  --red:        #FF4D6A;
-  --red-dim:    #C23050;
-  --blue:       #4D9EFF;
-  --text:       #C8D6E5;
-  --text-muted: #6B7E94;
-  --text-dim:   #3D5068;
-  --text-bright:#EEF2F8;
-  --online:     #00D4AA;
-  --offline:    #FF4D6A;
-  --paused:     #E0A458;
-  --radius-sm:  8px;
-  --radius:     12px;
-  --radius-lg:  18px;
+  --void:          #04060E;
+  --space:         #07091A;
+  --nebula:        #0B1228;
+  --starlight:     #131D3A;
+  --rim:           rgba(0,245,212,0.10);
+  --rim-glow:      rgba(0,245,212,0.28);
+  --mission-teal:  #00F5D4;
+  --solar-amber:   #FFB347;
+  --nova-red:      #FF3D6E;
+  --ion-blue:      #4D8FFF;
+  --plasma-purple: #9B7FFF;
+  --text-bright:   #F0F7FF;
+  --text:          #B8C7E0;
+  --text-mute:     #5A6E8A;
+  --text-dim:      #2E3F58;
+  --panel-bg:      rgba(11,18,40,0.65);
+  --radius:        14px;
   font-family: 'Inter', system-ui, sans-serif;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); min-height: 100vh; font-size: 13px; line-height: 1.5; }
 
-/* ── topbar ── */
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--void);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Star field ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 8% 12%,  rgba(240,247,255,.65) 0%,transparent 100%),
+    radial-gradient(1px 1px at 18% 45%, rgba(240,247,255,.40) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 27% 78%, rgba(240,247,255,.50) 0%,transparent 100%),
+    radial-gradient(1px 1px at 35% 22%, rgba(240,247,255,.35) 0%,transparent 100%),
+    radial-gradient(1px 1px at 42% 60%, rgba(240,247,255,.55) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 51% 8%,  rgba(240,247,255,.45) 0%,transparent 100%),
+    radial-gradient(1px 1px at 58% 40%, rgba(240,247,255,.30) 0%,transparent 100%),
+    radial-gradient(1px 1px at 63% 85%, rgba(240,247,255,.60) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 72% 30%, rgba(240,247,255,.45) 0%,transparent 100%),
+    radial-gradient(1px 1px at 78% 70%, rgba(240,247,255,.35) 0%,transparent 100%),
+    radial-gradient(1px 1px at 85% 15%, rgba(240,247,255,.50) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 91% 52%, rgba(240,247,255,.40) 0%,transparent 100%),
+    radial-gradient(1px 1px at 96% 88%, rgba(240,247,255,.45) 0%,transparent 100%),
+    radial-gradient(1px 1px at 3% 55%,  rgba(240,247,255,.30) 0%,transparent 100%),
+    radial-gradient(1px 1px at 13% 92%, rgba(240,247,255,.35) 0%,transparent 100%),
+    radial-gradient(1px 1px at 22% 33%, rgba(240,247,255,.25) 0%,transparent 100%),
+    radial-gradient(1px 1px at 31% 68%, rgba(240,247,255,.40) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 45% 90%, rgba(240,247,255,.30) 0%,transparent 100%),
+    radial-gradient(1px 1px at 54% 25%, rgba(240,247,255,.35) 0%,transparent 100%),
+    radial-gradient(1px 1px at 67% 55%, rgba(240,247,255,.28) 0%,transparent 100%),
+    radial-gradient(1px 1px at 75% 90%, rgba(240,247,255,.40) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 83% 42%, rgba(240,247,255,.32) 0%,transparent 100%),
+    radial-gradient(1px 1px at 89% 75%, rgba(240,247,255,.38) 0%,transparent 100%),
+    radial-gradient(1px 1px at 94% 20%, rgba(240,247,255,.42) 0%,transparent 100%),
+    radial-gradient(1px 1px at 6% 80%,  rgba(240,247,255,.30) 0%,transparent 100%);
+  animation: twinkle 8s ease-in-out alternate infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+/* ── Nebula glow ── */
+body::after {
+  content: '';
+  position: fixed;
+  top: -200px;
+  right: -200px;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle at 60% 40%,
+    rgba(155,127,255,.04) 0%,
+    rgba(77,143,255,.03)  40%,
+    transparent           70%);
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes twinkle {
+  0%   { opacity: .5; }
+  100% { opacity: 1;  }
+}
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none; }
+}
+
+/* ── Topbar ── */
 .topbar {
-  height: 64px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
+  height: 56px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(20px) saturate(140%);
+  border-bottom: 1px solid var(--rim);
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0 20px;
+  gap: 10px;
+  padding: 0 18px;
   position: sticky;
   top: 0;
   z-index: 200;
@@ -52,200 +114,222 @@ body { background: var(--bg); color: var(--text); min-height: 100vh; font-size: 
 .logo {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
-  font-size: 16px;
-  color: var(--teal);
-  letter-spacing: 0.04em;
-  white-space: nowrap;
+  font-size: 15px;
+  color: var(--mission-teal);
+  letter-spacing: .05em;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
-.logo-glyph { font-size: 18px; }
+.logo svg { flex-shrink: 0; }
 .live-chip {
   display: flex;
   align-items: center;
   gap: 5px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
+  border: 1px solid var(--rim);
   border-radius: 20px;
-  padding: 3px 10px;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
+  padding: 3px 9px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  color: var(--text-mute);
   white-space: nowrap;
+  flex-shrink: 0;
 }
 .live-dot {
-  width: 6px;
-  height: 6px;
+  width: 6px; height: 6px;
   border-radius: 50%;
-  background: var(--teal);
+  background: var(--mission-teal);
   animation: pulse-dot 3s ease-in-out infinite;
 }
 @keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.8); }
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .4; transform: scale(.8); }
 }
 @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
 
-.stats-row {
+.stat-chips {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   flex: 1;
   overflow-x: auto;
   scrollbar-width: none;
 }
-.stats-row::-webkit-scrollbar { display: none; }
-
-.stat-chip {
+.stat-chips::-webkit-scrollbar { display: none; }
+.chip {
   display: flex;
   align-items: center;
   gap: 5px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
+  border: 1px solid var(--rim);
   border-radius: 20px;
   padding: 4px 10px;
   font-size: 11px;
-  font-weight: 500;
   white-space: nowrap;
-  color: var(--text-muted);
+  flex-shrink: 0;
 }
-.stat-chip .sc-label { font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; }
-.stat-chip .sc-val { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; }
-.stat-chip.online  .sc-val { color: var(--online); }
-.stat-chip.offline .sc-val { color: var(--offline); }
-.stat-chip.total   .sc-val { color: var(--text); }
-.stat-chip.alerts  .sc-val { color: var(--brass); }
-.stat-chip.consented { position: relative; }
+.chip-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  color: var(--text-mute);
+  text-transform: uppercase;
+}
+.chip-val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+}
+.chip.online  .chip-val { color: var(--mission-teal); }
+.chip.offline .chip-val { color: var(--nova-red); }
+.chip.total   .chip-val { color: var(--text-bright); }
+.chip.alerts  .chip-val { color: var(--solar-amber); }
 
-.consent-ring { display: inline-block; vertical-align: middle; }
+.topbar-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-mute);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+.topbar-actions { display: flex; gap: 7px; flex-shrink: 0; }
 
-.topbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.time-label { font-size: 11px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
-
-/* ── buttons ── */
+/* ── Buttons ── */
 .btn {
-  background: var(--surface-2);
-  border: 1px solid var(--border-2);
+  background: rgba(11,18,40,.8);
+  border: 1px solid var(--rim-glow);
   color: var(--text);
-  padding: 6px 14px;
-  border-radius: var(--radius-sm);
+  padding: 6px 13px;
+  border-radius: 8px;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 500;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 180ms ease-out, border-color 180ms ease-out;
   white-space: nowrap;
 }
-.btn:hover { background: var(--surface-3); border-color: var(--border-2); color: var(--text-bright); }
-.btn.enroll { color: var(--teal); border-color: rgba(0,212,170,0.35); }
-.btn.enroll:hover { background: var(--teal-glow); }
-.btn.refresh { font-size: 14px; padding: 6px 10px; }
+.btn:hover { background: var(--starlight); color: var(--text-bright); }
+.btn.teal  { color: var(--mission-teal); border-color: rgba(0,245,212,.35); }
+.btn.teal:hover { background: rgba(0,245,212,.08); }
 .btn-primary {
-  background: var(--teal);
-  border: none;
-  color: #000;
-  padding: 8px 18px;
-  border-radius: var(--radius-sm);
+  background: var(--mission-teal);
+  border: none; color: #001A14;
+  padding: 8px 16px; border-radius: 8px;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 13px; font-weight: 600;
+  transition: background 180ms;
 }
-.btn-primary:hover { background: var(--teal-dim); }
-.btn-primary.green { background: #22c55e; color: #000; }
-.btn-primary.green:hover { background: #16a34a; }
+.btn-primary:hover { background: #00c9af; }
 .btn-cancel {
-  background: var(--surface-2);
-  border: 1px solid var(--border-2);
-  color: var(--text-muted);
-  padding: 8px 14px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-family: 'Inter', sans-serif;
+  background: transparent;
+  border: 1px solid var(--rim);
+  color: var(--text-mute);
+  padding: 8px 14px; border-radius: 8px;
+  cursor: pointer; font-family: 'Inter', sans-serif;
   font-size: 13px;
+  transition: color 180ms, border-color 180ms;
 }
-.btn-cancel:hover { color: var(--text); }
+.btn-cancel:hover { color: var(--text); border-color: var(--rim-glow); }
+.btn-revoke {
+  background: transparent;
+  border: 1px solid rgba(255,61,110,.35);
+  color: var(--nova-red);
+  padding: 5px 11px; border-radius: 8px;
+  cursor: pointer; font-family: 'Inter', sans-serif;
+  font-size: 11px; font-weight: 500;
+  transition: background 180ms;
+}
+.btn-revoke:hover { background: rgba(255,61,110,.1); }
 
-/* ── layout ── */
+/* ── Layout ── */
 .layout {
   display: flex;
-  height: calc(100vh - 64px);
+  height: calc(100vh - 56px);
   overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
-/* ── sidebar ── */
+/* ── Sidebar ── */
 .sidebar {
   width: 280px;
   min-width: 240px;
-  background: var(--surface);
-  border-right: 1px solid var(--border);
+  background: var(--panel-bg);
+  backdrop-filter: blur(20px) saturate(140%);
+  border-right: 1px solid var(--rim);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   scrollbar-width: thin;
-  scrollbar-color: var(--surface-3) transparent;
+  scrollbar-color: var(--starlight) transparent;
 }
 .sidebar-hdr {
-  padding: 12px 16px;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
+  padding: 11px 15px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .15em;
+  color: var(--text-mute);
   text-transform: uppercase;
-  border-bottom: 1px solid var(--border);
-  font-weight: 600;
+  border-bottom: 1px solid var(--rim);
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: sticky;
   top: 0;
-  background: var(--surface);
+  background: var(--panel-bg);
+  backdrop-filter: blur(20px) saturate(140%);
   z-index: 5;
 }
-.sidebar-count {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
+.fleet-count {
+  background: rgba(0,245,212,.08);
+  border: 1px solid var(--rim);
   border-radius: 10px;
   padding: 1px 7px;
-  font-size: 10px;
-  color: var(--teal);
-  font-weight: 600;
+  color: var(--mission-teal);
+  font-size: 9px;
   letter-spacing: 0;
 }
 
-/* ── device cards ── */
+/* ── Device card ── */
 .device-card {
   padding: 11px 14px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--rim);
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 180ms ease-out, border-left-color 180ms;
   border-left: 3px solid transparent;
   position: relative;
+  overflow: hidden;
 }
-.device-card:hover  { background: var(--surface-2); }
-.device-card.active { background: var(--surface-3); border-left-color: var(--teal); }
-.device-card.is-online  { border-left-color: var(--online); }
-.device-card.is-offline { border-left-color: var(--offline); }
-.device-card.is-paused  { border-left-color: var(--paused); }
-.device-card.active.is-online  { border-left-color: var(--teal); }
-.device-card.active.is-paused  { border-left-color: var(--paused); box-shadow: inset 3px 0 0 var(--paused); }
-.device-card.active.is-offline { border-left-color: var(--offline); box-shadow: inset 3px 0 0 var(--offline); }
+.device-card:hover  { background: rgba(19,29,58,.6); }
+.device-card.active { background: var(--starlight); }
+.device-card.is-online  { border-left-color: var(--mission-teal); }
+.device-card.is-paused  { border-left-color: var(--solar-amber); }
+.device-card.is-offline { border-left-color: var(--nova-red); }
 
-.dc-row1 { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
-.dc-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  flex-shrink: 0;
+/* Beacon pulse overlay */
+.device-card.beacon-active::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--rim-glow);
+  border-radius: 0;
+  animation: beacon-pulse 1.2s ease-out forwards;
+  pointer-events: none;
 }
-.dc-dot.online  { background: var(--online); animation: dot-pulse 3s ease-in-out infinite; }
-.dc-dot.paused  { background: var(--paused); }
-.dc-dot.offline { background: var(--offline); }
-@keyframes dot-pulse {
-  0%,100% { opacity:1; } 50% { opacity:0.35; }
+@keyframes beacon-pulse {
+  0%   { opacity: 1; box-shadow: inset 0 0 0 0 var(--rim-glow); }
+  40%  { opacity: .8; box-shadow: inset 0 0 12px 0 rgba(0,245,212,.15); }
+  100% { opacity: 0; box-shadow: inset 0 0 0 0 transparent; }
 }
-@media (prefers-reduced-motion: reduce) { .dc-dot.online { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .device-card.beacon-active::after { animation: none; } }
 
+.dc-row1 { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
 .dc-name {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
@@ -257,128 +341,200 @@ body { background: var(--bg); color: var(--text); min-height: 100vh; font-size: 
   white-space: nowrap;
 }
 .os-pill {
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: .06em;
   padding: 2px 5px;
   border-radius: 4px;
-  border: 1px solid var(--border-2);
-  color: var(--text-muted);
-  background: var(--surface-3);
+  border: 1px solid var(--rim);
+  color: var(--text-mute);
   flex-shrink: 0;
 }
-.consent-icon { font-size: 11px; flex-shrink: 0; }
-.consent-icon.ok   { color: var(--teal); }
-.consent-icon.warn { color: var(--brass); }
-
-.dc-row2 { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
-.dc-time { font-size: 11px; color: var(--text-muted); flex: 1; }
-.badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 1px 7px;
-  border-radius: 4px;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-.badge.online   { background: rgba(0,212,170,0.12); color: var(--online); border: 1px solid rgba(0,212,170,0.25); }
-.badge.offline  { background: rgba(255,77,106,0.10); color: var(--offline); border: 1px solid rgba(255,77,106,0.25); }
-.badge.paused   { background: rgba(224,164,88,0.12); color: var(--paused); border: 1px solid rgba(224,164,88,0.25); }
-.badge.consent-ok { background: rgba(77,158,255,0.10); color: var(--blue); border: 1px solid rgba(77,158,255,0.2); }
-.badge.consent-warn { background: rgba(224,164,88,0.12); color: var(--brass); border: 1px solid rgba(224,164,88,0.25); }
-.badge.info     { background: rgba(77,158,255,0.10); color: var(--blue); border: 1px solid rgba(77,158,255,0.2); }
-.badge.warn     { background: rgba(224,164,88,0.12); color: var(--brass); border: 1px solid rgba(224,164,88,0.25); }
-.badge.critical { background: rgba(255,77,106,0.10); color: var(--red); border: 1px solid rgba(255,77,106,0.25); }
-.badge.state-est  { background: rgba(0,212,170,0.1); color: var(--teal); border: 1px solid rgba(0,212,170,0.2); }
-.badge.state-listen { background: rgba(77,158,255,0.1); color: var(--blue); border: 1px solid rgba(77,158,255,0.2); }
-.badge.state-close  { background: rgba(224,164,88,0.1); color: var(--brass); border: 1px solid rgba(224,164,88,0.2); }
-
-.mini-bar { height: 6px; border-radius: 3px; background: var(--surface-3); margin-top: 3px; overflow: hidden; }
-.mini-bar-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
-
+.dc-row2 { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+.dc-time  { font-size: 10px; color: var(--text-mute); flex: 1; font-variant-numeric: tabular-nums; }
 .dc-window {
   font-size: 10px;
   color: var(--text-dim);
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-top: 4px;
+  white-space: nowrap;
+  margin-top: 3px;
 }
 
-/* ── main panel ── */
+/* ── Orbital ring (signature element #2) ── */
+.orbital-icon { flex-shrink: 0; display: block; }
+.orb-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.orb-ring.online { animation: orbital-spin 6s  linear infinite; }
+.orb-ring.paused { animation: orbital-spin 12s linear infinite; }
+@keyframes orbital-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .orb-ring.online, .orb-ring.paused { animation: none; }
+}
+
+/* ── Badges ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  white-space: nowrap;
+}
+.badge.online   { background: rgba(0,245,212,.10); color: var(--mission-teal); border: 1px solid rgba(0,245,212,.25); }
+.badge.offline  { background: rgba(255,61,110,.10); color: var(--nova-red);     border: 1px solid rgba(255,61,110,.25); }
+.badge.paused   { background: rgba(255,179,71,.10); color: var(--solar-amber);  border: 1px solid rgba(255,179,71,.25); }
+.badge.c-ok     { background: rgba(0,245,212,.08); color: var(--mission-teal); border: 1px solid rgba(0,245,212,.2); }
+.badge.c-warn   { background: rgba(255,179,71,.08); color: var(--solar-amber); border: 1px solid rgba(255,179,71,.2); }
+.badge.info     { background: rgba(77,143,255,.08); color: var(--ion-blue);    border: 1px solid rgba(77,143,255,.2); }
+.badge.warn     { background: rgba(255,179,71,.08); color: var(--solar-amber); border: 1px solid rgba(255,179,71,.2); }
+.badge.critical { background: rgba(255,61,110,.08); color: var(--nova-red);    border: 1px solid rgba(255,61,110,.2); }
+.badge.state-est    { background: rgba(0,245,212,.08);  color: var(--mission-teal); border: 1px solid rgba(0,245,212,.2); }
+.badge.state-listen { background: rgba(77,143,255,.08); color: var(--ion-blue);    border: 1px solid rgba(77,143,255,.2); }
+.badge.state-close  { background: rgba(255,179,71,.08); color: var(--solar-amber); border: 1px solid rgba(255,179,71,.2); }
+
+/* ── Main panel ── */
 .main-panel {
   flex: 1;
   overflow-y: auto;
-  padding: 18px 20px;
   scrollbar-width: thin;
-  scrollbar-color: var(--surface-3) transparent;
+  scrollbar-color: var(--starlight) transparent;
 }
 
-/* ── device header card ── */
-.device-header-card {
-  background: var(--surface);
-  border: 1px solid var(--border-2);
+/* ── Constellation view (signature element #1) ── */
+.constellation-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 24px 0;
+}
+.constellation-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .15em;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+#constellationSvg {
+  max-width: 480px;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.c-pulse {
+  animation: c-travel 4s ease-in-out infinite;
+}
+@keyframes c-travel {
+  0%   { opacity: 0;  }
+  15%  { opacity: .9; }
+  85%  { opacity: .4; }
+  100% { opacity: 0;  }
+}
+@media (prefers-reduced-motion: reduce) { .c-pulse { animation: none; } }
+.c-node-group { cursor: pointer; }
+.c-node-group:hover .c-node-circle { filter: brightness(1.3); }
+
+/* ── Feed area (below constellation) ── */
+.feed-area { padding: 16px 24px 24px; }
+.feed-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--rim);
+  margin-bottom: 14px;
+  gap: 2px;
+}
+.tab {
+  padding: 7px 15px;
+  cursor: pointer;
+  color: var(--text-mute);
+  border-bottom: 2px solid transparent;
+  font-size: 12px;
+  font-weight: 500;
+  transition: color 180ms, border-color 180ms;
+  white-space: nowrap;
+}
+.tab:hover  { color: var(--text); }
+.tab.active { color: var(--mission-teal); border-bottom-color: var(--mission-teal); }
+.section          { display: none; animation: fade-in 150ms ease-out; }
+.section.active   { display: block; }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* ── Device detail header card ── */
+.device-hdr-card {
+  margin: 16px 20px 0;
+  background: var(--panel-bg);
+  backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--rim);
   border-radius: var(--radius);
   padding: 16px 18px;
-  margin-bottom: 16px;
 }
 .dhc-row1 {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 9px;
+  margin-bottom: 8px;
   flex-wrap: wrap;
 }
 .dhc-name {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 17px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--text-bright);
   flex: 1;
-  min-width: 0;
 }
 .dhc-meta {
   font-size: 11px;
-  color: var(--text-muted);
-  margin-bottom: 12px;
+  color: var(--text-mute);
+  margin-bottom: 14px;
   display: flex;
+  gap: 6px;
   align-items: center;
-  gap: 8px;
+  flex-wrap: wrap;
+  font-family: 'JetBrains Mono', monospace;
+}
+.dhc-sep { color: var(--text-dim); }
+
+/* ── Radial gauges (signature element #3) ── */
+.gauges-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 12px;
   flex-wrap: wrap;
 }
-.dhc-meta-sep { color: var(--text-dim); }
-.dhc-metrics {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-bottom: 10px;
+.gauge-wrap { text-align: center; }
+.gauge-detail {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-mute);
+  margin-top: 4px;
 }
-.dhc-metric-block {}
-.dhc-metric-label {
-  font-size: 10px;
+.gauge-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .1em;
+  color: var(--text-mute);
   text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--text-muted);
-  margin-bottom: 4px;
-  font-weight: 600;
+  margin-top: 2px;
 }
-.dhc-metric-val {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text-bright);
-  margin-bottom: 5px;
-}
-.metric-bar { height: 5px; border-radius: 3px; background: var(--surface-3); overflow: hidden; }
-.metric-bar-fill { height: 100%; border-radius: 3px; transition: width 0.4s; }
+.gauge-arc { transition: stroke-dasharray 0.6s ease-out; }
 
 .dhc-window {
-  font-size: 11px;
-  color: var(--text-muted);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 2px;
 }
 .dhc-window-val {
   font-family: 'JetBrains Mono', monospace;
@@ -388,219 +544,138 @@ body { background: var(--bg); color: var(--text); min-height: 100vh; font-size: 
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.btn-revoke {
-  background: transparent;
-  border: 1px solid rgba(255,77,106,0.35);
-  color: var(--red);
-  padding: 5px 12px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  font-weight: 500;
-  transition: background 0.15s;
+.dhc-window-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .1em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  flex-shrink: 0;
 }
-.btn-revoke:hover { background: rgba(255,77,106,0.1); }
 
-/* ── tabs ── */
-.tabs {
-  display: flex;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 14px;
-  gap: 2px;
-}
-.tab {
-  padding: 8px 16px;
-  cursor: pointer;
-  color: var(--text-muted);
-  border-bottom: 2px solid transparent;
-  font-size: 13px;
-  font-weight: 500;
-  transition: color 0.15s, border-color 0.15s;
-  white-space: nowrap;
-}
-.tab:hover { color: var(--text); }
-.tab.active { color: var(--teal); border-bottom-color: var(--teal); }
-.section { display: none; }
-.section.active { display: block; }
+/* ── Tabs (device detail) ── */
+.device-tabs-wrap { padding: 14px 20px 0; }
+.device-tabs-wrap .feed-tabs { margin-bottom: 0; }
+.tab-panels { padding: 14px 20px 24px; }
 
-/* ── tables ── */
+/* ── Tables ── */
 table { width: 100%; border-collapse: collapse; font-size: 12px; }
 th {
   text-align: left;
   padding: 6px 10px;
-  color: var(--text-muted);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  color: var(--text-mute);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .1em;
   text-transform: uppercase;
-  border-bottom: 1px solid var(--border-2);
-  background: var(--surface);
+  border-bottom: 1px solid var(--rim);
 }
-td {
-  padding: 7px 10px;
-  border-bottom: 1px solid var(--border);
-}
-tr:nth-child(even) td { background: rgba(13,22,40,0.4); }
-tr:hover td { background: var(--surface-2); }
+td { padding: 7px 10px; border-bottom: 1px solid rgba(0,245,212,.04); }
+tr:hover td { background: rgba(19,29,58,.5); }
 .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
-.cpu-bar-wrap { display: flex; align-items: center; gap: 6px; }
-.cpu-bar { height: 4px; border-radius: 2px; background: var(--surface-3); width: 48px; flex-shrink: 0; overflow: hidden; }
-.cpu-bar-fill { height: 100%; border-radius: 2px; }
-.proc-top td { background: rgba(0,212,170,0.04) !important; }
+.proc-top td { background: rgba(0,245,212,.03); }
 
-/* ── events timeline ── */
-.timeline-item {
+/* ── Timeline ── */
+.tl-item {
   display: flex;
-  gap: 12px;
-  padding: 9px 0;
-  border-bottom: 1px solid var(--border);
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(0,245,212,.04);
   align-items: flex-start;
 }
-.tl-time {
-  color: var(--text-muted);
-  font-size: 11px;
-  white-space: nowrap;
-  min-width: 130px;
-  font-variant-numeric: tabular-nums;
-}
-.tl-icon { font-size: 12px; min-width: 16px; text-align: center; }
-.tl-body { flex: 1; }
-.tl-type {
-  font-size: 11px;
-  color: var(--text);
-  margin-bottom: 2px;
-  font-weight: 500;
-}
-.tl-detail {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  word-break: break-all;
-}
-.tl-sev-info    .tl-type { color: var(--text-muted); }
-.tl-sev-warning .tl-type { color: var(--brass); }
-.tl-sev-critical .tl-type { color: var(--red); }
+.tl-time  { color: var(--text-mute); font-size: 11px; white-space: nowrap; min-width: 130px; font-variant-numeric: tabular-nums; }
+.tl-icon  { font-size: 10px; min-width: 14px; text-align: center; flex-shrink: 0; }
+.tl-body  { flex: 1; }
+.tl-type  { font-size: 11px; font-weight: 500; margin-bottom: 1px; }
+.tl-detail { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-mute); word-break: break-all; }
+.tl-sev-info .tl-type     { color: var(--text-mute); }
+.tl-sev-warning .tl-type  { color: var(--solar-amber); }
+.tl-sev-critical .tl-type { color: var(--nova-red); }
 
-/* ── log box ── */
+/* ── Log box ── */
 .log-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  background: var(--nebula);
+  border: 1px solid var(--rim);
+  border-radius: 8px;
   padding: 12px;
-  max-height: 420px;
+  max-height: 400px;
   overflow-y: auto;
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   line-height: 1.7;
-  color: var(--text-muted);
+  color: var(--text-mute);
   white-space: pre-wrap;
   word-break: break-all;
 }
 
-/* ── file browser ── */
+/* ── File browser ── */
 .file-search {
   width: 100%;
-  background: var(--surface);
-  border: 1px solid var(--border-2);
+  background: var(--nebula);
+  border: 1px solid var(--rim);
   color: var(--text);
   padding: 8px 12px;
-  border-radius: var(--radius-sm);
+  border-radius: 8px;
   font-family: 'Inter', sans-serif;
   font-size: 13px;
-  margin-bottom: 10px;
   outline: none;
-  transition: border-color 0.15s;
+  margin-bottom: 10px;
+  transition: border-color 180ms;
 }
-.file-search:focus { border-color: var(--teal-dim); }
-.file-ts { color: var(--text-muted); font-size: 11px; margin-bottom: 8px; }
-.file-req-badge {
+.file-search:focus { border-color: var(--rim-glow); }
+.file-req-btn {
+  font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
   padding: 3px 9px;
-  border-radius: var(--radius-sm);
-  background: var(--surface-2);
-  border: 1px solid var(--border-2);
-  color: var(--teal);
+  border-radius: 5px;
+  border: 1px solid var(--rim-glow);
+  color: var(--mission-teal);
   cursor: pointer;
+  background: transparent;
+  transition: background 180ms;
   white-space: nowrap;
   text-decoration: none;
-  font-weight: 500;
   display: inline-block;
-  transition: background 0.15s;
 }
-.file-req-badge:hover  { background: var(--teal-glow); }
-.file-req-badge.pending  { color: var(--brass); border-color: rgba(224,164,88,0.35); background: rgba(224,164,88,0.08); cursor: default; }
-.file-req-badge.ready    { color: var(--teal); border-color: rgba(0,212,170,0.35); background: var(--teal-glow); cursor: default; }
-.file-req-badge.download { color: var(--teal); border-color: rgba(0,212,170,0.35); background: var(--teal-glow); }
-.file-req-badge.error    { color: var(--red); border-color: rgba(255,77,106,0.35); background: rgba(255,77,106,0.08); cursor: default; }
+.file-req-btn:hover    { background: rgba(0,245,212,.08); }
+.file-req-btn.pending  { color: var(--solar-amber); border-color: rgba(255,179,71,.35); cursor: default; }
+.file-req-btn.ready    { color: var(--mission-teal); background: rgba(0,245,212,.08); }
+.file-req-btn.dl-link  { color: var(--mission-teal); background: rgba(0,245,212,.08); }
+.file-req-btn.error    { color: var(--nova-red); border-color: rgba(255,61,110,.35); cursor: default; }
 
-.access-log-section { margin-top: 20px; }
-.access-log-section h4 {
-  font-size: 11px;
-  font-weight: 600;
+.access-section { margin-top: 20px; }
+.access-section h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .12em;
+  color: var(--text-mute);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--rim);
   padding-bottom: 6px;
+  margin-bottom: 8px;
 }
 
-/* ── activity feed ── */
-.event-row {
+/* ── Activity feed ── */
+.evt-row {
   display: flex;
   gap: 10px;
   padding: 7px 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(0,245,212,.04);
   align-items: flex-start;
 }
-.evt-time   { color: var(--text-muted); font-size: 11px; white-space: nowrap; min-width: 130px; font-variant-numeric: tabular-nums; }
-.evt-dev    { color: var(--blue); font-size: 11px; min-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.evt-body   { flex: 1; }
-.evt-detail { color: var(--text-muted); font-size: 11px; word-break: break-all; font-family: 'JetBrains Mono', monospace; }
+.evt-time { color: var(--text-mute); font-size: 11px; white-space: nowrap; min-width: 130px; font-variant-numeric: tabular-nums; }
+.evt-dev  { color: var(--ion-blue); font-size: 11px; min-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.evt-body { flex: 1; }
+.evt-detail { color: var(--text-mute); font-size: 11px; font-family: 'JetBrains Mono', monospace; word-break: break-all; }
 
-/* ── right panel ── */
-.right-panel {
-  width: 240px;
-  min-width: 200px;
-  background: var(--surface);
-  border-left: 1px solid var(--border);
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--surface-3) transparent;
-}
-.rp-hdr {
-  padding: 12px 14px;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  background: var(--surface);
-}
-.alert-item {
-  padding: 9px 12px;
-  border-bottom: 1px solid var(--border);
-  transition: background 0.12s;
-}
-.alert-item:hover { background: var(--surface-2); }
-.alert-dev  { color: var(--blue); font-size: 11px; font-weight: 500; }
-.alert-time { color: var(--text-dim); font-size: 10px; }
-.alert-msg  { font-size: 11px; word-break: break-all; margin-top: 3px; color: var(--text); }
-
-/* ── empty states ── */
+/* ── Empty states ── */
 .empty {
   text-align: center;
   padding: 48px 24px;
-  color: var(--text-muted);
+  color: var(--text-mute);
 }
-.empty-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.5; }
+.empty-icon { margin-bottom: 12px; }
 .empty-title {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 16px;
@@ -609,37 +684,38 @@ tr:hover td { background: var(--surface-2); }
   margin-bottom: 6px;
 }
 .empty-sub { font-size: 12px; line-height: 1.6; }
-.empty-sub a { color: var(--teal); text-decoration: none; cursor: pointer; }
-.loading { color: var(--text-muted); text-align: center; padding: 20px; font-size: 12px; }
-
-/* ── section eyebrow ── */
-.section-eyebrow {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+.empty-sub a { color: var(--mission-teal); text-decoration: none; cursor: pointer; }
+.loading { color: var(--text-mute); text-align: center; padding: 20px; font-size: 12px; }
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .12em;
+  color: var(--text-mute);
   text-transform: uppercase;
-  color: var(--text-muted);
-  padding: 6px 0 4px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--rim);
+  padding-bottom: 6px;
   margin-bottom: 8px;
+  margin-top: 14px;
 }
 
-/* ── modals ── */
+/* ── Modals ── */
 .overlay {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.65);
+  background: rgba(4,6,14,.75);
   z-index: 500;
   align-items: center;
   justify-content: center;
   padding: 20px;
+  backdrop-filter: blur(4px);
 }
 .overlay.open { display: flex; }
 .modal {
-  background: var(--surface);
-  border: 1px solid var(--border-2);
-  border-radius: var(--radius-lg);
+  background: var(--panel-bg);
+  backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--rim-glow);
+  border-radius: var(--radius);
   padding: 24px;
   width: 560px;
   max-width: 100%;
@@ -655,144 +731,119 @@ tr:hover td { background: var(--surface-2); }
 }
 .modal label {
   display: block;
-  color: var(--text-muted);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .12em;
   text-transform: uppercase;
+  color: var(--text-mute);
   margin: 14px 0 5px;
 }
 .modal label:first-of-type { margin-top: 0; }
 .modal input, .modal textarea {
   width: 100%;
-  background: var(--surface-2);
-  border: 1px solid var(--border-2);
+  background: var(--nebula);
+  border: 1px solid var(--rim);
   color: var(--text);
   padding: 8px 12px;
-  border-radius: var(--radius-sm);
+  border-radius: 8px;
   font-family: 'Inter', sans-serif;
   font-size: 13px;
   outline: none;
-  transition: border-color 0.15s;
+  transition: border-color 180ms;
   resize: vertical;
 }
-.modal input:focus, .modal textarea:focus { border-color: var(--teal-dim); }
-.modal-hint { color: var(--text-muted); font-size: 11px; margin-top: 4px; line-height: 1.6; }
-.modal-row { display: flex; gap: 8px; margin-top: 18px; }
-.modal-msg { margin-top: 12px; padding: 10px 12px; border-radius: var(--radius-sm); font-size: 12px; display: none; }
-.modal-msg.ok  { background: rgba(0,212,170,0.1); color: var(--teal); border: 1px solid rgba(0,212,170,0.25); display: block; }
-.modal-msg.err { background: rgba(255,77,106,0.1); color: var(--red); border: 1px solid rgba(255,77,106,0.25); display: block; }
-
-/* ── enroll modal two-col ── */
-.enroll-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
-.enroll-left {}
-.enroll-right {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 12px;
-  font-size: 11px;
-  line-height: 1.7;
-  color: var(--text-muted);
-  white-space: pre-wrap;
-  max-height: 280px;
-  overflow-y: auto;
-  font-family: 'JetBrains Mono', monospace;
-}
-.enroll-right-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-}
+.modal input:focus, .modal textarea:focus { border-color: var(--rim-glow); }
+.modal-hint { color: var(--text-mute); font-size: 11px; margin-top: 4px; line-height: 1.6; }
+.modal-row  { display: flex; gap: 8px; margin-top: 18px; }
+.modal-msg  { margin-top: 10px; padding: 10px 12px; border-radius: 8px; font-size: 12px; display: none; }
+.modal-msg.ok  { background: rgba(0,245,212,.08); color: var(--mission-teal); border: 1px solid rgba(0,245,212,.25); display: block; }
+.modal-msg.err { background: rgba(255,61,110,.08); color: var(--nova-red);    border: 1px solid rgba(255,61,110,.25); display: block; }
 .os-row { display: flex; gap: 6px; }
 .os-btn {
   flex: 1;
-  background: var(--surface-2);
-  border: 1px solid var(--border-2);
-  color: var(--text-muted);
+  background: var(--nebula);
+  border: 1px solid var(--rim);
+  color: var(--text-mute);
   padding: 7px;
-  border-radius: var(--radius-sm);
+  border-radius: 8px;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 500;
   text-align: center;
-  transition: all 0.15s;
+  transition: all 180ms;
 }
-.os-btn.sel { border-color: var(--teal-dim); color: var(--teal); background: var(--teal-glow); }
+.os-btn.sel { border-color: rgba(0,245,212,.4); color: var(--mission-teal); background: rgba(0,245,212,.06); }
 .url-box {
-  background: var(--surface-2);
-  border: 1px solid var(--border-2);
-  border-radius: var(--radius-sm);
+  background: var(--nebula);
+  border: 1px solid var(--rim);
+  border-radius: 8px;
   padding: 9px 12px;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  color: var(--teal);
+  color: var(--mission-teal);
   word-break: break-all;
   margin: 6px 0;
   min-height: 36px;
-  font-family: 'JetBrains Mono', monospace;
 }
 .consent-note {
-  background: rgba(0,212,170,0.06);
-  border: 1px solid rgba(0,212,170,0.18);
-  border-radius: var(--radius-sm);
+  background: rgba(0,245,212,.04);
+  border: 1px solid rgba(0,245,212,.15);
+  border-radius: 8px;
   padding: 9px 12px;
   font-size: 11px;
   line-height: 1.6;
-  color: rgba(0,212,170,0.75);
+  color: rgba(0,245,212,.7);
   margin-top: 8px;
 }
-
-/* ── settings value box ── */
 .value-box {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  background: var(--nebula);
+  border: 1px solid var(--rim);
+  border-radius: 8px;
   padding: 8px 12px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  color: var(--teal);
+  color: var(--mission-teal);
   word-break: break-all;
   margin-top: 4px;
 }
-.policy-box {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+.policy-text {
+  background: var(--nebula);
+  border: 1px solid var(--rim);
+  border-radius: 8px;
   padding: 10px 12px;
   font-size: 11px;
   line-height: 1.7;
-  color: var(--text-muted);
+  color: var(--text-mute);
   white-space: pre-wrap;
-  max-height: 150px;
+  max-height: 140px;
   overflow-y: auto;
   margin-top: 4px;
+  font-family: 'JetBrains Mono', monospace;
 }
-.cloudflare-note {
-  background: rgba(0,212,170,0.04);
-  border: 1px solid rgba(0,212,170,0.14);
-  border-radius: var(--radius-sm);
+.cf-note {
+  background: rgba(0,245,212,.03);
+  border: 1px solid rgba(0,245,212,.12);
+  border-radius: 8px;
   padding: 10px 12px;
   margin-top: 6px;
   font-size: 11px;
   line-height: 1.8;
-  color: var(--text-muted);
+  color: var(--text-mute);
 }
-.cloudflare-note strong { color: var(--teal); }
-.cloudflare-note code {
-  background: rgba(0,212,170,0.08);
+.cf-note strong { color: var(--mission-teal); }
+.cf-note code {
+  background: rgba(0,245,212,.07);
   padding: 1px 5px;
   border-radius: 3px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
 }
 
-::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--starlight); border-radius: 2px; }
 </style>
 </head>
 <body>
@@ -800,7 +851,10 @@ tr:hover td { background: var(--surface-2); }
 <!-- ── Topbar ── -->
 <div class="topbar">
   <div class="logo">
-    <span class="logo-glyph">◈</span>
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <polygon points="9,1 17,9 9,17 1,9" stroke="#00F5D4" stroke-width="1.2" fill="none"/>
+      <circle cx="9" cy="9" r="3" fill="#00F5D4" fill-opacity=".8"/>
+    </svg>
     GHOST MONITOR
   </div>
   <div class="live-chip">
@@ -808,218 +862,188 @@ tr:hover td { background: var(--surface-2); }
     LIVE
   </div>
 
-  <div class="stats-row">
-    <div class="stat-chip online">
-      <span class="sc-label">Online</span>
-      <span class="sc-val" id="s-online">—</span>
+  <div class="stat-chips">
+    <div class="chip online">
+      <span class="chip-label">Online</span>
+      <span class="chip-val" id="s-online">—</span>
     </div>
-    <div class="stat-chip offline">
-      <span class="sc-label">Offline</span>
-      <span class="sc-val" id="s-offline">—</span>
+    <div class="chip offline">
+      <span class="chip-label">Offline</span>
+      <span class="chip-val" id="s-offline">—</span>
     </div>
-    <div class="stat-chip total">
-      <span class="sc-label">Total</span>
-      <span class="sc-val" id="s-total">—</span>
+    <div class="chip total">
+      <span class="chip-label">Total</span>
+      <span class="chip-val" id="s-total">—</span>
     </div>
-    <div class="stat-chip consented" id="consented-chip">
-      <span class="consent-ring" id="consentRingSvg"></span>
-      <span class="sc-label">Consented</span>
-      <span class="sc-val" id="s-consented">—</span>
+    <!-- Consent ring chip (signature element #4) -->
+    <div class="chip" id="consented-chip" style="gap:6px;">
+      <span id="consentRingSvg"></span>
+      <span class="chip-label">Consented</span>
+      <span class="chip-val" id="s-consented" style="font-size:13px;">—</span>
     </div>
-    <div class="stat-chip alerts">
-      <span class="sc-label">Alerts 1h</span>
-      <span class="sc-val" id="s-alerts">—</span>
+    <div class="chip alerts">
+      <span class="chip-label">Alerts</span>
+      <span class="chip-val" id="s-alerts">—</span>
     </div>
-    <span class="time-label" id="serverTime"></span>
+    <span id="alertCount" style="display:none">0</span>
+    <span class="topbar-time" id="serverTime"></span>
   </div>
 
   <div class="topbar-actions">
-    <button class="btn refresh" onclick="refreshAll()" title="Refresh">↺</button>
-    <button class="btn enroll" onclick="openEnroll()">+ Enroll Device</button>
+    <button class="btn" onclick="refreshAll()" title="Refresh" style="padding:6px 10px;font-size:13px;">↺</button>
+    <button class="btn teal" onclick="openEnroll()">+ Enroll Device</button>
     <button class="btn" onclick="openSettings()">⚙ Settings</button>
   </div>
 </div>
 
-<!-- ── Main Layout ── -->
+<!-- ── Layout ── -->
 <div class="layout">
 
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="sidebar-hdr">
-      <span>Devices</span>
-      <span class="sidebar-count" id="deviceCount">0</span>
+      Fleet
+      <span class="fleet-count" id="deviceCount">0</span>
     </div>
-    <div id="fleetList"><div class="loading">Loading…</div></div>
+    <div id="fleetList"><div class="loading">Awaiting telemetry</div></div>
   </div>
 
-  <!-- Main Panel -->
+  <!-- Main panel -->
   <div class="main-panel">
 
-    <!-- All-devices view (default) -->
+    <!-- All-devices view -->
     <div id="viewAll">
-      <div class="tabs">
-        <div class="tab active" onclick="gTab('activity',this)">Activity Feed</div>
-        <div class="tab" onclick="gTab('warnings',this)">Warnings</div>
+      <!-- Constellation view (signature element #1) -->
+      <div class="constellation-wrap">
+        <div class="constellation-label">Fleet Constellation</div>
+        <svg id="constellationSvg" viewBox="-250 -250 500 500" width="380" height="380" style="max-height:42vh">
+          <!-- Static orbital rings -->
+          <circle cx="0" cy="0" r="110" fill="none" stroke="rgba(0,245,212,.07)" stroke-width="1" stroke-dasharray="4 6"/>
+          <circle cx="0" cy="0" r="180" fill="none" stroke="rgba(0,245,212,.05)" stroke-width="1" stroke-dasharray="4 8"/>
+          <!-- Commander center node -->
+          <circle cx="0" cy="0" r="22" fill="rgba(0,245,212,.05)" stroke="rgba(0,245,212,.15)" stroke-width="1"/>
+          <circle cx="0" cy="0" r="6"  fill="#00F5D4" fill-opacity=".9"/>
+          <circle cx="0" cy="0" r="10" fill="none" stroke="rgba(0,245,212,.35)" stroke-width="0.8"/>
+          <text x="0" y="35" text-anchor="middle" fill="rgba(0,245,212,.5)" font-size="8" font-family="'JetBrains Mono',monospace" letter-spacing=".1em">COMMANDER</text>
+          <!-- Device nodes rendered by JS below -->
+        </svg>
       </div>
-      <div class="section active" id="gt-activity">
-        <div id="activityFeed"><div class="loading">Loading…</div></div>
-      </div>
-      <div class="section" id="gt-warnings">
-        <div id="allWarnings"><div class="loading">Loading…</div></div>
+
+      <!-- Feed area -->
+      <div class="feed-area">
+        <div class="feed-tabs">
+          <div class="tab active" onclick="gTab('activity',this)">Activity</div>
+          <div class="tab" onclick="gTab('warnings',this)">Warnings</div>
+        </div>
+        <div class="section active" id="gt-activity">
+          <div id="activityFeed"><div class="loading">Awaiting telemetry</div></div>
+        </div>
+        <div class="section" id="gt-warnings">
+          <div id="allWarnings"><div class="loading">Awaiting telemetry</div></div>
+          <div id="alertsFeed" style="display:none"></div>
+        </div>
       </div>
     </div>
 
     <!-- Device detail view -->
     <div id="viewDevice" style="display:none">
-
-      <!-- Header card -->
-      <div class="device-header-card">
+      <div class="device-hdr-card">
         <div class="dhc-row1">
           <span id="dBadge"></span>
           <span class="dhc-name" id="dTitle"></span>
           <span id="dConsentBadge"></span>
-          <button id="dRevokeBtn" class="btn-revoke" style="display:none" onclick="revokeDevice()">✕ Revoke</button>
+          <button id="dRevokeBtn" class="btn-revoke" style="display:none" onclick="revokeDevice()">Revoke</button>
           <button class="btn" style="font-size:11px;padding:4px 10px;" onclick="clearDevice()">← Back</button>
         </div>
         <div class="dhc-meta" id="dMeta"></div>
-        <div class="dhc-metrics" id="dMetrics"></div>
+        <div class="gauges-row" id="dMetrics"></div>
         <div class="dhc-window" id="activeWin" style="display:none">
-          <span style="color:var(--text-muted);font-size:10px;text-transform:uppercase;letter-spacing:.07em;flex-shrink:0">Active:</span>
+          <span class="dhc-window-label">Active</span>
           <span class="dhc-window-val" id="activeWinVal"></span>
         </div>
       </div>
 
-      <div class="tabs">
-        <div class="tab active" onclick="dTab('processes',this)">Processes</div>
-        <div class="tab" onclick="dTab('network',this)">Network</div>
-        <div class="tab" onclick="dTab('files',this)">Files</div>
-        <div class="tab" onclick="dTab('events',this)">Events</div>
-        <div class="tab" onclick="dTab('agentlog',this)">Agent Log</div>
+      <div class="device-tabs-wrap">
+        <div class="feed-tabs">
+          <div class="tab active" onclick="dTab('processes',this)">Processes</div>
+          <div class="tab" onclick="dTab('network',this)">Network</div>
+          <div class="tab" onclick="dTab('files',this)">Files</div>
+          <div class="tab" onclick="dTab('events',this)">Events</div>
+          <div class="tab" onclick="dTab('agentlog',this)">Agent Log</div>
+        </div>
       </div>
-      <div class="section active" id="dt-processes"><div class="loading">Loading…</div></div>
-      <div class="section"        id="dt-network"><div class="loading">Loading…</div></div>
-      <div class="section"        id="dt-files"><div class="loading">Loading…</div></div>
-      <div class="section"        id="dt-events"><div class="loading">Loading…</div></div>
-      <div class="section"        id="dt-agentlog"><div class="loading">Loading…</div></div>
+      <div class="tab-panels">
+        <div class="section active" id="dt-processes"><div class="loading">Awaiting telemetry</div></div>
+        <div class="section"        id="dt-network"><div class="loading">Awaiting telemetry</div></div>
+        <div class="section"        id="dt-files"><div class="loading">Awaiting telemetry</div></div>
+        <div class="section"        id="dt-events"><div class="loading">Awaiting telemetry</div></div>
+        <div class="section"        id="dt-agentlog"><div class="loading">Awaiting telemetry</div></div>
+      </div>
     </div>
-  </div>
 
-  <!-- Right Panel: Warnings -->
-  <div class="right-panel">
-    <div class="rp-hdr">
-      <span>Warnings</span>
-      <span id="alertCount" style="color:var(--brass)">0</span>
-    </div>
-    <div id="alertsFeed"><div class="loading">—</div></div>
-  </div>
-</div>
+  </div><!-- /main-panel -->
+</div><!-- /layout -->
 
-<!-- ══ Enroll Device Modal ══ -->
+<!-- ── Enroll Modal ── -->
 <div class="overlay" id="enrollModal">
-  <div class="modal" style="width:680px">
+  <div class="modal" style="width:620px">
     <div class="modal-title">Enroll New Device</div>
-
     <label>Device Name</label>
     <input id="enrollName" type="text" placeholder="e.g. john-laptop, workstation-2" oninput="updateEnrollURL()">
-    <div class="modal-hint">Letters, numbers, hyphens. Appears as the device label in the dashboard.</div>
-
+    <div class="modal-hint">Letters, numbers, hyphens only. Identifies this device in the dashboard.</div>
     <label>Operating System</label>
     <div class="os-row">
       <div class="os-btn sel" id="os-win" onclick="selOS('win')">Windows (.bat)</div>
       <div class="os-btn"     id="os-lin" onclick="selOS('lin')">Linux / macOS (.sh)</div>
     </div>
-
     <label>Enrollment Link</label>
     <div class="url-box" id="enrollURL">Enter a device name above…</div>
-
-    <div class="enroll-grid">
-      <div class="enroll-left">
-        <div class="modal-hint" style="margin-top:0;">
-          <strong style="color:var(--text)">Share this link</strong> — staff member opens it in a browser to download the setup script, then runs it.<br>
-          Or click <em>Download Script</em> to grab it yourself.
-        </div>
-        <div class="consent-note" style="margin-top:8px;">
-          ◈ Staff member sees the full monitoring policy and must type <strong>Y</strong> before anything installs.
-          Consent is logged on the commander before any files are written — no silent installs.
-        </div>
-      </div>
-      <div class="enroll-right-col">
-        <div class="enroll-right-label">What your staff will see:</div>
-        <div class="enroll-right">GHOST MONITOR | MONITORING DISCLOSURE
-================================================================
-
-This device will be monitored by your agency administrator.
-The following data is collected every 5-10 minutes:
-
-  Processes      - program names, CPU%, memory
-  Network        - active connections, external IPs
-  System metrics - CPU%, RAM%, disk usage
-  Active window  - title of the focused window
-  File listings  - names/sizes in Documents, Desktop, Downloads
-                   (contents NOT read without explicit request)
-
-Data goes only to your agency's commander PC.
-
-================================================================
-Type Y to accept and continue, anything else to cancel:</div>
-      </div>
+    <div class="consent-note">
+      Staff member sees the full monitoring policy and must type Y before anything installs. Consent is logged server-side before any files are written.
     </div>
-
     <div class="modal-msg" id="enrollMsg"></div>
     <div class="modal-row">
       <button class="btn-primary" onclick="copyEnrollLink()">Copy Link</button>
-      <button class="btn-primary green" onclick="downloadEnrollScript()">Download Script</button>
-      <button class="btn-cancel" onclick="closeEnroll()">Close</button>
+      <button class="btn-primary" style="background:var(--ion-blue);color:#000;" onclick="downloadEnrollScript()">Download Script</button>
+      <button class="btn-cancel"  onclick="closeEnroll()">Close</button>
     </div>
   </div>
 </div>
 
-<!-- ══ Settings Modal ══ -->
+<!-- ── Settings Modal ── -->
 <div class="overlay" id="settingsModal">
   <div class="modal">
     <div class="modal-title">Settings</div>
-
-    <label>Commander Network Address</label>
+    <label>Commander Address (LAN)</label>
     <div class="value-box" id="settingsLanIP">Detecting…</div>
-    <div class="modal-hint">Address staff machines connect to on your LAN.</div>
-
-    <label>Auth Model</label>
-    <div class="modal-hint" style="margin-top:4px;">
-      v2 uses <strong style="color:var(--text)">per-device tokens</strong> stored in
-      <code style="font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--surface-2);padding:1px 5px;border-radius:3px;">tokens.json</code>.
-      Each enrollment generates a unique token. Revoking one device leaves all others unaffected.
-    </div>
-
-    <label>Monitoring Policy <span style="color:var(--text-dim);font-weight:400;text-transform:none;letter-spacing:0;">(shown to staff at enrollment)</span></label>
-    <div class="policy-box" id="settingsPolicy">Loading…</div>
-
-    <label>Public URL Override <span style="color:var(--text-dim);font-weight:400;text-transform:none;letter-spacing:0;">(for remote / internet access)</span></label>
+    <div class="modal-hint">Address staff machines use on your local network.</div>
+    <label>Monitoring Policy</label>
+    <div class="policy-text" id="settingsPolicy">Loading…</div>
+    <label>Public URL Override</label>
     <input id="settingsURLOverride" type="text" placeholder="https://your-tunnel.trycloudflare.com">
-    <div class="cloudflare-note">
-      <strong>Cloudflare Tunnel setup (one-time, free)</strong><br>
-      1. Download <code>cloudflared</code> from developers.cloudflare.com/cloudflare-one/…/downloads<br>
-      2. Run: <code>cloudflared tunnel --url http://localhost:8888</code><br>
-      3. Copy the <code>https://….trycloudflare.com</code> URL it prints<br>
-      4. Paste above and click Save — all new enrollment links will use it.
+    <div class="cf-note">
+      <strong>Cloudflare Tunnel</strong> — one-time free setup for remote access:<br>
+      1. Install <code>cloudflared</code> &nbsp;2. Run <code>cloudflared tunnel --url http://localhost:8888</code><br>
+      3. Paste the <code>https://….trycloudflare.com</code> URL above and save.
     </div>
-    <div class="modal-hint" style="margin-top:6px;">Leave blank to use LAN-only mode.</div>
-
     <div class="modal-msg" id="settingsMsg"></div>
     <div class="modal-row">
-      <button class="btn-primary" onclick="saveSettings()">Save</button>
+      <button class="btn-primary" onclick="saveSettings()">Save changes</button>
       <button class="btn-cancel"  onclick="closeSettings()">Close</button>
     </div>
   </div>
 </div>
 
 <script>
-// ── state ──────────────────────────────────────────────────────────────────
+// ── State ────────────────────────────────────────────────────────────────────
 let selectedDevice = null;
 let enrollOS = 'win';
 let enrollBaseURL = '';
 let fileRequests = {};
+let _fileListCache = {};
+let _prevLastSeen = {};
 
-// ── utils ──────────────────────────────────────────────────────────────────
+// ── Utils ─────────────────────────────────────────────────────────────────────
 function fmt(iso) {
   if (!iso) return '—';
   try { return new Date(iso).toLocaleString([], {month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
@@ -1033,27 +1057,18 @@ function fmtShort(iso) {
 function ago(iso) {
   if (!iso) return '—';
   const s = (Date.now() - new Date(iso)) / 1000;
-  if (s < 60)   return `${Math.round(s)}s ago`;
-  if (s < 3600) return `${Math.round(s/60)}m ago`;
-  return `${Math.round(s/3600)}h ago`;
+  if (s < 60)   return Math.round(s)   + 's ago';
+  if (s < 3600) return Math.round(s/60)   + 'm ago';
+  return Math.round(s/3600) + 'h ago';
 }
 function pct(n) { return Math.min(100, Math.max(0, n || 0)); }
 function barColor(n) {
-  return n > 80 ? 'var(--red)' : n > 60 ? 'var(--brass)' : 'var(--teal)';
+  return n > 80 ? 'var(--nova-red)' : n > 60 ? 'var(--solar-amber)' : 'var(--mission-teal)';
 }
-function sevClass(s) {
-  return s === 'critical' ? 'critical' : s === 'warning' ? 'warn' : 'info';
-}
-function tlSevClass(s) {
-  return s === 'critical' ? 'tl-sev-critical' : s === 'warning' ? 'tl-sev-warning' : 'tl-sev-info';
-}
-function evtIcon(t) {
-  return {process_started:'▶',process_stopped:'■',high_cpu:'△',high_ram:'△',new_ext_connection:'◆',new_ext_conn:'◆'}[t] || '●';
-}
-function fmtSize(kb) {
-  if (kb < 1024) return kb + ' KB';
-  return (kb / 1024).toFixed(1) + ' MB';
-}
+function sevClass(s) { return s === 'critical' ? 'critical' : s === 'warning' ? 'warn' : 'info'; }
+function tlSevClass(s) { return s === 'critical' ? 'tl-sev-critical' : s === 'warning' ? 'tl-sev-warning' : 'tl-sev-info'; }
+function evtIcon(t) { return {process_started:'▶',process_stopped:'■',high_cpu:'△',high_ram:'△',new_ext_connection:'◆',new_ext_conn:'◆'}[t] || '●'; }
+function fmtSize(kb) { return kb < 1024 ? kb + ' KB' : (kb/1024).toFixed(1) + ' MB'; }
 function osLabel(os) {
   if (!os) return '';
   const o = os.toLowerCase();
@@ -1061,190 +1076,293 @@ function osLabel(os) {
   if (o.includes('darwin') || o.includes('mac')) return 'MAC';
   return 'LIN';
 }
-function netStateBadge(s) {
-  if (!s) return `<span style="color:var(--text-muted)">${s||'—'}</span>`;
-  const u = (s||'').toUpperCase();
-  if (u === 'ESTABLISHED') return `<span class="badge state-est">${s}</span>`;
-  if (u === 'LISTEN')      return `<span class="badge state-listen">${s}</span>`;
-  if (u === 'CLOSE_WAIT' || u === 'TIME_WAIT') return `<span class="badge state-close">${s}</span>`;
-  return `<span style="color:var(--text-muted);font-size:10px">${s}</span>`;
+function netBadge(s) {
+  const u = (s || '').toUpperCase();
+  if (u === 'ESTABLISHED') return '<span class="badge state-est">ESTABLISHED</span>';
+  if (u === 'LISTEN')      return '<span class="badge state-listen">LISTEN</span>';
+  if (u === 'CLOSE_WAIT' || u === 'TIME_WAIT') return '<span class="badge state-close">' + s + '</span>';
+  return '<span style="color:var(--text-mute);font-size:10px">' + escHtml(s || '—') + '</span>';
 }
+function escJs(s)   { return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'\\"'); }
+function escAttr(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-// consent ring SVG
-function makeConsentRingSvg(fraction, color) {
-  const r = 8, cx = 10, cy = 10, strokeW = 2.5;
-  const circ = 2 * Math.PI * r;
+// ── Consent ring SVG (signature element #4) ──────────────────────────────────
+function makeConsentRing(fraction, color) {
+  const r = 8, circ = 2 * Math.PI * r;
   const dash = fraction * circ;
-  return `<svg width="20" height="20" viewBox="0 0 20 20" style="transform:rotate(-90deg)">
-    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="${strokeW}"/>
-    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="${strokeW}"
-      stroke-dasharray="${dash} ${circ}" stroke-linecap="round" style="transition:stroke-dasharray .4s"/>
-  </svg>`;
+  return '<svg width="20" height="20" viewBox="0 0 20 20" style="display:block;transform:rotate(-90deg)">'
+    + '<circle cx="10" cy="10" r="' + r + '" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="2.5"/>'
+    + '<circle cx="10" cy="10" r="' + r + '" fill="none" stroke="' + color + '" stroke-width="2.5"'
+    + ' stroke-dasharray="' + dash.toFixed(2) + ' ' + circ.toFixed(2) + '" stroke-linecap="round"'
+    + ' style="transition:stroke-dasharray .5s ease-out"/>'
+    + '</svg>';
 }
 
-// ── stats ──────────────────────────────────────────────────────────────────
+// ── Radial gauge SVG (signature element #3) ──────────────────────────────────
+function makeGauge(value, pctVal, detailLine, name, color) {
+  const r = 34, circ = 2 * Math.PI * r; // circ ≈ 213.63
+  const dash = (pct(pctVal) / 100) * circ;
+  return '<div class="gauge-wrap">'
+    + '<svg width="88" height="88" viewBox="0 0 88 88">'
+    + '<circle cx="44" cy="44" r="' + r + '" fill="none" stroke="var(--rim)" stroke-width="4.5"/>'
+    + '<circle cx="44" cy="44" r="' + r + '" fill="none" stroke="' + color + '" stroke-width="4.5"'
+    + ' stroke-linecap="round"'
+    + ' stroke-dasharray="' + dash.toFixed(2) + ' ' + circ.toFixed(2) + '"'
+    + ' transform="rotate(-90 44 44)" class="gauge-arc"/>'
+    + '<text x="44" y="41" text-anchor="middle" dominant-baseline="middle"'
+    + ' font-family="\'Space Grotesk\',sans-serif" font-size="16" font-weight="700"'
+    + ' fill="' + color + '">' + Math.round(pct(pctVal)) + '%</text>'
+    + '</svg>'
+    + '<div class="gauge-detail">' + escHtml(detailLine) + '</div>'
+    + '<div class="gauge-name">' + name + '</div>'
+    + '</div>';
+}
+
+// ── Stats ─────────────────────────────────────────────────────────────────────
 async function loadStats() {
   const d = await fetch('/api/stats').then(r=>r.json()).catch(()=>({}));
-  document.getElementById('s-online').textContent    = d.devices_online    ?? '—';
-  document.getElementById('s-offline').textContent   = d.devices_offline   ?? '—';
-  document.getElementById('s-total').textContent     = d.devices_total     ?? '—';
-
+  document.getElementById('s-online').textContent  = d.devices_online  ?? '—';
+  document.getElementById('s-offline').textContent = d.devices_offline ?? '—';
+  document.getElementById('s-total').textContent   = d.devices_total   ?? '—';
   const consented = d.devices_consented ?? 0;
   const total     = d.devices_total ?? 0;
-  const allOk     = total > 0 && consented >= total;
-  const someOk    = consented > 0 && consented < total;
-  const noneOk    = consented === 0 && total > 0;
-  const consentColor = allOk ? 'var(--teal)' : someOk ? 'var(--brass)' : noneOk ? 'var(--red)' : 'var(--text-muted)';
-  const fraction = total > 0 ? consented / total : 0;
-
-  document.getElementById('s-consented').textContent = total > 0 ? `${consented}/${total}` : '—';
-  document.getElementById('s-consented').style.color = consentColor;
-  document.getElementById('consentRingSvg').innerHTML = makeConsentRingSvg(fraction, consentColor);
-
+  const fraction  = total > 0 ? consented / total : 0;
+  const color     = total === 0 ? 'var(--text-mute)' : consented >= total ? 'var(--mission-teal)' : consented > 0 ? 'var(--solar-amber)' : 'var(--nova-red)';
+  document.getElementById('s-consented').textContent  = total > 0 ? consented + '/' + total : '—';
+  document.getElementById('s-consented').style.color  = color;
+  document.getElementById('consentRingSvg').innerHTML = makeConsentRing(fraction, color);
   document.getElementById('s-alerts').textContent = d.alerts_1h ?? '—';
-  document.getElementById('s-alerts').style.color = (d.alerts_1h > 0) ? 'var(--red)' : 'var(--text-muted)';
-
+  document.getElementById('s-alerts').style.color = (d.alerts_1h > 0) ? 'var(--nova-red)' : 'var(--text-mute)';
   if (d.server_time) document.getElementById('serverTime').textContent = new Date(d.server_time).toLocaleTimeString();
 }
 
-// ── fleet ──────────────────────────────────────────────────────────────────
-async function loadFleet() {
-  const devices = await fetch('/api/fleet').then(r=>r.json()).catch(()=>[]);
-  const el = document.getElementById('fleetList');
-  document.getElementById('deviceCount').textContent = devices.length;
+// ── Constellation (signature element #1) ─────────────────────────────────────
+function renderConstellation(devices) {
+  const svg = document.getElementById('constellationSvg');
+  if (!svg) return;
+  // Remove old dynamic nodes
+  svg.querySelectorAll('.c-dyn').forEach(el => el.remove());
 
   if (!devices.length) {
-    el.innerHTML = `<div class="empty">
-      <div class="empty-icon">◈</div>
-      <div class="empty-title">No devices yet</div>
-      <div class="empty-sub"><a onclick="openEnroll()">Click + Enroll Device</a> to add your first device.</div>
-    </div>`;
+    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x','0'); t.setAttribute('y','60');
+    t.setAttribute('text-anchor','middle');
+    t.setAttribute('fill','var(--text-mute)');
+    t.setAttribute('font-size','10');
+    t.setAttribute('font-family',"'JetBrains Mono',monospace");
+    t.textContent = 'No agents enrolled. Enroll the first device.';
+    t.classList.add('c-dyn');
+    svg.appendChild(t);
+    return;
+  }
+
+  const R = 170; // orbit radius
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  devices.forEach((d, i) => {
+    const angle = (i / devices.length) * Math.PI * 2 - Math.PI / 2;
+    const x = +(Math.cos(angle) * R).toFixed(2);
+    const y = +(Math.sin(angle) * R).toFixed(2);
+    const color = d.paused ? '#FFB347' : d.online ? '#00F5D4' : '#FF3D6E';
+    const isSelected = selectedDevice === d.device_id;
+
+    // Connection line
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1','0'); line.setAttribute('y1','0');
+    line.setAttribute('x2', x); line.setAttribute('y2', y);
+    line.setAttribute('stroke', color);
+    line.setAttribute('stroke-width','0.5');
+    line.setAttribute('stroke-opacity','0.18');
+    line.classList.add('c-dyn');
+    svg.insertBefore(line, svg.children[2]); // insert before commander node
+
+    // Pulse dot traveling center → node
+    if ((d.online || d.paused) && !prefersReduced) {
+      const pulseCircle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      pulseCircle.setAttribute('r','2.5');
+      pulseCircle.setAttribute('fill', color);
+      pulseCircle.setAttribute('cx','0');
+      pulseCircle.setAttribute('cy','0');
+      pulseCircle.classList.add('c-dyn');
+      svg.appendChild(pulseCircle);
+      const delay = i * 800;
+      const duration = d.paused ? 6000 : 4000;
+      pulseCircle.animate(
+        [
+          { transform: 'translate(0px, 0px)', opacity: 0 },
+          { transform: 'translate(0px, 0px)', opacity: 0.9, offset: 0.05 },
+          { transform: 'translate(' + x + 'px,' + y + 'px)', opacity: 0 }
+        ],
+        { duration, delay, iterations: Infinity, easing: 'ease-in', fill: 'forwards' }
+      );
+    }
+
+    // Device node group
+    const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.classList.add('c-dyn','c-node-group');
+    g.setAttribute('transform','translate(' + x + ',' + y + ')');
+
+    // Glow halo for online
+    if (d.online && !d.paused) {
+      const halo = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      halo.setAttribute('r','12');
+      halo.setAttribute('fill', color);
+      halo.setAttribute('fill-opacity','0.1');
+      g.appendChild(halo);
+    }
+    // Main circle
+    const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    circle.setAttribute('r', isSelected ? '9' : '7');
+    circle.setAttribute('fill', color);
+    circle.setAttribute('fill-opacity', d.online ? '1' : '0.45');
+    circle.classList.add('c-node-circle');
+    if (isSelected) {
+      circle.setAttribute('stroke', color);
+      circle.setAttribute('stroke-width','2');
+      circle.setAttribute('stroke-opacity','0.4');
+    }
+    g.appendChild(circle);
+
+    // Label
+    const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+    const lx = Math.cos(angle) >= 0 ? 14 : -14;
+    label.setAttribute('x', lx);
+    label.setAttribute('y', '4');
+    label.setAttribute('text-anchor', Math.cos(angle) >= 0 ? 'start' : 'end');
+    label.setAttribute('fill', isSelected ? '#F0F7FF' : 'var(--text)');
+    label.setAttribute('font-size', '9');
+    label.setAttribute('font-family', "'Inter',sans-serif");
+    label.textContent = (d.display_name || d.device_id).slice(0, 14);
+    g.appendChild(label);
+
+    // Tooltip
+    const title = document.createElementNS('http://www.w3.org/2000/svg','title');
+    const cpu = d.metrics && d.metrics.cpu_percent != null ? d.metrics.cpu_percent.toFixed(1) + '%' : '?';
+    title.textContent = (d.display_name || d.device_id) + '\n' + (d.os || '') + ' ' + (d.ip || '') + '\nCPU: ' + cpu + '  Last: ' + ago(d.last_seen);
+    g.appendChild(title);
+
+    g.addEventListener('click', () => selectDevice(d.device_id));
+    svg.appendChild(g);
+  });
+}
+
+// ── Fleet ─────────────────────────────────────────────────────────────────────
+async function loadFleet() {
+  const devices = await fetch('/api/fleet').then(r=>r.json()).catch(()=>[]);
+  document.getElementById('deviceCount').textContent = devices.length;
+  const el = document.getElementById('fleetList');
+
+  if (!devices.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon"><svg width="36" height="36" viewBox="0 0 36 36"><polygon points="18,3 33,18 18,33 3,18" stroke="rgba(0,245,212,.3)" stroke-width="1" fill="none"/><circle cx="18" cy="18" r="4" fill="rgba(0,245,212,.3)"/></svg></div><div class="empty-title">No devices</div><div class="empty-sub"><a onclick="openEnroll()">Enroll the first device</a> to begin.</div></div>';
+    renderConstellation([]);
     return;
   }
 
   el.innerHTML = devices.map(d => {
-    const cpu  = d.metrics?.cpu_percent || 0;
-    const ram  = d.metrics?.ram_percent || 0;
     const stateClass = d.paused ? 'paused' : d.online ? 'online' : 'offline';
-    const dotClass   = d.paused ? 'paused' : d.online ? 'online' : 'offline';
+    const color      = d.paused ? '#FFB347' : d.online ? '#00F5D4' : '#FF3D6E';
     const isActive   = selectedDevice === d.device_id;
-    const consentHtml = d.consented
-      ? `<span class="consent-icon ok" title="Consented ${d.consent_ts ? ago(d.consent_ts) : ''}">✓</span>`
-      : `<span class="consent-icon warn" title="No consent record">⚠</span>`;
-    const winTitle = d.active_window ? `<div class="dc-window">${escHtml(d.active_window.slice(0,55))}</div>` : '';
+    const consent    = d.consented
+      ? '<span class="badge c-ok" style="font-size:8px">CONSENTED</span>'
+      : '<span class="badge c-warn" style="font-size:8px">NO CONSENT</span>';
+    const winRow     = d.active_window ? '<div class="dc-window">' + escHtml(d.active_window.slice(0,52)) + '</div>' : '';
 
-    return `<div class="device-card is-${stateClass}${isActive?' active':''}" onclick="selectDevice('${d.device_id}')">
-      <div class="dc-row1">
-        <div class="dc-dot ${dotClass}"></div>
-        <div class="dc-name">${escHtml(d.display_name||d.device_id)}</div>
-        <span class="os-pill">${osLabel(d.os)}</span>
-        ${consentHtml}
-      </div>
-      <div class="dc-row2">
-        ${d.paused
-          ? `<span class="badge paused">PAUSED</span>`
-          : `<span class="badge ${d.online?'online':'offline'}">${d.online?'ONLINE':'OFFLINE'}</span>`
-        }
-        <span class="dc-time">${ago(d.last_seen)}</span>
-      </div>
-      <div class="mini-bar" title="CPU ${cpu}%">
-        <div class="mini-bar-fill" style="width:${pct(cpu)}%;background:${barColor(cpu)}"></div>
-      </div>
-      <div class="mini-bar" style="margin-top:3px;" title="RAM ${ram}%">
-        <div class="mini-bar-fill" style="width:${pct(ram)}%;background:${barColor(ram)}"></div>
-      </div>
-      ${winTitle}
-    </div>`;
+    // Detect beacon pulse
+    const prev = _prevLastSeen[d.device_id];
+    const hasPulse = prev && prev !== d.last_seen;
+    _prevLastSeen[d.device_id] = d.last_seen;
+
+    return '<div class="device-card is-' + stateClass + (isActive ? ' active' : '') + (hasPulse ? ' beacon-active' : '') + '"'
+      + ' onclick="selectDevice(\'' + d.device_id + '\')">'
+      + '<div class="dc-row1">'
+      // Orbital ring SVG (signature element #2)
+      + '<svg class="orbital-icon" width="20" height="20" viewBox="0 0 20 20">'
+      + '<circle cx="10" cy="10" r="8.5" fill="none" stroke="' + color + '" stroke-width="1"'
+      + ' stroke-dasharray="3.5 2.5" class="orb-ring ' + stateClass + '"/>'
+      + '<circle cx="10" cy="10" r="3.5" fill="' + color + '"'
+      + (d.online && !d.paused ? ' style="filter:drop-shadow(0 0 4px ' + color + ')"' : ' fill-opacity=".5"')
+      + '/></svg>'
+      + '<span class="dc-name">' + escHtml(d.display_name || d.device_id) + '</span>'
+      + '<span class="os-pill">' + osLabel(d.os) + '</span>'
+      + '</div>'
+      + '<div class="dc-row2">'
+      + '<span class="badge ' + stateClass + '">' + stateClass.toUpperCase() + '</span>'
+      + consent
+      + '<span class="dc-time">' + ago(d.last_seen) + '</span>'
+      + '</div>'
+      + winRow
+      + '</div>';
   }).join('');
+
+  // Remove then re-add beacon class (force re-trigger)
+  el.querySelectorAll('.beacon-active').forEach(card => {
+    void card.offsetWidth; // reflow
+  });
+
+  renderConstellation(devices);
 }
 
-// ── global feeds ───────────────────────────────────────────────────────────
+// ── Global feeds ──────────────────────────────────────────────────────────────
 async function loadActivityFeed() {
   const events = await fetch('/api/activity?limit=150').then(r=>r.json()).catch(()=>[]);
   const el = document.getElementById('activityFeed');
   if (!events.length) {
-    el.innerHTML = `<div class="empty">
-      <div class="empty-icon">◈</div>
-      <div class="empty-title">No activity yet</div>
-      <div class="empty-sub">Waiting for agents to check in. Data arrives every 5–10 minutes.</div>
-    </div>`;
+    el.innerHTML = '<div class="empty"><div class="empty-title">Mission nominal</div><div class="empty-sub">No events. Agents beacon every 5–10 min.</div></div>';
     return;
   }
-  el.innerHTML = events.map(e => `
-    <div class="event-row">
-      <span class="evt-time">${fmt(e.ts)}</span>
-      <span class="evt-dev">${escHtml(e.display_name||e.device_id||'—')}</span>
-      <div class="evt-body">
-        <span class="badge ${sevClass(e.severity)}">${e.type}</span>
-        <span class="evt-detail" style="margin-left:6px;">${escHtml(e.detail||'')}</span>
-      </div>
-    </div>`).join('');
+  el.innerHTML = events.map(e => '<div class="evt-row">'
+    + '<span class="evt-time">' + fmt(e.ts) + '</span>'
+    + '<span class="evt-dev">' + escHtml(e.display_name || e.device_id || '—') + '</span>'
+    + '<div class="evt-body">'
+    + '<span class="badge ' + sevClass(e.severity) + '">' + escHtml(e.type || '') + '</span>'
+    + ' <span class="evt-detail">' + escHtml(e.detail || '') + '</span>'
+    + '</div></div>').join('');
 }
 
 async function loadAllWarnings() {
   const alerts = await fetch('/api/alerts?limit=100').then(r=>r.json()).catch(()=>[]);
   const el = document.getElementById('allWarnings');
   if (!alerts.length) {
-    el.innerHTML = `<div class="empty">
-      <div class="empty-icon">✓</div>
-      <div class="empty-title">No warnings</div>
-      <div class="empty-sub">All devices are within normal parameters.</div>
-    </div>`;
+    el.innerHTML = '<div class="empty"><div class="empty-title">No warnings</div><div class="empty-sub">All devices within normal parameters.</div></div>';
     return;
   }
-  el.innerHTML = alerts.map(a => `
-    <div class="event-row">
-      <span class="evt-time">${fmt(a.ts)}</span>
-      <span class="evt-dev">${escHtml(a.display_name||a.device_id||'—')}</span>
-      <div class="evt-body">
-        <span class="badge warn">${a.type}</span>
-        <span class="evt-detail" style="margin-left:6px;">${escHtml(a.detail||'')}</span>
-      </div>
-    </div>`).join('');
+  el.innerHTML = alerts.map(a => '<div class="evt-row">'
+    + '<span class="evt-time">' + fmt(a.ts) + '</span>'
+    + '<span class="evt-dev">' + escHtml(a.display_name || a.device_id || '—') + '</span>'
+    + '<div class="evt-body">'
+    + '<span class="badge warn">' + escHtml(a.type || '') + '</span>'
+    + ' <span class="evt-detail">' + escHtml(a.detail || '') + '</span>'
+    + '</div></div>').join('');
 }
 
 async function loadRightAlerts() {
   const alerts = await fetch('/api/alerts?limit=50').then(r=>r.json()).catch(()=>[]);
   document.getElementById('alertCount').textContent = alerts.length;
-  if (!alerts.length) {
-    document.getElementById('alertsFeed').innerHTML = '<div class="loading" style="color:var(--teal)">No warnings</div>';
-    return;
-  }
-  document.getElementById('alertsFeed').innerHTML = alerts.map(a=>`<div class="alert-item">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;">
-      <span class="alert-dev">${escHtml(a.display_name||a.device_id||'?')}</span>
-      <span class="alert-time">${ago(a.ts)}</span>
-    </div>
-    <div class="alert-msg"><span class="badge warn">${a.type}</span> ${escHtml(a.detail||'')}</div>
-  </div>`).join('');
+  document.getElementById('alertsFeed').innerHTML = alerts.map(a =>
+    '<div>' + escHtml(a.display_name || '') + ' — ' + escHtml(a.detail || '') + '</div>'
+  ).join('');
 }
 
-// ── device detail ──────────────────────────────────────────────────────────
+// ── Device detail ─────────────────────────────────────────────────────────────
 async function selectDevice(id) {
   selectedDevice = id;
   delete _fileListCache[id];
   document.getElementById('viewAll').style.display    = 'none';
   document.getElementById('viewDevice').style.display = 'block';
 
-  const status = await fetch(`/api/device/${id}/status`).then(r=>r.json()).catch(()=>({}));
+  const status = await fetch('/api/device/' + id + '/status').then(r=>r.json()).catch(()=>({}));
   document.getElementById('dTitle').textContent = status.display_name || id;
 
-  const onlineBadge = status.paused
-    ? `<span class="badge paused">PAUSED</span>`
-    : `<span class="badge ${status.online?'online':'offline'}">${status.online?'ONLINE':'OFFLINE'}</span>`;
-  document.getElementById('dBadge').innerHTML = onlineBadge;
+  const stateClass = status.paused ? 'paused' : status.online ? 'online' : 'offline';
+  document.getElementById('dBadge').innerHTML = '<span class="badge ' + stateClass + '">' + stateClass.toUpperCase() + '</span>';
 
-  const consentHtml = status.consented
-    ? `<span class="badge consent-ok" title="Policy v${status.policy_version||'1.0'}">✓ CONSENTED ${status.consent_ts ? fmtShort(status.consent_ts) : ''}</span>`
-    : `<span class="badge consent-warn" title="No consent on record — re-enroll device">! NO CONSENT</span>`;
-  document.getElementById('dConsentBadge').innerHTML = consentHtml;
+  document.getElementById('dConsentBadge').innerHTML = status.consented
+    ? '<span class="badge c-ok">CONSENTED ' + (status.consent_ts ? fmtShort(status.consent_ts) : '') + '</span>'
+    : '<span class="badge c-warn">NO CONSENT</span>';
 
-  // Meta row: OS · IP · hostname
-  const metaParts = [];
-  if (status.os) metaParts.push(status.os);
-  if (status.ip) metaParts.push(status.ip);
-  if (status.hostname) metaParts.push(status.hostname);
-  document.getElementById('dMeta').innerHTML = metaParts.map(p=>`<span>${escHtml(p)}</span>`).join('<span class="dhc-meta-sep">·</span>');
+  const metaParts = [status.os, status.ip, status.hostname].filter(Boolean);
+  document.getElementById('dMeta').innerHTML = metaParts.map(p => '<span>' + escHtml(p) + '</span>').join('<span class="dhc-sep"> · </span>');
 
   document.getElementById('dRevokeBtn').style.display = 'inline-block';
 
@@ -1256,15 +1374,10 @@ async function selectDevice(id) {
   }
 
   const m = status.metrics || {};
-  document.getElementById('dMetrics').innerHTML = [
-    {label:'CPU',  val:(m.cpu_percent||0).toFixed(1)+'%', pct:m.cpu_percent},
-    {label:'RAM',  val:`${m.ram_used_gb||0} / ${m.ram_total_gb||0} GB`, pct:m.ram_percent},
-    {label:'Disk', val:`${m.disk?.used_gb||0} / ${m.disk?.total_gb||0} GB`, pct:m.disk?.percent},
-  ].map(c=>`<div class="dhc-metric-block">
-    <div class="dhc-metric-label">${c.label}</div>
-    <div class="dhc-metric-val">${c.val}</div>
-    <div class="metric-bar"><div class="metric-bar-fill" style="width:${pct(c.pct)}%;background:${barColor(c.pct||0)}"></div></div>
-  </div>`).join('');
+  document.getElementById('dMetrics').innerHTML =
+    makeGauge(m.cpu_percent || 0, m.cpu_percent, (m.cpu_percent || 0).toFixed(1) + '% avg', 'CPU', 'var(--mission-teal)') +
+    makeGauge(m.ram_percent || 0, m.ram_percent, (m.ram_used_gb || 0) + ' / ' + (m.ram_total_gb || 0) + ' GB', 'RAM', 'var(--ion-blue)') +
+    makeGauge(m.disk ? m.disk.percent : 0, m.disk ? m.disk.percent : 0, (m.disk ? m.disk.used_gb : 0) + ' / ' + (m.disk ? m.disk.total_gb : 0) + ' GB', 'Disk', 'var(--plasma-purple)');
 
   loadDeviceTab(id, 'processes');
   loadFleet();
@@ -1279,79 +1392,71 @@ function clearDevice() {
 }
 
 function dTab(name, el) {
-  document.querySelectorAll('#viewDevice .tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('#viewDevice .section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('#viewDevice .feed-tabs .tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#viewDevice .section').forEach(s => s.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('dt-'+name).classList.add('active');
+  document.getElementById('dt-' + name).classList.add('active');
   if (selectedDevice) loadDeviceTab(selectedDevice, name);
 }
 
 function gTab(name, el) {
-  document.querySelectorAll('#viewAll .tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('#viewAll .section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('#viewAll .feed-tabs .tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#viewAll .section').forEach(s => s.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('gt-'+name).classList.add('active');
-  if (name==='activity') loadActivityFeed();
-  if (name==='warnings') loadAllWarnings();
+  document.getElementById('gt-' + name).classList.add('active');
+  if (name === 'activity') loadActivityFeed();
+  if (name === 'warnings') loadAllWarnings();
 }
 
 async function loadDeviceTab(id, tab) {
-  const el = document.getElementById('dt-'+tab);
+  const el = document.getElementById('dt-' + tab);
   if (!el) return;
 
   if (tab === 'processes') {
-    const snap  = await fetch(`/api/device/${id}/snapshot`).then(r=>r.json()).catch(()=>({}));
+    const snap  = await fetch('/api/device/' + id + '/snapshot').then(r=>r.json()).catch(()=>({}));
     const procs = snap.processes || [];
     if (!procs.length) {
-      el.innerHTML = `<div class="empty"><div class="empty-icon">◈</div><div class="empty-title">No process data yet</div><div class="empty-sub">Data arrives within 5–10 minutes after enrollment.</div></div>`;
+      el.innerHTML = '<div class="empty"><div class="empty-title">No process data yet</div><div class="empty-sub">Awaiting first telemetry cycle.</div></div>';
       return;
     }
-    const top5 = new Set(procs.slice(0,5).map(p=>p.pid));
-    el.innerHTML = `<table>
-      <thead><tr><th>PID</th><th>Name</th><th>User</th><th>CPU%</th><th>RAM%</th><th>Status</th></tr></thead>
-      <tbody>
-      ${procs.slice(0,80).map(p=>`<tr class="${top5.has(p.pid)?'proc-top':''}">
-        <td class="mono" style="color:var(--text-muted)">${p.pid||'—'}</td>
-        <td class="mono">${escHtml(p.name||'—')}</td>
-        <td class="mono" style="color:var(--text-muted)">${escHtml(p.username||'—')}</td>
-        <td>
-          <div class="cpu-bar-wrap">
-            <span style="color:${barColor(p.cpu_percent||0)};min-width:36px">${(p.cpu_percent||0).toFixed(1)}%</span>
-            <div class="cpu-bar"><div class="cpu-bar-fill" style="width:${pct(p.cpu_percent)}%;background:${barColor(p.cpu_percent||0)}"></div></div>
-          </div>
-        </td>
-        <td style="color:var(--text-muted)">${(p.memory_percent||0).toFixed(1)}%</td>
-        <td><span style="font-size:10px;color:var(--text-dim)">${escHtml(p.status||'')}</span></td>
-      </tr>`).join('')}
-      </tbody>
-    </table>`;
+    const top5 = new Set(procs.slice(0, 5).map(p => p.pid));
+    el.innerHTML = '<table><thead><tr><th>PID</th><th>Name</th><th>User</th><th>CPU %</th><th>RAM %</th><th>Status</th></tr></thead><tbody>'
+      + procs.slice(0, 80).map(p => {
+          const cpu = p.cpu_percent || 0;
+          const cpuColor = cpu > 80 ? 'var(--nova-red)' : cpu > 50 ? 'var(--solar-amber)' : 'var(--mission-teal)';
+          return '<tr class="' + (top5.has(p.pid) ? 'proc-top' : '') + '">'
+            + '<td class="mono" style="color:var(--text-mute)">' + (p.pid || '—') + '</td>'
+            + '<td class="mono">' + escHtml(p.name || '—') + '</td>'
+            + '<td class="mono" style="color:var(--text-mute)">' + escHtml(p.username || '—') + '</td>'
+            + '<td style="color:' + cpuColor + ';font-family:\'JetBrains Mono\',monospace;font-size:11px">' + cpu.toFixed(1) + '%</td>'
+            + '<td style="color:var(--text-mute);font-family:\'JetBrains Mono\',monospace;font-size:11px">' + (p.memory_percent || 0).toFixed(1) + '%</td>'
+            + '<td style="color:var(--text-dim);font-size:10px">' + escHtml(p.status || '') + '</td>'
+            + '</tr>';
+        }).join('')
+      + '</tbody></table>';
   }
 
   else if (tab === 'network') {
-    const snap  = await fetch(`/api/device/${id}/snapshot`).then(r=>r.json()).catch(()=>({}));
+    const snap  = await fetch('/api/device/' + id + '/snapshot').then(r=>r.json()).catch(()=>({}));
     const conns = snap.network || [];
     if (!conns.length) {
-      el.innerHTML = `<div class="empty"><div class="empty-icon">◈</div><div class="empty-title">No network data yet</div><div class="empty-sub">Network connections appear after the first agent cycle.</div></div>`;
+      el.innerHTML = '<div class="empty"><div class="empty-title">No network data yet</div><div class="empty-sub">Connections appear after the first agent cycle.</div></div>';
       return;
     }
     const ext = conns.filter(c => c.raddr && !c.raddr.match(/^(127\.|192\.168\.|10\.|172\.|::1|0\.0\.)/));
     const loc = conns.filter(c => !ext.includes(c));
-
-    const tbl = (list, lbl) => !list.length ? '' : `
-      <div class="section-eyebrow" style="margin-top:${lbl.includes('Local')?'16px':'0'}">${escHtml(lbl)} <span style="color:var(--text-dim)">(${list.length})</span></div>
-      <table>
-        <thead><tr><th>Proto</th><th>Local</th><th>Remote</th><th>State</th><th>PID</th></tr></thead>
-        <tbody>
-        ${list.map(c=>`<tr>
-          <td style="color:var(--teal);font-size:11px;font-weight:600">${c.proto||'?'}</td>
-          <td class="mono" style="color:var(--text-muted)">${escHtml(c.laddr||'—')}</td>
-          <td class="mono" style="color:${ext.includes(c)?'var(--teal)':'var(--text-muted)'}">${escHtml(c.raddr||'—')}</td>
-          <td>${netStateBadge(c.status)}</td>
-          <td class="mono" style="color:var(--text-dim)">${c.pid||'—'}</td>
-        </tr>`).join('')}
-        </tbody>
-      </table>`;
-    el.innerHTML = tbl(ext,'External Connections') + tbl(loc,'Local / Internal');
+    const tbl = (list, lbl) => !list.length ? '' :
+      '<div class="eyebrow">' + lbl + ' <span style="color:var(--text-dim)">(' + list.length + ')</span></div>'
+      + '<table><thead><tr><th>Proto</th><th>Local</th><th>Remote</th><th>State</th><th>PID</th></tr></thead><tbody>'
+      + list.map(c => '<tr>'
+          + '<td style="color:var(--mission-teal);font-size:11px;font-weight:600">' + escHtml(c.proto || '?') + '</td>'
+          + '<td class="mono" style="color:var(--text-mute)">' + escHtml(c.laddr || '—') + '</td>'
+          + '<td class="mono" style="color:' + (ext.includes(c) ? 'var(--mission-teal)' : 'var(--text-mute)') + '">' + escHtml(c.raddr || '—') + '</td>'
+          + '<td>' + netBadge(c.status) + '</td>'
+          + '<td class="mono" style="color:var(--text-dim)">' + (c.pid || '—') + '</td>'
+          + '</tr>').join('')
+      + '</tbody></table>';
+    el.innerHTML = tbl(ext, 'External Connections') + tbl(loc, 'Local / Internal');
   }
 
   else if (tab === 'files') {
@@ -1359,147 +1464,102 @@ async function loadDeviceTab(id, tab) {
   }
 
   else if (tab === 'events') {
-    const events = await fetch(`/api/device/${id}/events?limit=100`).then(r=>r.json()).catch(()=>[]);
+    const events = await fetch('/api/device/' + id + '/events?limit=100').then(r=>r.json()).catch(()=>[]);
     if (!events.length) {
-      el.innerHTML = `<div class="empty"><div class="empty-icon">◈</div><div class="empty-title">No events yet</div><div class="empty-sub">Events appear when processes start or stop, CPU spikes, or new connections appear.</div></div>`;
+      el.innerHTML = '<div class="empty"><div class="empty-title">Mission nominal</div><div class="empty-sub">No events recorded.</div></div>';
       return;
     }
-    el.innerHTML = events.map(e=>`
-      <div class="timeline-item ${tlSevClass(e.severity)}">
-        <span class="tl-time">${fmt(e.ts)}</span>
-        <span class="tl-icon">${evtIcon(e.type)}</span>
-        <div class="tl-body">
-          <div class="tl-type">${escHtml(e.type?.replace(/_/g,' '))}</div>
-          <div class="tl-detail">${escHtml(e.detail||'')}</div>
-        </div>
-        <span class="badge ${sevClass(e.severity)}" style="flex-shrink:0;align-self:flex-start">${e.severity||'info'}</span>
-      </div>`).join('');
+    el.innerHTML = events.map(e => '<div class="tl-item ' + tlSevClass(e.severity) + '">'
+      + '<span class="tl-time">' + fmt(e.ts) + '</span>'
+      + '<span class="tl-icon">' + evtIcon(e.type) + '</span>'
+      + '<div class="tl-body">'
+      + '<div class="tl-type">' + escHtml((e.type || '').replace(/_/g,' ')) + '</div>'
+      + '<div class="tl-detail">' + escHtml(e.detail || '') + '</div>'
+      + '</div>'
+      + '<span class="badge ' + sevClass(e.severity) + '" style="flex-shrink:0;align-self:flex-start">' + (e.severity || 'info') + '</span>'
+      + '</div>').join('');
   }
 
   else if (tab === 'agentlog') {
-    const data = await fetch(`/api/device/${id}/logs`).then(r=>r.json()).catch(()=>({lines:[]}));
-    el.innerHTML = `<div class="log-box">${escHtml((data.lines||[]).join('\n'))||'(no log data yet)'}</div>`;
+    const data = await fetch('/api/device/' + id + '/logs').then(r=>r.json()).catch(()=>({lines:[]}));
+    el.innerHTML = '<div class="log-box">' + escHtml((data.lines || []).join('\n') || '(no log data yet)') + '</div>';
   }
 }
 
-// ── file browser ───────────────────────────────────────────────────────────
+// ── File browser ──────────────────────────────────────────────────────────────
 async function loadFilesBrowser(deviceId, el) {
-  const data  = await fetch(`/api/device/${deviceId}/files`).then(r=>r.json()).catch(()=>({files:[]}));
+  const data  = await fetch('/api/device/' + deviceId + '/files').then(r=>r.json()).catch(()=>({files:[]}));
   const files = data.files || [];
-
   if (!files.length) {
-    el.innerHTML = `<div class="empty">
-      <div class="empty-icon">◈</div>
-      <div class="empty-title">No files indexed yet</div>
-      <div class="empty-sub">Documents, Desktop, and Downloads are scanned every few agent cycles.</div>
-    </div>`;
+    el.innerHTML = '<div class="empty"><div class="empty-title">No files indexed yet</div><div class="empty-sub">Documents, Desktop, and Downloads are scanned each agent cycle.</div></div>';
     return;
   }
-
-  el.innerHTML = `
-    <div class="file-ts">Last indexed: ${fmt(data.ts)} — ${files.length} files</div>
-    <input class="file-search" type="text" placeholder="Search files…" id="fileSearch_${deviceId}" oninput="filterFiles('${deviceId}')">
-    <div id="fileTable_${deviceId}"></div>
-    <div class="access-log-section" id="accessLogSection_${deviceId}"></div>`;
-
+  el.innerHTML = '<div style="font-family:\'JetBrains Mono\',monospace;font-size:9px;color:var(--text-mute);margin-bottom:8px;letter-spacing:.08em">Last indexed: ' + fmt(data.ts) + ' — ' + files.length + ' files</div>'
+    + '<input class="file-search" type="text" placeholder="Search files…" id="fileSearch_' + deviceId + '" oninput="filterFiles(\'' + deviceId + '\')">'
+    + '<div id="fileTable_' + deviceId + '"></div>'
+    + '<div class="access-section" id="accessLogSection_' + deviceId + '"><h4>Files accessed by administrator</h4><div style="font-size:11px;color:var(--text-mute)">Access log is visible in the agent transparency page (tray icon).</div></div>';
   renderFileTable(deviceId, files);
-  loadAccessLogSection(deviceId);
 }
 
-async function loadAccessLogSection(deviceId) {
-  const el = document.getElementById(`accessLogSection_${deviceId}`);
+function renderFileTable(deviceId, files, filter) {
+  const el = document.getElementById('fileTable_' + deviceId);
   if (!el) return;
-  const data = await fetch(`/api/device/${deviceId}/status`).then(r=>r.json()).catch(()=>({}));
-  // Access log is synced separately — just show a heading
-  el.innerHTML = `<h4>Files accessed by administrator</h4>
-    <div style="font-size:11px;color:var(--text-muted)">Access log is visible in the agent's local transparency page (tray icon → "What's being monitored?").</div>`;
+  const shown = filter ? files.filter(f => f.rel.toLowerCase().includes(filter.toLowerCase()) || f.name.toLowerCase().includes(filter.toLowerCase())) : files;
+  if (!shown.length) { el.innerHTML = '<div class="empty" style="padding:20px">No files match that search.</div>'; return; }
+  el.innerHTML = '<table><thead><tr><th>Name</th><th>Path</th><th>Modified</th><th>Size</th><th>Action</th></tr></thead><tbody>'
+    + shown.slice(0, 200).map(f => {
+        const rid = fileRequests[f.path];
+        let action = '<button class="file-req-btn" onclick="requestFileDownload(\'' + escAttr(deviceId) + '\',\'' + escAttr(escJs(f.path)) + '\',\'' + escAttr(escJs(f.name)) + '\',this)">Request</button>';
+        if (rid) {
+          if (rid.status === 'pending') action = '<span class="file-req-btn pending">Uploading…</span>';
+          else if (rid.status === 'ready') action = '<a href="/api/device/' + escAttr(deviceId) + '/download/' + escAttr(rid.request_id) + '" download="' + escAttr(f.name) + '" class="file-req-btn dl-link">Download</a>';
+          else if (rid.status === 'error') action = '<span class="file-req-btn error" title="' + escAttr(rid.error || '') + '">Error</span>';
+        }
+        return '<tr>'
+          + '<td><strong style="color:var(--text-bright)">' + escHtml(f.name) + '</strong></td>'
+          + '<td class="mono" style="color:var(--text-dim);font-size:10px">' + escHtml(f.rel) + '</td>'
+          + '<td style="color:var(--text-mute);white-space:nowrap">' + fmt(f.modified) + '</td>'
+          + '<td style="color:var(--text-mute);white-space:nowrap">' + fmtSize(f.size_kb) + '</td>'
+          + '<td>' + action + '</td>'
+          + '</tr>';
+      }).join('')
+    + '</tbody></table>';
 }
-
-function renderFileTable(deviceId, files, filter='') {
-  const el = document.getElementById(`fileTable_${deviceId}`);
-  if (!el) return;
-  const shown = filter
-    ? files.filter(f => f.rel.toLowerCase().includes(filter.toLowerCase()) || f.name.toLowerCase().includes(filter.toLowerCase()))
-    : files;
-  if (!shown.length) {
-    el.innerHTML = '<div class="empty" style="padding:20px;">No files match that search.</div>';
-    return;
-  }
-
-  el.innerHTML = `<table>
-    <thead><tr><th>Name</th><th>Path</th><th>Modified</th><th>Size</th><th>Action</th></tr></thead>
-    <tbody>
-    ${shown.slice(0,200).map(f => {
-      const rid = fileRequests[f.path];
-      let actionHtml = `<span class="file-req-badge" onclick="requestFileDownload('${escAttr(deviceId)}','${escAttr(escJs(f.path))}','${escAttr(escJs(f.name))}',this)">Request Download</span>`;
-      if (rid) {
-        const st = rid.status;
-        if (st === 'pending')  actionHtml = `<span class="file-req-badge pending">Uploading… wait for next sync</span>`;
-        else if (st === 'ready')   actionHtml = `<a href="/api/device/${escAttr(deviceId)}/download/${escAttr(rid.request_id)}" download="${escAttr(f.name)}" class="file-req-badge download">⬇ Download Now</a>`;
-        else if (st === 'error')   actionHtml = `<span class="file-req-badge error" title="${escAttr(rid.error||'')}">Error</span>`;
-      }
-      return `<tr>
-        <td><strong style="color:var(--text-bright)">${escHtml(f.name)}</strong></td>
-        <td class="mono" style="color:var(--text-dim);font-size:10px">${escHtml(f.rel)}</td>
-        <td style="color:var(--text-muted);white-space:nowrap">${fmt(f.modified)}</td>
-        <td style="color:var(--text-muted);white-space:nowrap">${fmtSize(f.size_kb)}</td>
-        <td>${actionHtml}</td>
-      </tr>`;
-    }).join('')}
-    </tbody>
-  </table>
-  ${shown.length > 200 ? `<div class="modal-hint" style="padding:8px 0">Showing first 200 of ${shown.length} files. Use search to filter.</div>` : ''}`;
-}
-
-let _fileListCache = {};
 
 async function filterFiles(deviceId) {
-  const filter = document.getElementById(`fileSearch_${deviceId}`)?.value || '';
+  const filter = (document.getElementById('fileSearch_' + deviceId) || {}).value || '';
   if (!_fileListCache[deviceId]) {
-    const data = await fetch(`/api/device/${deviceId}/files`).then(r=>r.json()).catch(()=>({files:[]}));
+    const data = await fetch('/api/device/' + deviceId + '/files').then(r=>r.json()).catch(()=>({files:[]}));
     _fileListCache[deviceId] = data.files || [];
   }
   renderFileTable(deviceId, _fileListCache[deviceId], filter);
 }
 
-async function requestFileDownload(deviceId, filePath, filename, badgeEl) {
-  badgeEl.textContent = 'Requesting…';
-  badgeEl.className = 'file-req-badge pending';
-  const r = await fetch(`/api/device/${deviceId}/request-file`, {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
+async function requestFileDownload(deviceId, filePath, filename, btn) {
+  btn.textContent = 'Requesting…'; btn.className = 'file-req-btn pending';
+  const r = await fetch('/api/device/' + deviceId + '/request-file', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
     body: JSON.stringify({path: filePath}),
   }).then(r=>r.json()).catch(()=>({}));
-
-  if (!r.ok) {
-    badgeEl.textContent = 'Error';
-    badgeEl.className = 'file-req-badge error';
-    return;
-  }
+  if (!r.ok) { btn.textContent = 'Error'; btn.className = 'file-req-btn error'; return; }
   const rid = r.request_id;
   fileRequests[filePath] = {request_id: rid, status: 'pending'};
-  badgeEl.textContent = 'Uploading… wait for next agent sync';
-
+  btn.textContent = 'Awaiting sync…';
   const poll = setInterval(async () => {
-    const st = await fetch(`/api/device/${deviceId}/file-status/${rid}`).then(r=>r.json()).catch(()=>({}));
+    const st = await fetch('/api/device/' + deviceId + '/file-status/' + rid).then(r=>r.json()).catch(()=>({}));
     if (st.status === 'ready') {
       clearInterval(poll);
       fileRequests[filePath] = {request_id: rid, status: 'ready'};
-      badgeEl.outerHTML = `<a href="/api/device/${escAttr(deviceId)}/download/${escAttr(rid)}" download="${escAttr(filename)}" class="file-req-badge download">⬇ Download Now</a>`;
+      btn.outerHTML = '<a href="/api/device/' + escAttr(deviceId) + '/download/' + escAttr(rid) + '" download="' + escAttr(filename) + '" class="file-req-btn dl-link">Download</a>';
     } else if (st.status === 'error') {
       clearInterval(poll);
       fileRequests[filePath] = {request_id: rid, status: 'error', error: st.error};
-      badgeEl.textContent = 'Error: ' + (st.error || 'unknown');
-      badgeEl.className = 'file-req-badge error';
+      btn.textContent = 'Error'; btn.className = 'file-req-btn error';
     }
-  }, 30_000);
+  }, 30000);
 }
 
-function escJs(s)   { return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'\\"'); }
-function escAttr(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-// ── enroll modal ───────────────────────────────────────────────────────────
+// ── Enroll modal ──────────────────────────────────────────────────────────────
 async function openEnroll() {
   document.getElementById('enrollName').value = '';
   document.getElementById('enrollURL').textContent = 'Enter a device name above…';
@@ -1513,18 +1573,18 @@ function closeEnroll() { document.getElementById('enrollModal').classList.remove
 
 function selOS(os) {
   enrollOS = os;
-  document.getElementById('os-win').classList.toggle('sel', os==='win');
-  document.getElementById('os-lin').classList.toggle('sel', os==='lin');
+  document.getElementById('os-win').classList.toggle('sel', os === 'win');
+  document.getElementById('os-lin').classList.toggle('sel', os === 'lin');
   updateEnrollURL();
 }
 
 function updateEnrollURL() {
-  const name  = document.getElementById('enrollName').value.trim().replace(/[^a-zA-Z0-9_\-]/g,'_');
-  const ext   = enrollOS === 'win' ? 'bat' : 'sh';
+  const name = document.getElementById('enrollName').value.trim().replace(/[^a-zA-Z0-9_\-]/g,'_');
+  const ext  = enrollOS === 'win' ? 'bat' : 'sh';
   const urlEl = document.getElementById('enrollURL');
-  if (!name) { urlEl.textContent = 'Enter a device name above…'; urlEl.style.color=''; return; }
-  const url = `${enrollBaseURL}/enroll/${name}.${ext}`;
-  urlEl.innerHTML = `<a href="${escAttr(url)}" target="_blank" style="color:var(--teal);text-decoration:underline">${escHtml(url)}</a>`;
+  if (!name) { urlEl.textContent = 'Enter a device name above…'; urlEl.style.color = ''; return; }
+  const url = enrollBaseURL + '/enroll/' + name + '.' + ext;
+  urlEl.innerHTML = '<a href="' + escAttr(url) + '" target="_blank" style="color:var(--mission-teal)">' + escHtml(url) + '</a>';
 }
 
 function _getEnrollURL() {
@@ -1535,32 +1595,28 @@ function _getEnrollURL() {
 function copyEnrollLink() {
   const url = _getEnrollURL();
   if (!url) { showModalMsg('enrollMsg','err','Enter a device name first.'); return; }
-  navigator.clipboard.writeText(url).then(()=>{
-    showModalMsg('enrollMsg','ok','Link copied — send it to the staff member. They open it in a browser to download the script.');
-  }).catch(()=>{ showModalMsg('enrollMsg','err','Copy failed. Select the link manually and copy it.'); });
+  navigator.clipboard.writeText(url).then(() => {
+    showModalMsg('enrollMsg','ok','Link copied — share it with the staff member to begin enrollment.');
+  }).catch(() => showModalMsg('enrollMsg','err','Copy failed. Select the link manually.'));
 }
 
 async function downloadEnrollScript() {
   const url = _getEnrollURL();
   if (!url) { showModalMsg('enrollMsg','err','Enter a device name first.'); return; }
-  const a = document.createElement('a');
-  a.href = url;
-  a.click();
-  const os = enrollOS === 'win'
-    ? 'Double-click the .bat file to run it.'
-    : 'Run: bash enroll-devicename.sh  (do not double-click — opens in text editor)';
-  showModalMsg('enrollMsg','ok', `Script downloading. ${os}`);
+  document.createElement('a').href = url, document.body.appendChild(document.createElement('a')).href = url;
+  const a = document.createElement('a'); a.href = url; a.click();
+  showModalMsg('enrollMsg','ok','Script downloading. Staff member double-clicks the .bat file to begin.');
 }
 
-// ── settings modal ─────────────────────────────────────────────────────────
+// ── Settings modal ────────────────────────────────────────────────────────────
 async function openSettings() {
   const [s, policy] = await Promise.all([
     fetch('/api/settings').then(r=>r.json()).catch(()=>({})),
     fetch('/api/policy').then(r=>r.text()).catch(()=>'(policy unavailable)'),
   ]);
-  document.getElementById('settingsLanIP').textContent  = `http://${s.lan_ip}:${s.port}`;
-  document.getElementById('settingsPolicy').textContent = policy;
-  document.getElementById('settingsURLOverride').value  = s.commander_url_override || '';
+  document.getElementById('settingsLanIP').textContent   = 'http://' + s.lan_ip + ':' + s.port;
+  document.getElementById('settingsPolicy').textContent  = policy;
+  document.getElementById('settingsURLOverride').value   = s.commander_url_override || '';
   document.getElementById('settingsMsg').className = 'modal-msg';
   document.getElementById('settingsModal').classList.add('open');
 }
@@ -1569,38 +1625,24 @@ function closeSettings() { document.getElementById('settingsModal').classList.re
 async function saveSettings() {
   const ov = document.getElementById('settingsURLOverride').value.trim();
   const r = await fetch('/api/settings', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
+    method: 'POST', headers: {'Content-Type':'application/json'},
     body: JSON.stringify({commander_url_override: ov}),
   }).then(r=>r.json()).catch(()=>({}));
   if (r.ok) {
-    showModalMsg('settingsMsg','ok', ov ? 'Saved. New enrollment links will use the Cloudflare URL.' : 'Saved. Back to LAN-only mode.');
+    showModalMsg('settingsMsg','ok', ov ? 'Saved — new enrollment links will use the tunnel URL.' : 'Saved. LAN-only mode.');
     setTimeout(closeSettings, 1800);
   } else {
-    showModalMsg('settingsMsg','err','Save failed.');
+    showModalMsg('settingsMsg','err','Save failed — check server.');
   }
 }
 
 async function revokeDevice() {
   if (!selectedDevice) return;
   const name = document.getElementById('dTitle').textContent || selectedDevice;
-  if (!confirm(
-    `Revoke "${name}"?\n\n` +
-    `This will:\n` +
-    `  - Invalidate the device token (agent stops checking in)\n` +
-    `  - Clear the consent record\n` +
-    `  - Keep all historical logs\n\n` +
-    `The device must be re-enrolled with a new link to resume monitoring.`
-  )) return;
-  const r = await fetch(`/api/device/${selectedDevice}/revoke`, {method:'POST'})
-    .then(r=>r.json()).catch(()=>({}));
-  if (r.ok) {
-    alert(`"${name}" revoked. Generate a new enrollment link to re-add it.`);
-    clearDevice();
-    refreshAll();
-  } else {
-    alert('Revoke failed — check the server.');
-  }
+  if (!confirm('Revoke "' + name + '"?\n\nThis invalidates the device token and clears consent. Historical logs are kept. The device must be re-enrolled to resume monitoring.')) return;
+  const r = await fetch('/api/device/' + selectedDevice + '/revoke', {method:'POST'}).then(r=>r.json()).catch(()=>({}));
+  if (r.ok) { alert('"' + name + '" revoked.'); clearDevice(); refreshAll(); }
+  else alert('Revoke failed — check the server.');
 }
 
 function showModalMsg(id, type, msg) {
@@ -1612,18 +1654,18 @@ function showModalMsg(id, type, msg) {
 // Close overlays on backdrop click
 ['enrollModal','settingsModal'].forEach(id => {
   document.getElementById(id).addEventListener('click', e => {
-    if (e.target === e.currentTarget) document.getElementById(id).classList.remove('open');
+    if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
   });
 });
 
-// ── refresh ────────────────────────────────────────────────────────────────
+// ── Refresh ───────────────────────────────────────────────────────────────────
 async function refreshAll() {
   await Promise.all([loadStats(), loadFleet(), loadRightAlerts()]);
   if (selectedDevice) selectDevice(selectedDevice);
   else { loadActivityFeed(); loadAllWarnings(); }
 }
 
-setInterval(refreshAll, 60_000);
+setInterval(refreshAll, 60000);
 refreshAll();
 </script>
 </body>
